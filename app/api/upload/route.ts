@@ -12,14 +12,14 @@ export async function POST(request: Request) {
     const signedUrl = await getSignedUrl(
       R2,
       new PutObjectCommand({
-        Bucket: process.env.R2_BUCKET_NAME!,
+        Bucket: process.env.CLOUDFLARE_R2_BUCKET_NAME!,
         Key,
         ContentType: contentType,
       }),
       { expiresIn: 3600 }
     );
 
-    const publicUrl = `${process.env.NEXT_PUBLIC_R2_PUBLIC_URL}/${Key}`;
+    const publicUrl = `${process.env.NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL}/${Key}`;
 
     return NextResponse.json({ url: signedUrl, publicUrl: publicUrl });
   } catch (error) {
