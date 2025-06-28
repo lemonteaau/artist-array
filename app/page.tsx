@@ -3,6 +3,8 @@ import { SortSelector } from "@/components/sort-selector";
 import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
+import { Heart } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 interface Prompt {
   id: number;
@@ -107,13 +109,14 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                     </p>
                     {prompt.model && (
                       <p className="text-xs text-muted-foreground mt-1">
-                        Model: {prompt.model}
+                        {prompt.model}
                       </p>
                     )}
                     {typeof prompt.likes_count !== "undefined" && (
-                      <p className="text-xs text-muted-foreground mt-1">
-                        ❤️ {prompt.likes_count}
-                      </p>
+                      <Badge variant="outline" className="mt-2">
+                        <Heart className="w-4 h-4 text-red-500" />
+                        {prompt.likes_count}
+                      </Badge>
                     )}
                   </div>
                 </CardFooter>
