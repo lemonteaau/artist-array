@@ -16,8 +16,53 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Artist Array",
+  title: {
+    default: "Artist Array",
+    template: "%s | Artist Array",
+  },
   description: "Share and discover AI art prompts and techniques",
+  keywords: [
+    "AI art",
+    "prompts",
+    "artificial intelligence",
+    "art generation",
+    "creative AI",
+  ],
+  authors: [{ name: "Artist Array Team" }],
+  creator: "Artist Array",
+  publisher: "Artist Array",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || "https://artist-array.vercel.app"
+  ),
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "/",
+    title: "Artist Array",
+    description: "Share and discover AI art prompts and techniques",
+    siteName: "Artist Array",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Artist Array",
+    description: "Share and discover AI art prompts and techniques",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
