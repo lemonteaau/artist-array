@@ -34,7 +34,8 @@ export default async function PromptDetailPage({
 }: {
   params: { id: string };
 }) {
-  const prompt = await getPrompt(params.id);
+  const { id } = await params;
+  const prompt = await getPrompt(id);
 
   if (!prompt) {
     return <div>Prompt not found</div>;
