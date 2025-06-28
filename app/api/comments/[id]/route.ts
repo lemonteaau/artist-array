@@ -3,7 +3,7 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const { id } = await params;
   const supabase = await createClient();
@@ -59,7 +59,7 @@ export async function DELETE(
 
     return NextResponse.json({ message: "Comment deleted successfully" });
   } catch (error) {
-    console.error(error);
+    console.error("Error deleting comment:", error);
     return NextResponse.json(
       { error: "Error deleting comment" },
       { status: 500 }

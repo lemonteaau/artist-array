@@ -36,14 +36,7 @@ export async function POST(request: Request) {
           user_id: user.id,
         },
       ])
-      .select(
-        `
-        *,
-        users:user_id (
-          email
-        )
-      `
-      )
+      .select("*")
       .single();
 
     if (error) {
@@ -52,7 +45,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ data }, { status: 201 });
   } catch (error) {
-    console.error(error);
+    console.error("Error adding comment:", error);
     return NextResponse.json(
       { error: "Error adding comment" },
       { status: 500 }
