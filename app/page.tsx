@@ -1,5 +1,6 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { SortSelector } from "@/components/sort-selector";
+import { createClient } from "@/utils/supabase/server";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -16,21 +17,54 @@ interface Prompt {
 }
 
 async function getPrompts(sortBy = "newest"): Promise<Prompt[]> {
-  // In a real app, you'd fetch from an API.
-  // We'll use our own API route.
-  // The URL needs to be absolute when fetching on the server.
-  const url =
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000/api/prompts"
-      : `https://${process.env.VERCEL_URL}/api/prompts`;
+  const supabase = await createClient();
 
-  const res = await fetch(`${url}?sort=${sortBy}`, { cache: "no-store" });
-  if (!res.ok) {
-    // This will activate the closest `error.js` Error Boundary
-    throw new Error("Failed to fetch data");
+  try {
+    // Get all prompts
+    let promptsQuery = supabase.from("prompts").select("*");
+
+    if (sortBy === "newest") {
+      promptsQuery = promptsQuery.order("created_at", { ascending: false });
+    }
+
+    const { data: prompts, error: promptsError } = await promptsQuery;
+
+    if (promptsError) {
+      throw promptsError;
+    }
+
+    if (!prompts) {
+      return [];
+    }
+
+    // Get likes count for each prompt
+    const promptsWithLikes = await Promise.all(
+      prompts.map(async (prompt) => {
+        const { count } = await supabase
+          .from("likes")
+          .select("*", { count: "exact" })
+          .eq("prompt_id", prompt.id);
+
+        return {
+          ...prompt,
+          likes_count: count || 0,
+        };
+      })
+    );
+
+    // Sort by popularity if requested
+    let finalData = promptsWithLikes;
+    if (sortBy === "popular") {
+      finalData = promptsWithLikes.sort(
+        (a, b) => b.likes_count - a.likes_count
+      );
+    }
+
+    return finalData;
+  } catch (error) {
+    console.error("Error fetching prompts:", error);
+    return [];
   }
-  const { data } = await res.json();
-  return data;
 }
 
 interface HomePageProps {
