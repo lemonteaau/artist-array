@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://artist-array.vercel.app/sitemap.xml 
