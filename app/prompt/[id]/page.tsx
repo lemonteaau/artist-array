@@ -89,13 +89,42 @@ export default function PromptDetailPage() {
   useEffect(() => {
     const fetchPrompt = async () => {
       try {
-        const response = await fetch(`/api/prompts/${id}`);
-        if (!response.ok) {
-          throw new Error("Failed to fetch prompt");
+        // Fetch prompt data directly from Supabase
+        const { data: promptData, error: promptError } = await supabase
+          .from("prompts")
+          .select("*")
+          .eq("id", id)
+          .single();
+
+        if (promptError) {
+          throw promptError;
         }
-        const { data } = await response.json();
-        setPrompt(data);
-        setLikesCount(data.likes_count);
+
+        // Get likes count
+        const { count: likesCount } = await supabase
+          .from("likes")
+          .select("*", { count: "exact" })
+          .eq("prompt_id", id);
+
+        // Get comments
+        const { data: comments, error: commentsError } = await supabase
+          .from("comments")
+          .select("id, created_at, content, user_id")
+          .eq("prompt_id", id)
+          .order("created_at", { ascending: true });
+
+        if (commentsError) {
+          throw commentsError;
+        }
+
+        const transformedData = {
+          ...promptData,
+          likes_count: likesCount || 0,
+          comments: comments || [],
+        };
+
+        setPrompt(transformedData);
+        setLikesCount(transformedData.likes_count);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -119,7 +148,7 @@ export default function PromptDetailPage() {
 
     fetchPrompt();
     fetchLikeStatus();
-  }, [id]);
+  }, [id, supabase]);
 
   const handleLike = async () => {
     if (!user) {
