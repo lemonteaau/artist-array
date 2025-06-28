@@ -1,9 +1,18 @@
 import { CopyButton } from "@/components/copy-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import { Heart, MessageCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Toaster } from "sonner";
+
+interface Comment {
+  id: number;
+  created_at: string;
+  content: string;
+  user_id: string;
+}
 
 interface Prompt {
   id: number;
@@ -13,6 +22,8 @@ interface Prompt {
   prompt: string | null;
   negative_prompt: string | null;
   user_id: string | null;
+  likes_count: number;
+  comments: Comment[];
 }
 
 async function getPrompt(id: string): Promise<Prompt> {
@@ -27,6 +38,16 @@ async function getPrompt(id: string): Promise<Prompt> {
   }
   const { data } = await res.json();
   return data;
+}
+
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
 
 export default async function PromptDetailPage({
@@ -58,7 +79,25 @@ export default async function PromptDetailPage({
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Details</CardTitle>
+                <CardTitle className="flex justify-between items-center">
+                  <span>Details</span>
+                  <div className="flex gap-2">
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
+                      <Heart className="w-4 h-4" />
+                      {prompt.likes_count}
+                    </Badge>
+                    <Badge
+                      variant="secondary"
+                      className="flex items-center gap-1"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      {prompt.comments.length}
+                    </Badge>
+                  </div>
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -102,6 +141,32 @@ export default async function PromptDetailPage({
                 )}
               </CardContent>
             </Card>
+
+            {/* Comments Section */}
+            {prompt.comments.length > 0 && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Comments ({prompt.comments.length})</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {prompt.comments.map((comment) => (
+                      <div
+                        key={comment.id}
+                        className="bg-muted p-3 rounded-md space-y-2"
+                      >
+                        <p className="text-sm">{comment.content}</p>
+                        <div className="flex justify-between items-center text-xs text-muted-foreground">
+                          <span>User: {comment.user_id.slice(0, 8)}...</span>
+                          <span>{formatDate(comment.created_at)}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+
             <Link href="/" className="text-sm text-blue-500 hover:underline">
               &larr; Back to gallery
             </Link>

@@ -9,21 +9,40 @@ export async function GET(
   const supabase = await createClient();
 
   try {
-    const { data, error } = await supabase
+    const { data: prompt, error: promptError } = await supabase
       .from("prompts")
-      .select("*")
+      .select(
+        `
+        *,
+        likes(count),
+        comments(
+          id,
+          created_at,
+          content,
+          user_id
+        )
+      `
+      )
       .eq("id", id)
       .single();
 
-    if (error) {
-      throw error;
+    if (promptError) {
+      throw promptError;
     }
 
-    if (!data) {
+    if (!prompt) {
       return NextResponse.json({ error: "Prompt not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ data });
+    const likesCount = prompt.likes?.[0]?.count || 0;
+
+    const responseData = {
+      ...prompt,
+      likes_count: likesCount,
+      comments: prompt.comments || [],
+    };
+
+    return NextResponse.json({ data: responseData });
   } catch (error) {
     console.error(error);
     return NextResponse.json({ error: "Error fetching data" }, { status: 500 });
