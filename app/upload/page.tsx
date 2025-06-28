@@ -19,7 +19,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { AI_MODELS } from "@/lib/models";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
@@ -31,8 +30,10 @@ export default function UploadPage() {
   const [prompt, setPrompt] = useState("");
   const [negativePrompt, setNegativePrompt] = useState("");
   const [model, setModel] = useState("");
+  const [availableModels, setAvailableModels] = useState<string[]>([]);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [modelsLoading, setModelsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -51,6 +52,35 @@ export default function UploadPage() {
 
     getUser();
   }, [router, supabase]);
+
+  useEffect(() => {
+    const fetchModels = async () => {
+      try {
+        const response = await fetch("/api/models");
+        if (response.ok) {
+          const { data } = await response.json();
+          setAvailableModels(data);
+        } else {
+          console.error("Failed to fetch models");
+          // Fallback to hardcoded list if API fails
+          setAvailableModels([
+            "Stable Diffusion XL",
+            "Midjourney",
+            "DALL-E 3",
+            "Other",
+          ]);
+        }
+      } catch (error) {
+        console.error("Error fetching models:", error);
+        // Fallback to hardcoded list if fetch fails
+        setAvailableModels(["Other"]);
+      } finally {
+        setModelsLoading(false);
+      }
+    };
+
+    fetchModels();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -192,13 +222,19 @@ export default function UploadPage() {
                 <Select
                   value={model}
                   onValueChange={setModel}
-                  disabled={isLoading}
+                  disabled={isLoading || modelsLoading}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Select the AI model used" />
+                    <SelectValue
+                      placeholder={
+                        modelsLoading
+                          ? "Loading models..."
+                          : "Select the AI model used"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent>
-                    {AI_MODELS.map((modelName) => (
+                    {availableModels.map((modelName) => (
                       <SelectItem key={modelName} value={modelName}>
                         {modelName}
                       </SelectItem>
@@ -237,7 +273,11 @@ export default function UploadPage() {
                   disabled={isLoading}
                 />
               </div>
-              <Button className="w-full" type="submit" disabled={isLoading}>
+              <Button
+                className="w-full"
+                type="submit"
+                disabled={isLoading || modelsLoading || !model}
+              >
                 {isLoading ? "Submitting..." : "Submit"}
               </Button>
             </form>
