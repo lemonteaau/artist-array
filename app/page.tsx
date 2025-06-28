@@ -34,11 +34,12 @@ async function getPrompts(sortBy = "newest"): Promise<Prompt[]> {
 }
 
 interface HomePageProps {
-  searchParams: { sort?: string };
+  searchParams: Promise<{ sort?: string }>;
 }
 
 export default async function HomePage({ searchParams }: HomePageProps) {
-  const sortBy = searchParams.sort || "newest";
+  const resolvedSearchParams = await searchParams;
+  const sortBy = resolvedSearchParams.sort || "newest";
   const prompts = await getPrompts(sortBy);
 
   return (
@@ -62,6 +63,7 @@ export default async function HomePage({ searchParams }: HomePageProps) {
                     width={500}
                     height={500}
                     className="object-cover aspect-square"
+                    priority={prompt.id === prompts[0]?.id}
                   />
                 </CardContent>
                 <CardFooter className="p-4">
