@@ -11,22 +11,58 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useState } from "react";
+import { AI_MODELS } from "@/lib/models";
+import { createClient } from "@/utils/supabase/client";
+import { User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { Toaster, toast } from "sonner";
 
 export default function UploadPage() {
   const [artistString, setArtistString] = useState("");
   const [prompt, setPrompt] = useState("");
   const [negativePrompt, setNegativePrompt] = useState("");
+  const [model, setModel] = useState("");
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const router = useRouter();
+  const supabase = createClient();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        router.push("/login");
+        return;
+      }
+      setUser(user);
+    };
+
+    getUser();
+  }, [router, supabase]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!artistString || !imageFile) {
-      toast.error("Artist String and Example Image are required.");
+    if (!artistString || !imageFile || !model) {
+      toast.error("Artist String, Example Image, and Model are required.");
+      return;
+    }
+
+    if (!user) {
+      toast.error("You must be logged in to upload.");
+      router.push("/login");
       return;
     }
 
@@ -76,11 +112,13 @@ export default function UploadPage() {
           image_url: publicUrl,
           prompt,
           negative_prompt: negativePrompt,
+          model,
         }),
       });
 
       if (!submitResponse.ok) {
-        throw new Error("Failed to submit prompt.");
+        const errorData = await submitResponse.json();
+        throw new Error(errorData.error || "Failed to submit prompt.");
       }
 
       toast.dismiss();
@@ -89,12 +127,16 @@ export default function UploadPage() {
       setArtistString("");
       setPrompt("");
       setNegativePrompt("");
+      setModel("");
       setImageFile(null);
       // a bit of a hack to reset the file input
       const fileInput = document.getElementById("image") as HTMLInputElement;
       if (fileInput) {
         fileInput.value = "";
       }
+
+      // Redirect to home page
+      router.push("/");
     } catch (error) {
       console.error(error);
       toast.dismiss();
@@ -105,6 +147,21 @@ export default function UploadPage() {
       setIsLoading(false);
     }
   };
+
+  if (!user) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">
+            Authentication Required
+          </h2>
+          <p className="text-muted-foreground">
+            Please log in to upload content.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -120,7 +177,7 @@ export default function UploadPage() {
           <CardContent>
             <form className="grid gap-6" onSubmit={handleSubmit}>
               <div className="grid gap-2">
-                <Label htmlFor="artist-string">Artist String</Label>
+                <Label htmlFor="artist-string">Artist String *</Label>
                 <Input
                   id="artist-string"
                   placeholder="e.g. by artist1, by artist2, style of artist3"
@@ -131,10 +188,30 @@ export default function UploadPage() {
                 />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="image">Example Image</Label>
+                <Label htmlFor="model">Model *</Label>
+                <Select
+                  value={model}
+                  onValueChange={setModel}
+                  disabled={isLoading}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select the AI model used" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {AI_MODELS.map((modelName) => (
+                      <SelectItem key={modelName} value={modelName}>
+                        {modelName}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="image">Example Image *</Label>
                 <Input
                   id="image"
                   type="file"
+                  accept="image/*"
                   required
                   onChange={(e) => setImageFile(e.target.files?.[0] || null)}
                   disabled={isLoading}
