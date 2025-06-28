@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/server";
 
 export async function POST(request: Request) {
   const { artist_string, image_url, prompt, negative_prompt } =
@@ -12,10 +12,7 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase
@@ -46,10 +43,7 @@ export async function POST(request: Request) {
 }
 
 export async function GET() {
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase

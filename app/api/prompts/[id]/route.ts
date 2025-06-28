@@ -1,4 +1,4 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient } from "@/utils/supabase/server";
 import { NextResponse } from "next/server";
 
 export async function GET(
@@ -6,10 +6,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   const { id } = await params;
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!
-  );
+  const supabase = await createClient();
 
   try {
     const { data, error } = await supabase
