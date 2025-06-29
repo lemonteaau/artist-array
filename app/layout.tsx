@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/navbar";
-import { Toaster } from "sonner";
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -82,18 +81,6 @@ export default function RootLayout({
           <Navbar />
           <main className="container mx-auto px-4 py-8">{children}</main>
         </div>
-
-        <Toaster
-          richColors
-          position="top-center"
-          toastOptions={{
-            style: {
-              background: "var(--background)",
-              color: "var(--foreground)",
-              border: "1px solid var(--border)",
-            },
-          }}
-        />
       </body>
       <Script
         defer
