@@ -107,7 +107,7 @@ export default function FavoritesPage() {
             <Heart className="h-8 w-8 text-primary fill-current" />
           </div>
           <h1 className="text-3xl font-bold gradient-text">Favorite Prompts</h1>
-          <p className="text-muted-foreground">Prompts you&apos;ve liked</p>
+          <p className="text-muted-foreground">Prompts you liked</p>
         </div>
         <PromptsLoadingFallback />
       </div>
@@ -176,12 +176,6 @@ export default function FavoritesPage() {
                 Total likes given:{" "}
                 <span className="font-semibold text-foreground">
                   {prompts.length}
-                </span>
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Combined likes on these prompts:{" "}
-                <span className="font-semibold text-foreground">
-                  {prompts.reduce((acc, p) => acc + (p.likes_count || 0), 0)}
                 </span>
               </p>
             </div>
