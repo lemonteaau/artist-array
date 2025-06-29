@@ -82,34 +82,7 @@ export default function RootLayout({
           <Navbar />
           <main className="container mx-auto px-4 py-8">{children}</main>
         </div>
-        <footer className="mt-auto border-t">
-          <div className="container mx-auto px-4 py-8">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-              <div className="text-center md:text-left">
-                <p className="text-sm text-muted-foreground">
-                  © 2024 Artist Array. Share and discover AI art.
-                </p>
-              </div>
-              <div className="flex gap-6 text-sm text-muted-foreground">
-                <a href="#" className="hover:text-foreground transition-colors">
-                  About
-                </a>
-                <a href="#" className="hover:text-foreground transition-colors">
-                  Terms
-                </a>
-                <a href="#" className="hover:text-foreground transition-colors">
-                  Privacy
-                </a>
-                <a
-                  href="https://github.com"
-                  className="hover:text-foreground transition-colors"
-                >
-                  GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        </footer>
+
         <Toaster
           richColors
           position="top-center"

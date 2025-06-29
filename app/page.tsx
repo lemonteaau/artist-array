@@ -11,7 +11,7 @@ import { Sparkles, TrendingUp, Clock } from "lucide-react";
 
 function HomePageContent() {
   const searchParams = useSearchParams();
-  const sortBy = searchParams.get("sort") || "newest";
+  const sortBy = searchParams.get("sort") || "popular";
 
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [user, setUser] = useState<User | null>(null);
@@ -47,7 +47,7 @@ function HomePageContent() {
 
 function HomePageWrapper() {
   const searchParams = useSearchParams();
-  const sortBy = searchParams.get("sort") || "newest";
+  const sortBy = searchParams.get("sort") || "popular";
 
   return (
     <div className="space-y-8">
@@ -69,7 +69,7 @@ function HomePageWrapper() {
 
       {/* Sort Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 rounded-lg glass-effect">
-        <div className="flex items-center gap-4">
+        <div className="flex justify-between w-full gap-4">
           <div className="flex items-center gap-2 text-sm">
             {sortBy === "popular" ? (
               <>
@@ -85,9 +85,6 @@ function HomePageWrapper() {
           </div>
           <SortSelector currentSort={sortBy} />
         </div>
-        <p className="text-sm text-muted-foreground">
-          {sortBy === "popular" ? "Most liked prompts" : "Recently shared"}
-        </p>
       </div>
 
       {/* Prompts Grid */}

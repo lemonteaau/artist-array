@@ -22,7 +22,7 @@ export function SortSelector({ currentSort }: SortSelectorProps) {
   const handleSortChange = useCallback(
     (value: string) => {
       const params = new URLSearchParams(searchParams);
-      if (value === "newest") {
+      if (value === "popular") {
         params.delete("sort");
       } else {
         params.set("sort", value);

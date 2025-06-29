@@ -71,16 +71,20 @@ export function Navbar() {
           </Link>
 
           <nav className="flex items-center gap-2">
-            <Button
-              asChild
-              className="hover-glow"
-              size={loading ? "default" : "sm"}
-            >
-              <Link href="/upload">
-                <Upload className="mr-2 h-4 w-4" />
-                Share Prompt
-              </Link>
-            </Button>
+            {user ? (
+              <Button
+                asChild
+                className="hover-glow"
+                size={loading ? "default" : "sm"}
+              >
+                <Link href="/upload">
+                  <Upload className="mr-2 h-4 w-4" />
+                  Share Prompt
+                </Link>
+              </Button>
+            ) : (
+              ""
+            )}
 
             {loading ? (
               <div className="flex items-center gap-2">
