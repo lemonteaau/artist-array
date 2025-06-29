@@ -39,18 +39,16 @@ export function PromptCard({
             priority={priority}
           />
         </CardContent>
-        <CardFooter className="p-4">
-          <div className="w-full">
+        <CardFooter className="px-6">
+          <div className="w-full flex flex-col gap-4">
             <p className="text-sm truncate font-medium">
               {prompt.artist_string}
             </p>
             {prompt.model && (
-              <p className="text-xs text-muted-foreground mt-1">
-                {prompt.model}
-              </p>
+              <p className="text-xs text-muted-foreground">{prompt.model}</p>
             )}
             {typeof prompt.likes_count !== "undefined" && (
-              <div className="mt-2">
+              <div className="">
                 <SmartLikeButton
                   promptId={prompt.id.toString()}
                   userId={userId}
