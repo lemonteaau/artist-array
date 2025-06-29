@@ -57,7 +57,7 @@ export default function FavoritesPage() {
         if (likesError) throw likesError;
 
         if (likes && likes.length > 0) {
-          // Extract prompts from the likes data
+          /* eslint-disable @typescript-eslint/no-explicit-any */
           const likedPrompts = likes
             .map((like: any) => like.prompts)
             .filter(Boolean) as Prompt[];
