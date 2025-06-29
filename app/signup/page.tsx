@@ -15,13 +15,21 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
-import { UserPlus, Mail, Lock, Sparkles, CheckCircle } from "lucide-react";
+import {
+  UserPlus,
+  Mail,
+  Lock,
+  Sparkles,
+  CheckCircle,
+  User,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
@@ -46,6 +54,9 @@ export default function SignupPage() {
       password,
       options: {
         emailRedirectTo: `${location.origin}/auth/callback`,
+        data: {
+          display_name: displayName,
+        },
       },
     });
 
@@ -83,7 +94,7 @@ export default function SignupPage() {
           </div>
 
           <Card className="glass-effect border-border/50">
-            <CardHeader className="space-y-1 pb-6">
+            <CardHeader className="space-y-1 pb-1">
               <CardTitle className="text-2xl text-center">
                 Create Account
               </CardTitle>
@@ -92,7 +103,7 @@ export default function SignupPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form className="space-y-8" onSubmit={handleSubmit}>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
@@ -107,6 +118,25 @@ export default function SignupPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     disabled={isLoading}
                     className="glass-effect"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="display-name"
+                    className="flex items-center gap-2"
+                  >
+                    <User className="h-4 w-4 text-muted-foreground" />
+                    Display Name
+                  </Label>
+                  <Input
+                    id="display-name"
+                    type="text"
+                    required
+                    value={displayName}
+                    onChange={(e) => setDisplayName(e.target.value)}
+                    disabled={isLoading}
+                    className="glass-effect"
+                    placeholder="Enter your display name"
                   />
                 </div>
                 <div className="space-y-2">
@@ -143,19 +173,6 @@ export default function SignupPage() {
                     className="glass-effect"
                     placeholder="Re-enter password"
                   />
-                </div>
-                <div className="text-xs text-muted-foreground">
-                  By signing up, you agree to our{" "}
-                  <Link href="/terms" className="underline hover:text-primary">
-                    Terms of Service
-                  </Link>{" "}
-                  and{" "}
-                  <Link
-                    href="/privacy"
-                    className="underline hover:text-primary"
-                  >
-                    Privacy Policy
-                  </Link>
                 </div>
                 <Button
                   type="submit"

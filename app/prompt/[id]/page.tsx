@@ -35,6 +35,9 @@ interface Comment {
   user_id: string;
   users?: {
     email: string;
+    user_metadata?: {
+      display_name?: string;
+    };
   };
 }
 
@@ -403,8 +406,8 @@ export default function PromptDetailPage() {
                       <p className="text-sm">{comment.content}</p>
                       <div className="flex justify-between items-center text-xs text-muted-foreground">
                         <span>
-                          {comment.users?.email
-                            ? comment.users.email.split("@")[0]
+                          {comment.users?.user_metadata?.display_name
+                            ? comment.users.user_metadata.display_name
                             : `User ${comment.user_id.slice(0, 8)}...`}
                         </span>
                         <div className="flex items-center gap-2">
@@ -415,7 +418,7 @@ export default function PromptDetailPage() {
                               size="sm"
                               onClick={() => handleDeleteComment(comment.id)}
                               disabled={isDeletingComment(comment.id)}
-                              className="h-auto p-1 text-destructive hover:text-destructive"
+                              className="h-auto p-1 text-destructive hover:text-destructive hover:bg-destructive/10"
                             >
                               {isDeletingComment(comment.id) ? (
                                 <Heart className="w-3 h-3 animate-spin" />

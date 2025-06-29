@@ -62,7 +62,7 @@ export default function ProfilePage() {
         }
 
         setUser(user);
-        setDisplayName(user.user_metadata?.full_name || "");
+        setDisplayName(user.user_metadata?.display_name || "");
 
         // Fetch user statistics
         const [promptsResult, likesResult, commentsResult] = await Promise.all([
@@ -110,7 +110,7 @@ export default function ProfilePage() {
 
     try {
       const { error } = await supabase.auth.updateUser({
-        data: { full_name: displayName },
+        data: { display_name: displayName },
       });
 
       if (error) throw error;
