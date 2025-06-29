@@ -33,11 +33,9 @@ interface Comment {
   created_at: string;
   content: string;
   user_id: string;
-  users?: {
-    email: string;
-    user_metadata?: {
-      display_name?: string;
-    };
+  profiles?: {
+    display_name?: string;
+    avatar_url?: string;
   };
 }
 
@@ -146,7 +144,15 @@ export default function PromptDetailPage() {
 
         const { data: comments, error: commentsError } = await supabase
           .from("comments")
-          .select("id, created_at, content, user_id")
+          .select(
+            `
+            id,
+            created_at,
+            content,
+            user_id,
+            profiles ( display_name, avatar_url )
+          `
+          )
           .eq("prompt_id", id)
           .order("created_at", { ascending: true });
 
@@ -406,9 +412,8 @@ export default function PromptDetailPage() {
                       <p className="text-sm">{comment.content}</p>
                       <div className="flex justify-between items-center text-xs text-muted-foreground">
                         <span>
-                          {comment.users?.user_metadata?.display_name
-                            ? comment.users.user_metadata.display_name
-                            : `User ${comment.user_id.slice(0, 8)}...`}
+                          {comment.profiles?.display_name ??
+                            `User ${comment.user_id.slice(0, 8)}...`}
                         </span>
                         <div className="flex items-center gap-2">
                           <span>{formatDate(comment.created_at)}</span>
