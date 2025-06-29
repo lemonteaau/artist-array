@@ -2,6 +2,9 @@
 
 import { PromptCard } from "@/components/prompt-card";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { Upload, Sparkles } from "lucide-react";
 
 interface Prompt {
   id: number;
@@ -32,21 +35,32 @@ export function PromptsGrid({
 
   if (!prompts || prompts.length === 0) {
     return (
-      <div className="text-center">
-        <h2 className="text-2xl font-semibold">No prompts yet!</h2>
-        <p className="text-muted-foreground">Be the first to share one.</p>
+      <div className="flex flex-col items-center justify-center py-16 px-4">
+        <div className="p-6 rounded-full bg-muted mb-6">
+          <Sparkles className="h-12 w-12 text-muted-foreground" />
+        </div>
+        <h2 className="text-2xl font-semibold mb-2">No prompts yet!</h2>
+        <p className="text-muted-foreground text-center mb-6 max-w-md">
+          Be the first to share your AI art inspiration with the community.
+        </p>
+        <Button asChild size="lg" className="hover-glow">
+          <Link href="/upload">
+            <Upload className="mr-2 h-4 w-4" />
+            Share Your First Prompt
+          </Link>
+        </Button>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {prompts.map((prompt, index) => (
         <PromptCard
           key={prompt.id}
           prompt={prompt}
           userId={userId}
-          priority={index === 0}
+          priority={index < 4}
         />
       ))}
     </div>
@@ -55,17 +69,20 @@ export function PromptsGrid({
 
 export function PromptsLoadingFallback() {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {Array.from({ length: 8 }).map((_, i) => (
-        <Card key={i} className="overflow-hidden animate-pulse">
+        <Card key={i} className="overflow-hidden border-border/50">
           <CardContent className="p-0">
-            <div className="aspect-square bg-muted" />
+            <div className="aspect-square bg-muted animate-pulse" />
           </CardContent>
-          <CardFooter className="p-4">
+          <CardFooter className="p-4 space-y-3">
             <div className="w-full space-y-2">
-              <div className="h-4 bg-muted rounded w-3/4" />
-              <div className="h-3 bg-muted rounded w-1/2" />
-              <div className="h-5 bg-muted rounded w-16" />
+              <div className="h-4 bg-muted rounded animate-pulse" />
+              <div className="h-3 bg-muted rounded w-1/2 animate-pulse" />
+              <div className="flex justify-between items-center">
+                <div className="h-6 bg-muted rounded w-16 animate-pulse" />
+                <div className="h-5 bg-muted rounded w-20 animate-pulse" />
+              </div>
             </div>
           </CardFooter>
         </Card>

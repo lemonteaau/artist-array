@@ -4,6 +4,7 @@ import { Heart, Loader2 } from "lucide-react";
 import { useSmartLike } from "@/hooks/use-smart-like";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
 
 interface SmartLikeButtonProps {
   promptId: string;
@@ -45,17 +46,25 @@ export function SmartLikeButton({
         variant={liked ? "default" : "outline"}
         size={size}
         onClick={handleClick}
-        className={`flex items-center gap-1 ${className} ${
-          isLoading ? "opacity-80" : ""
-        }`}
+        className={cn(
+          "flex items-center gap-2 transition-all",
+          liked && "bg-red-500 hover:bg-red-600 text-white border-red-500",
+          isLoading && "opacity-80",
+          className
+        )}
         disabled={!userId && !liked}
       >
         {isLoading ? (
           <Loader2 className="w-4 h-4 animate-spin" />
         ) : (
-          <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
+          <Heart
+            className={cn(
+              "w-4 h-4 transition-all",
+              liked && "fill-current animate-in zoom-in-50 duration-200"
+            )}
+          />
         )}
-        <span className="tabular-nums">{count}</span>
+        <span className="tabular-nums font-medium">{count}</span>
       </Button>
     );
   }
@@ -63,22 +72,30 @@ export function SmartLikeButton({
   return (
     <Badge
       variant="outline"
-      className={`cursor-pointer hover:bg-accent transition-all duration-200 ${className} ${
-        isLoading ? "opacity-80" : ""
-      } ${liked ? "border-red-200 bg-red-50" : ""}`}
+      className={cn(
+        "cursor-pointer transition-all duration-200 select-none",
+        "hover:bg-accent hover:border-red-200",
+        isLoading && "opacity-80 cursor-wait",
+        liked &&
+          "border-red-300 bg-red-50 text-red-600 dark:bg-red-950/20 dark:text-red-400 dark:border-red-800",
+        className
+      )}
       onClick={handleClick}
     >
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-1.5">
         {isLoading ? (
-          <Loader2 className="w-4 h-4 text-red-500 animate-spin" />
+          <Loader2 className="w-3.5 h-3.5 animate-spin" />
         ) : (
           <Heart
-            className={`w-4 h-4 transition-colors ${
-              liked ? "text-red-500 fill-current" : "text-red-500"
-            }`}
+            className={cn(
+              "w-3.5 h-3.5 transition-all",
+              liked
+                ? "text-red-500 fill-current animate-in zoom-in-50 duration-200"
+                : "text-muted-foreground"
+            )}
           />
         )}
-        <span className="tabular-nums font-medium">{count}</span>
+        <span className="tabular-nums font-medium text-xs">{count}</span>
       </div>
     </Badge>
   );

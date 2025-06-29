@@ -8,8 +8,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useDebouncedCallback } from "use-debounce";
-import { useState } from "react";
+import { useCallback } from "react";
+import { TrendingUp, Clock } from "lucide-react";
 
 interface SortSelectorProps {
   currentSort: string;
@@ -18,42 +18,38 @@ interface SortSelectorProps {
 export function SortSelector({ currentSort }: SortSelectorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isChanging, setIsChanging] = useState(false);
 
-  const debouncedSortChange = useDebouncedCallback((value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value === "newest") {
-      params.delete("sort");
-    } else {
-      params.set("sort", value);
-    }
-
-    const url = params.toString() ? `/?${params.toString()}` : "/";
-    router.push(url);
-    setIsChanging(false);
-  }, 300);
-
-  const handleSortChange = (value: string) => {
-    setIsChanging(true);
-    debouncedSortChange(value);
-  };
+  const handleSortChange = useCallback(
+    (value: string) => {
+      const params = new URLSearchParams(searchParams);
+      if (value === "newest") {
+        params.delete("sort");
+      } else {
+        params.set("sort", value);
+      }
+      router.push(`?${params.toString()}`);
+    },
+    [router, searchParams]
+  );
 
   return (
-    <Select
-      value={currentSort}
-      onValueChange={handleSortChange}
-      disabled={isChanging}
-    >
-      <SelectTrigger
-        className={`w-[180px] ${isChanging ? "opacity-60 cursor-wait" : ""}`}
-      >
-        <SelectValue
-          placeholder={isChanging ? "Changing..." : "Select sort order"}
-        />
+    <Select value={currentSort} onValueChange={handleSortChange}>
+      <SelectTrigger className="w-[140px] glass-effect">
+        <SelectValue placeholder="Sort by" />
       </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="newest">Newest</SelectItem>
-        <SelectItem value="popular">Most Popular</SelectItem>
+      <SelectContent className="glass-effect">
+        <SelectItem value="newest">
+          <div className="flex items-center gap-2">
+            <Clock className="h-4 w-4" />
+            <span>Newest</span>
+          </div>
+        </SelectItem>
+        <SelectItem value="popular">
+          <div className="flex items-center gap-2">
+            <TrendingUp className="h-4 w-4" />
+            <span>Popular</span>
+          </div>
+        </SelectItem>
       </SelectContent>
     </Select>
   );
