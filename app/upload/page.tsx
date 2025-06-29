@@ -72,9 +72,10 @@ export default function UploadPage() {
         } else {
           console.error("Failed to fetch models");
           setAvailableModels([
-            "Stable Diffusion XL",
-            "Midjourney",
-            "DALL-E 3",
+            "NAI Diffusion V4 Curated",
+            "NAI Diffusion V4 Full",
+            "NAI Diffusion V4.5 Curated",
+            "NAI Diffusion V4.5 Full",
             "Other",
           ]);
         }
