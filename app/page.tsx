@@ -52,7 +52,7 @@ function HomePageWrapper() {
   return (
     <div className="space-y-8">
       {/* Hero Section */}
-      <section className="text-center py-12 space-y-4">
+      <section className="text-center hidden md:block py-6 space-y-4">
         <div className="flex justify-center mb-4">
           <div className="p-4 rounded-2xl bg-primary/10 animate-pulse-scale">
             <Sparkles className="h-12 w-12 text-primary" />
