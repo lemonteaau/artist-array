@@ -25,6 +25,8 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
+import { useSmartLike } from "@/hooks/use-smart-like";
+import { useDebouncedComment } from "@/hooks/use-debounced-comment";
 
 interface Comment {
   id: number;
@@ -67,13 +69,48 @@ export default function PromptDetailPage() {
   const [prompt, setPrompt] = useState<Prompt | null>(null);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
-  const [liked, setLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
   const [newComment, setNewComment] = useState("");
-  const [submittingComment, setSubmittingComment] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
   const supabase = createClient();
+
+  const handleAuthRequired = () => {
+    toast.error("Please log in to interact with posts");
+    router.push("/login");
+  };
+
+  const {
+    liked,
+    count: likesCount,
+    isLoading: likesLoading,
+    toggleLike,
+  } = useSmartLike({
+    promptId: id,
+    userId: user?.id || null,
+    onAuthRequired: handleAuthRequired,
+  });
+
+  const {
+    isSubmitting: submittingComment,
+    submitComment,
+    deleteComment: debouncedDeleteComment,
+    isDeleting: isDeletingComment,
+  } = useDebouncedComment({
+    promptId: id,
+    userId: user?.id || null,
+    onAuthRequired: handleAuthRequired,
+    onCommentAdded: (newComment) => {
+      setPrompt((prev) =>
+        prev
+          ? {
+              ...prev,
+              comments: [...prev.comments, newComment],
+            }
+          : null
+      );
+      setNewComment("");
+    },
+  });
 
   useEffect(() => {
     const getUser = async () => {
@@ -89,7 +126,6 @@ export default function PromptDetailPage() {
   useEffect(() => {
     const fetchPrompt = async () => {
       try {
-        // Fetch prompt data directly from Supabase
         const { data: promptData, error: promptError } = await supabase
           .from("prompts")
           .select("*")
@@ -100,13 +136,11 @@ export default function PromptDetailPage() {
           throw promptError;
         }
 
-        // Get likes count
         const { count: likesCount } = await supabase
           .from("likes")
           .select("*", { count: "exact" })
           .eq("prompt_id", id);
 
-        // Get comments
         const { data: comments, error: commentsError } = await supabase
           .from("comments")
           .select("id, created_at, content, user_id")
@@ -124,7 +158,6 @@ export default function PromptDetailPage() {
         };
 
         setPrompt(transformedData);
-        setLikesCount(transformedData.likes_count);
         setLoading(false);
       } catch (error) {
         console.error(error);
@@ -133,126 +166,25 @@ export default function PromptDetailPage() {
       }
     };
 
-    const fetchLikeStatus = async () => {
-      try {
-        const response = await fetch(`/api/likes?prompt_id=${id}`);
-        if (response.ok) {
-          const { liked, count } = await response.json();
-          setLiked(liked);
-          setLikesCount(count);
-        }
-      } catch (error) {
-        console.error("Failed to fetch like status:", error);
-      }
-    };
-
     fetchPrompt();
-    fetchLikeStatus();
   }, [id, supabase]);
-
-  const handleLike = async () => {
-    if (!user) {
-      toast.error("Please log in to like posts");
-      router.push("/login");
-      return;
-    }
-
-    try {
-      const response = await fetch("/api/likes", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ prompt_id: parseInt(id) }),
-      });
-
-      if (response.ok) {
-        const { liked: newLikedStatus } = await response.json();
-        setLiked(newLikedStatus);
-        setLikesCount((prev) => (newLikedStatus ? prev + 1 : prev - 1));
-        toast.success(newLikedStatus ? "Liked!" : "Unliked!");
-      } else {
-        throw new Error("Failed to update like");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to update like");
-    }
-  };
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!user) {
-      toast.error("Please log in to comment");
-      router.push("/login");
-      return;
-    }
-
-    if (!newComment.trim()) {
-      toast.error("Comment cannot be empty");
-      return;
-    }
-
-    setSubmittingComment(true);
-
-    try {
-      const response = await fetch("/api/comments", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          prompt_id: parseInt(id),
-          content: newComment.trim(),
-        }),
-      });
-
-      if (response.ok) {
-        const { data } = await response.json();
-        setPrompt((prev) =>
-          prev
-            ? {
-                ...prev,
-                comments: [...prev.comments, data],
-              }
-            : null
-        );
-        setNewComment("");
-        toast.success("Comment added!");
-      } else {
-        throw new Error("Failed to add comment");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to add comment");
-    } finally {
-      setSubmittingComment(false);
-    }
+    submitComment(newComment);
   };
 
   const handleDeleteComment = async (commentId: number) => {
-    try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        setPrompt((prev) =>
-          prev
-            ? {
-                ...prev,
-                comments: prev.comments.filter((c) => c.id !== commentId),
-              }
-            : null
-        );
-        toast.success("Comment deleted!");
-      } else {
-        throw new Error("Failed to delete comment");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to delete comment");
+    const success = await debouncedDeleteComment(commentId);
+    if (success) {
+      setPrompt((prev) =>
+        prev
+          ? {
+              ...prev,
+              comments: prev.comments.filter((c) => c.id !== commentId),
+            }
+          : null
+      );
     }
   };
 
@@ -319,13 +251,18 @@ export default function PromptDetailPage() {
                   <Button
                     variant={liked ? "default" : "outline"}
                     size="sm"
-                    onClick={handleLike}
+                    onClick={toggleLike}
+                    disabled={likesLoading}
                     className="flex items-center gap-1"
                   >
-                    <Heart
-                      className={`w-4 h-4 ${liked ? "fill-current" : ""}`}
-                    />
-                    {likesCount}
+                    {likesLoading ? (
+                      <Heart className="w-4 h-4 animate-pulse" />
+                    ) : (
+                      <Heart
+                        className={`w-4 h-4 ${liked ? "fill-current" : ""}`}
+                      />
+                    )}
+                    <span className="tabular-nums">{likesCount}</span>
                   </Button>
                   <Badge
                     variant="secondary"
@@ -477,9 +414,14 @@ export default function PromptDetailPage() {
                               variant="ghost"
                               size="sm"
                               onClick={() => handleDeleteComment(comment.id)}
+                              disabled={isDeletingComment(comment.id)}
                               className="h-auto p-1 text-destructive hover:text-destructive"
                             >
-                              <Trash2 className="w-3 h-3" />
+                              {isDeletingComment(comment.id) ? (
+                                <Heart className="w-3 h-3 animate-spin" />
+                              ) : (
+                                <Trash2 className="w-3 h-3" />
+                              )}
                             </Button>
                           )}
                         </div>
