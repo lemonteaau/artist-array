@@ -33,12 +33,18 @@ export function SmartLikeButton({
     onAuthRequired: handleAuthRequired,
   });
 
+  const handleClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleLike();
+  };
+
   if (variant === "button") {
     return (
       <Button
         variant={liked ? "default" : "outline"}
         size={size}
-        onClick={toggleLike}
+        onClick={handleClick}
         className={`flex items-center gap-1 ${className} ${
           isLoading ? "opacity-80" : ""
         }`}
@@ -60,7 +66,7 @@ export function SmartLikeButton({
       className={`cursor-pointer hover:bg-accent transition-all duration-200 ${className} ${
         isLoading ? "opacity-80" : ""
       } ${liked ? "border-red-200 bg-red-50" : ""}`}
-      onClick={toggleLike}
+      onClick={handleClick}
     >
       <div className="flex items-center gap-1">
         {isLoading ? (
