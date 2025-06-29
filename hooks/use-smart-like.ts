@@ -29,7 +29,8 @@ export function useSmartLike({
     liked: false,
     count: 0,
   });
-  const pendingOperationsRef = useRef(0);
+
+  const targetLikedRef = useRef<boolean | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchInitialState = useCallback(async () => {
@@ -39,10 +40,10 @@ export function useSmartLike({
       const response = await fetch(`/api/likes?prompt_id=${promptId}`);
       if (response.ok) {
         const { liked, count } = await response.json();
-        const newState = { liked, count };
 
-        serverStateRef.current = newState;
-        setState({ ...newState, isLoading: false });
+        serverStateRef.current = { liked, count };
+        targetLikedRef.current = null;
+        setState({ liked, count, isLoading: false });
       }
     } catch (error) {
       console.error("Failed to fetch like status:", error);
@@ -51,7 +52,13 @@ export function useSmartLike({
   }, [promptId]);
 
   const debouncedApiCall = useDebouncedCallback(async () => {
-    if (!userId || pendingOperationsRef.current === 0) return;
+    if (!userId || targetLikedRef.current === null) return;
+
+    if (targetLikedRef.current === serverStateRef.current.liked) {
+      targetLikedRef.current = null;
+      setState((prev) => ({ ...prev, isLoading: false }));
+      return;
+    }
 
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -71,25 +78,33 @@ export function useSmartLike({
       });
 
       if (response.ok) {
-        const { liked: serverLiked, count: serverCount } =
-          await response.json();
+        const { liked, count } = await response.json();
 
-        serverStateRef.current = { liked: serverLiked, count: serverCount };
+        serverStateRef.current = { liked, count };
 
-        const finalLiked =
-          pendingOperationsRef.current % 2 === 0 ? serverLiked : !serverLiked;
-        const finalCount = Math.max(
-          0,
-          serverCount + pendingOperationsRef.current
-        );
+        if (
+          targetLikedRef.current !== null &&
+          targetLikedRef.current !== liked
+        ) {
+          const finalCount = targetLikedRef.current
+            ? count + 1
+            : Math.max(0, count - 1);
 
-        setState({
-          liked: finalLiked,
-          count: finalCount,
-          isLoading: false,
-        });
+          setState({
+            liked: targetLikedRef.current,
+            count: finalCount,
+            isLoading: false,
+          });
 
-        pendingOperationsRef.current = 0;
+          debouncedApiCall();
+        } else {
+          targetLikedRef.current = null;
+          setState({
+            liked,
+            count,
+            isLoading: false,
+          });
+        }
       } else {
         throw new Error("Failed to update like");
       }
@@ -100,11 +115,11 @@ export function useSmartLike({
 
       console.error("Like API error:", error);
 
+      targetLikedRef.current = null;
       setState({
         ...serverStateRef.current,
         isLoading: false,
       });
-      pendingOperationsRef.current = 0;
 
       toast.error("Failed to update like. Please try again.");
     }
@@ -118,8 +133,9 @@ export function useSmartLike({
 
     setState((prev) => {
       const newLiked = !prev.liked;
-      const countChange = newLiked ? 1 : -1;
-      const newCount = Math.max(0, prev.count + countChange);
+      targetLikedRef.current = newLiked;
+
+      const newCount = newLiked ? prev.count + 1 : Math.max(0, prev.count - 1);
 
       return {
         liked: newLiked,
@@ -128,10 +144,8 @@ export function useSmartLike({
       };
     });
 
-    pendingOperationsRef.current += state.liked ? -1 : 1;
-
     debouncedApiCall();
-  }, [userId, state.liked, onAuthRequired, debouncedApiCall]);
+  }, [userId, onAuthRequired, debouncedApiCall]);
 
   useEffect(() => {
     fetchInitialState();

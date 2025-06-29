@@ -47,7 +47,17 @@ export async function POST(request: Request) {
         throw error;
       }
 
-      return NextResponse.json({ liked: false, message: "Like removed" });
+      // Get updated count after unlike
+      const { count } = await supabase
+        .from("likes")
+        .select("*", { count: "exact" })
+        .eq("prompt_id", prompt_id);
+
+      return NextResponse.json({
+        liked: false,
+        count: count || 0,
+        message: "Like removed",
+      });
     } else {
       // Like - add the like
       const { error } = await supabase.from("likes").insert([
@@ -61,7 +71,17 @@ export async function POST(request: Request) {
         throw error;
       }
 
-      return NextResponse.json({ liked: true, message: "Like added" });
+      // Get updated count after like
+      const { count } = await supabase
+        .from("likes")
+        .select("*", { count: "exact" })
+        .eq("prompt_id", prompt_id);
+
+      return NextResponse.json({
+        liked: true,
+        count: count || 0,
+        message: "Like added",
+      });
     }
   } catch (error) {
     console.error(error);
