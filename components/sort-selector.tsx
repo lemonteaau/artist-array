@@ -8,6 +8,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useRouter, useSearchParams } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
+import { useState } from "react";
 
 interface SortSelectorProps {
   currentSort: string;
@@ -16,8 +18,9 @@ interface SortSelectorProps {
 export function SortSelector({ currentSort }: SortSelectorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [isChanging, setIsChanging] = useState(false);
 
-  const handleSortChange = (value: string) => {
+  const debouncedSortChange = useDebouncedCallback((value: string) => {
     const params = new URLSearchParams(searchParams);
     if (value === "newest") {
       params.delete("sort");
@@ -27,12 +30,26 @@ export function SortSelector({ currentSort }: SortSelectorProps) {
 
     const url = params.toString() ? `/?${params.toString()}` : "/";
     router.push(url);
+    setIsChanging(false);
+  }, 300);
+
+  const handleSortChange = (value: string) => {
+    setIsChanging(true);
+    debouncedSortChange(value);
   };
 
   return (
-    <Select value={currentSort} onValueChange={handleSortChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Select sort order" />
+    <Select
+      value={currentSort}
+      onValueChange={handleSortChange}
+      disabled={isChanging}
+    >
+      <SelectTrigger
+        className={`w-[180px] ${isChanging ? "opacity-60 cursor-wait" : ""}`}
+      >
+        <SelectValue
+          placeholder={isChanging ? "Changing..." : "Select sort order"}
+        />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="newest">Newest</SelectItem>
