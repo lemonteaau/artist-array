@@ -1,23 +1,13 @@
 # 🎨 Artist Array
+<img width="828" height="288" alt="image" src="https://github.com/user-attachments/assets/06eeb60e-1bcc-41a0-9abc-8e565e8f8c42" />
 
-Artist Array is a web platform designed for the AI art community to share, discover, and utilize "Artist Strings"—curated lists of artist names used to define specific art styles in AI image generation models like NovelAI and Stable Diffusion.
+Artist Array is a web platform designed for the AI art community to share, discover, and utilize "Artist Strings"—curated lists of artist names used to define specific art styles in AI image generation models in NovelAI.
 
 This platform moves these valuable "recipes" from scattered social media posts into a structured, searchable, and interactive gallery.
 
-**Live Demo:** `[Link to your deployed website]` _(You can add this later)_
-
-_(To make this work, add a screenshot of your app named `screenshot.png` inside the `/public` directory of your project)_
+**Live Demo:** https://artist-array.vercel.app
 
 ---
-
-## ✨ Core Features
-
-- **🖼️ Gallery View**: Browse an infinite-scrolling gallery of AI art submissions.
-- **📋 Discover & Copy**: View detailed information for each submission, including the full Artist String, prompt, and model used, with easy-to-copy buttons.
-- **🚀 Open Submissions**: Anonymously share your own creations with the community via a simple upload form.
-- **🤖 Model Filtering**: See which AI model (e.g., NAI Diffusion V3, V4.5) was used for each piece.
-- **❤️ Community Interaction (V2)**: Log in to like and comment on your favorite submissions.
-- **🔥 Popularity Sorting (V2)**: Sort the gallery to see the "Most Popular" or "Newest" creations.
 
 ## 🔧 Tech Stack
 
