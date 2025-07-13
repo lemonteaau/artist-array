@@ -248,7 +248,6 @@ export default function MyPromptsPage() {
                       alt={prompt.artist_string}
                       fill
                       className="object-cover"
-                      unoptimized
                     />
                   </div>
 

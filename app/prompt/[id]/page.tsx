@@ -250,7 +250,6 @@ export default function PromptDetailPage() {
             height={1024}
             className="rounded-lg object-contain"
             priority
-            unoptimized
           />
         </div>
         <div className="space-y-6">
