@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "*.r2.dev",
+        hostname: "image.artistarray.com",
       },
     ],
   },
