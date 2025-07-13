@@ -27,6 +27,7 @@ import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { useSmartLike } from "@/hooks/use-smart-like";
 import { useDebouncedComment } from "@/hooks/use-debounced-comment";
+import { PromptPageSkeleton } from "./loading";
 
 interface Comment {
   id: number;
@@ -221,11 +222,7 @@ export default function PromptDetailPage() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div>Loading...</div>
-      </div>
-    );
+    return <PromptPageSkeleton />;
   }
 
   if (!prompt) {

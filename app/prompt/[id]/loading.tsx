@@ -1,42 +1,96 @@
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export default function PromptLoading() {
+export function PromptPageSkeleton() {
   return (
-    <div className="max-w-4xl mx-auto">
-      <Card>
-        <CardHeader>
-          <Skeleton className="h-8 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
-        </CardHeader>
-        <CardContent className="space-y-6">
-          <Skeleton className="aspect-square w-full max-w-md mx-auto" />
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* Left side - Image skeleton */}
+      <div>
+        <Skeleton className="aspect-square w-full rounded-lg" />
+      </div>
 
-          <div className="grid gap-4">
+      {/* Right side - Content skeleton */}
+      <div className="space-y-6">
+        {/* Details Card skeleton */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex justify-between items-center">
+              <Skeleton className="h-6 w-16" />
+              <div className="flex gap-2">
+                <Skeleton className="h-8 w-16" />
+                <Skeleton className="h-8 w-12" />
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            {/* Artist String */}
             <div>
-              <Skeleton className="h-5 w-20 mb-2" />
-              <Skeleton className="h-20 w-full" />
-            </div>
-            <div>
-              <Skeleton className="h-5 w-32 mb-2" />
+              <div className="flex justify-between items-center mb-2">
+                <Skeleton className="h-6 w-24" />
+                <Skeleton className="h-6 w-6" />
+              </div>
               <Skeleton className="h-16 w-full" />
             </div>
+
+            {/* Model */}
             <div>
-              <Skeleton className="h-5 w-16 mb-2" />
-              <Skeleton className="h-6 w-40" />
+              <Skeleton className="h-6 w-16 mb-2" />
+              <Skeleton className="h-6 w-20" />
             </div>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between">
-          <Skeleton className="h-10 w-24" />
-          <Skeleton className="h-10 w-32" />
-        </CardFooter>
-      </Card>
+
+            {/* Prompt */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <Skeleton className="h-6 w-16" />
+                <Skeleton className="h-6 w-6" />
+              </div>
+              <Skeleton className="h-32 w-full" />
+            </div>
+
+            {/* Negative Prompt */}
+            <div>
+              <div className="flex justify-between items-center mb-2">
+                <Skeleton className="h-6 w-28" />
+                <Skeleton className="h-6 w-6" />
+              </div>
+              <Skeleton className="h-24 w-full" />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Comments Card skeleton */}
+        <Card>
+          <CardHeader>
+            <CardTitle>
+              <Skeleton className="h-6 w-32" />
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {/* Comment form */}
+            <div className="space-y-4 mb-6">
+              <Skeleton className="h-20 w-full" />
+              <Skeleton className="h-10 w-24" />
+            </div>
+
+            {/* Comments list */}
+            <div className="space-y-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <div key={i} className="space-y-2">
+                  <Skeleton className="h-12 w-full" />
+                  <div className="flex justify-between items-center">
+                    <Skeleton className="h-4 w-20" />
+                    <Skeleton className="h-4 w-16" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
+}
+
+export default function PromptLoading() {
+  return <PromptPageSkeleton />;
 }
