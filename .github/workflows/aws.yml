@@ -54,6 +54,10 @@ jobs:
         run: |
           aws ecs describe-task-definition --task-definition ${{ env.ECS_TASK_DEFINITION_FAMILY }} --query taskDefinition > task-definition.json
 
+      - name: Sanitize task definition
+        run: |
+          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy, .enableFaultInjection)' task-definition.json > task-definition-clean.json && mv task-definition-clean.json task-definition.json
+
       - name: Fill in new image ID in the Amazon ECS task definition
         id: task-def-render
         uses: aws-actions/amazon-ecs-render-task-definition@v1
