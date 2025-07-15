@@ -18,6 +18,10 @@ RUN pnpm build
 FROM node:18-alpine AS runner
 RUN npm install -g pnpm
 WORKDIR /app
+ENV NODE_ENV=production
+ARG NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL
+ENV NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL=$NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL
+
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next ./.next
 COPY --from=builder /app/node_modules ./node_modules
