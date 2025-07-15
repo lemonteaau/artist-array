@@ -73,6 +73,9 @@ export default function PromptDetailPage() {
   const [user, setUser] = useState<User | null>(null);
   const [newComment, setNewComment] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
+  const [deletingComments, setDeletingComments] = useState<Set<number>>(
+    new Set()
+  );
 
   const supabase = createClient();
 
@@ -92,27 +95,23 @@ export default function PromptDetailPage() {
     onAuthRequired: handleAuthRequired,
   });
 
-  const {
-    isSubmitting: submittingComment,
-    submitComment,
-    deleteComment: debouncedDeleteComment,
-    isDeleting: isDeletingComment,
-  } = useDebouncedComment({
-    promptId: id,
-    userId: user?.id || null,
-    onAuthRequired: handleAuthRequired,
-    onCommentAdded: (newComment) => {
-      setPrompt((prev) =>
-        prev
-          ? {
-              ...prev,
-              comments: [...prev.comments, newComment],
-            }
-          : null
-      );
-      setNewComment("");
-    },
-  });
+  const { isSubmitting: submittingComment, submitComment } =
+    useDebouncedComment({
+      promptId: id,
+      userId: user?.id || null,
+      onAuthRequired: handleAuthRequired,
+      onCommentAdded: (newComment) => {
+        setPrompt((prev) =>
+          prev
+            ? {
+                ...prev,
+                comments: [...prev.comments, newComment],
+              }
+            : null
+        );
+        setNewComment("");
+      },
+    });
 
   useEffect(() => {
     const getUser = async () => {
@@ -185,8 +184,16 @@ export default function PromptDetailPage() {
   };
 
   const handleDeleteComment = async (commentId: number) => {
-    const success = await debouncedDeleteComment(commentId);
-    if (success) {
+    if (!user) {
+      handleAuthRequired();
+      return;
+    }
+
+    // Optimistic update - immediately mark comment as deleting and add fade-out animation
+    setDeletingComments((prev) => new Set(prev).add(commentId));
+
+    // After animation duration, optimistically remove from UI
+    setTimeout(() => {
       setPrompt((prev) =>
         prev
           ? {
@@ -195,6 +202,66 @@ export default function PromptDetailPage() {
             }
           : null
       );
+    }, 300); // Match animation duration
+
+    // Perform the actual deletion
+    try {
+      const response = await fetch(`/api/comments/${commentId}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete comment");
+      }
+
+      toast.success("Comment deleted!");
+    } catch (error) {
+      console.error("Delete comment error:", error);
+      toast.error("Failed to delete comment. Please try again.");
+
+      // Rollback optimistic update on error
+      setDeletingComments((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(commentId);
+        return newSet;
+      });
+
+      // Restore the comment to the UI
+      const { data: comments, error: commentsError } = await supabase
+        .from("comments")
+        .select(
+          `
+          id,
+          created_at,
+          content,
+          user_id,
+          profiles ( display_name, avatar_url )
+        `
+        )
+        .eq("prompt_id", id)
+        .order("created_at", { ascending: true });
+
+      if (!commentsError && comments) {
+        setPrompt((prev) =>
+          prev
+            ? {
+                ...prev,
+                comments: comments.map((comment) => ({
+                  ...comment,
+                  profiles: Array.isArray(comment.profiles)
+                    ? comment.profiles[0]
+                    : comment.profiles,
+                })) as Comment[],
+              }
+            : null
+        );
+      }
+    } finally {
+      setDeletingComments((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(commentId);
+        return newSet;
+      });
     }
   };
 
@@ -405,7 +472,11 @@ export default function PromptDetailPage() {
                   {prompt.comments.map((comment) => (
                     <div
                       key={comment.id}
-                      className="bg-muted p-3 rounded-md space-y-2"
+                      className={`bg-muted p-3 rounded-md space-y-2 transition-all duration-300 ${
+                        deletingComments.has(comment.id)
+                          ? "opacity-0 transform scale-95"
+                          : "opacity-100 transform scale-100"
+                      }`}
                     >
                       <p className="text-sm">{comment.content}</p>
                       <div className="flex justify-between items-center text-xs text-muted-foreground">
@@ -420,11 +491,11 @@ export default function PromptDetailPage() {
                               variant="ghost"
                               size="sm"
                               onClick={() => handleDeleteComment(comment.id)}
-                              disabled={isDeletingComment(comment.id)}
-                              className="h-auto p-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+                              disabled={deletingComments.has(comment.id)}
+                              className="h-auto p-1 text-destructive hover:text-destructive hover:bg-destructive/10 disabled:opacity-50"
                             >
-                              {isDeletingComment(comment.id) ? (
-                                <Heart className="w-3 h-3 animate-spin" />
+                              {deletingComments.has(comment.id) ? (
+                                <div className="w-3 h-3 border-2 border-destructive border-t-transparent rounded-full animate-spin" />
                               ) : (
                                 <Trash2 className="w-3 h-3" />
                               )}
