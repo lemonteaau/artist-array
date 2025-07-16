@@ -8,7 +8,6 @@ import { User } from "@supabase/supabase-js";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Sparkles, TrendingUp, Clock } from "lucide-react";
-import { useTranslations } from "next-intl";
 
 function HomePageContent() {
   const searchParams = useSearchParams();
@@ -49,7 +48,6 @@ function HomePageContent() {
 function HomePageWrapper() {
   const searchParams = useSearchParams();
   const sortBy = searchParams.get("sort") || "popular";
-  const t = useTranslations("home");
 
   return (
     <div className="space-y-8">
@@ -61,10 +59,11 @@ function HomePageWrapper() {
           </div>
         </div>
         <h1 className="text-4xl md:text-5xl font-bold gradient-text">
-          {t("title")}
+          Discover AI Art Inspiration
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-          {t("subtitle")}
+          Share and explore artist strings, prompts, and techniques from the AI
+          art community
         </p>
       </section>
 
@@ -75,12 +74,12 @@ function HomePageWrapper() {
             {sortBy === "popular" ? (
               <>
                 <TrendingUp className="h-4 w-4 text-primary" />
-                <span className="font-medium">{t("trending")}</span>
+                <span className="font-medium">Trending</span>
               </>
             ) : (
               <>
                 <Clock className="h-4 w-4 text-primary" />
-                <span className="font-medium">{t("latest")}</span>
+                <span className="font-medium">Latest</span>
               </>
             )}
           </div>

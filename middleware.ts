@@ -1,25 +1,10 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import createIntlMiddleware from "next-intl/middleware";
-import { routing } from "./i18n/routing";
-
-// Create the intl middleware
-const intlMiddleware = createIntlMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  // Handle internationalization first
-  const intlResponse = intlMiddleware(request);
-
-  // If intl middleware wants to redirect, return that response
-  if (intlResponse && intlResponse.status !== 200) {
-    return intlResponse;
-  }
-
-  let supabaseResponse =
-    intlResponse ||
-    NextResponse.next({
-      request,
-    });
+  let supabaseResponse = NextResponse.next({
+    request,
+  });
 
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -54,24 +39,16 @@ export async function middleware(request: NextRequest) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Protected routes that require authentication (with locale prefix)
+  // Protected routes that require authentication
   const protectedRoutes = ["/upload"];
-  const pathname = request.nextUrl.pathname;
-
-  // Remove locale prefix to check protected routes
-  const pathnameWithoutLocale = pathname.replace(/^\/[a-z]{2}(?:\/|$)/, "/");
   const isProtectedRoute = protectedRoutes.some((route) =>
-    pathnameWithoutLocale.startsWith(route)
+    request.nextUrl.pathname.startsWith(route)
   );
 
   if (!user && isProtectedRoute) {
-    // Extract locale from pathname
-    const localeMatch = pathname.match(/^\/([a-z]{2})(?:\/|$)/);
-    const locale = localeMatch ? localeMatch[1] : routing.defaultLocale;
-
-    // Redirect to login page with locale
+    // no user, potentially respond by redirecting the user to the login page
     const url = request.nextUrl.clone();
-    url.pathname = `/${locale}/login`;
+    url.pathname = "/login";
     return NextResponse.redirect(url);
   }
 

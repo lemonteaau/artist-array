@@ -12,23 +12,16 @@ import {
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Sparkles, Upload, LogIn, UserPlus } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { LanguageSwitcher } from "./language-switcher";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-  const pathname = usePathname();
   const supabase = createClient();
-  const t = useTranslations("navbar");
-
-  // Get current locale from pathname
-  const locale = pathname.split("/")[1] || "en";
 
   useEffect(() => {
     const getUser = async () => {
@@ -70,24 +63,23 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href={`/${locale}`} className="flex items-center gap-2 group">
+          <Link href="/" className="flex items-center gap-2 group">
             <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
               <Sparkles className="h-5 w-5 text-primary" />
             </div>
-            <h1 className="text-xl font-bold gradient-text">{t("title")}</h1>
+            <h1 className="text-xl font-bold gradient-text">Artist Array</h1>
           </Link>
 
           <nav className="flex items-center gap-2">
-            <LanguageSwitcher />
             {user ? (
               <Button
                 asChild
                 className="hover-glow"
                 size={loading ? "default" : "sm"}
               >
-                <Link href={`/${locale}/upload`}>
+                <Link href="/upload">
                   <Upload className="mr-2 h-4 w-4" />
-                  {t("upload")}
+                  Share Prompt
                 </Link>
               </Button>
             ) : (
