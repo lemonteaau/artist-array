@@ -1,0 +1,15 @@
+{
+  "HomePage": {
+    "title": "ホームページへようこそ"
+  },
+  "Navbar": {
+    "home": "ホーム",
+    "about": "紹介"
+  },
+  "LocaleSwitcher": {
+    "locale": "言語",
+    "en": "英語",
+    "zh-CN": "中国語 (簡体字)",
+    "ja": "日本語"
+  }
+}

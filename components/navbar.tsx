@@ -10,12 +10,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
+
 import { Sparkles, Upload, LogIn, UserPlus } from "lucide-react";
+
+import Link from "next/link";
+import { User } from "@supabase/supabase-js";
+import { useRouter } from "@/i18n/navigation";
+import { useEffect, useState } from "react";
+import { LanguageSwitcher } from "./language-switcher";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
@@ -71,6 +74,7 @@ export function Navbar() {
           </Link>
 
           <nav className="flex items-center gap-2">
+            <LanguageSwitcher />
             {user ? (
               <Button
                 asChild
