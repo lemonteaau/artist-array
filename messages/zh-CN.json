@@ -1,4 +1,10 @@
 {
+  "LocaleSwitcher": {
+    "locale": "语言",
+    "en": "英文",
+    "zh-CN": "中文 (简体)",
+    "ja": "日语"
+  },
   "HomePage": {
     "title": "欢迎来到首页"
   },
@@ -6,10 +12,7 @@
     "home": "首页",
     "about": "关于"
   },
-  "LocaleSwitcher": {
-    "locale": "语言",
-    "en": "英文",
-    "zh-CN": "中文 (简体)",
-    "ja": "日语"
+  "UploadPage": {
+    "uploadImageButton": "上传图片"
   }
 }

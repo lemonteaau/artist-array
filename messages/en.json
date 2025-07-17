@@ -1,4 +1,10 @@
 {
+  "LocaleSwitcher": {
+    "locale": "Language",
+    "en": "English",
+    "zh-CN": "Chinese (Simplified)",
+    "ja": "Japanese"
+  },
   "HomePage": {
     "title": "Welcome to the Homepage"
   },
@@ -6,10 +12,7 @@
     "home": "Home",
     "about": "About"
   },
-  "LocaleSwitcher": {
-    "locale": "Language",
-    "en": "English",
-    "zh-CN": "Chinese (Simplified)",
-    "ja": "Japanese"
+  "UploadPage": {
+    "uploadImageButton": "Upload Image"
   }
 }

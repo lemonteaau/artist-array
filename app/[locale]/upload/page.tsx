@@ -313,16 +313,16 @@ export default function UploadPage() {
                     required
                     onChange={handleImageChange}
                     disabled={isLoading}
-                    className="glass-effect file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary hover:file:bg-primary/20"
+                    className="glass-effect file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary file:items-center file:cursor-pointer hover:file:bg-primary/20"
                   />
                   {imagePreview && (
-                    <div className="mt-4 relative rounded-lg overflow-hidden border">
+                    <div className="mt-4 relative flex h-96 w-full items-center justify-center overflow-hidden rounded-lg border bg-muted/20">
                       <img
                         src={imagePreview}
                         alt="Preview"
-                        className="w-full h-48 object-cover"
+                        className="max-h-full max-w-full object-contain"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                       <Badge className="absolute bottom-2 right-2">
                         <ImageIcon className="h-3 w-3 mr-1" />
                         Preview
