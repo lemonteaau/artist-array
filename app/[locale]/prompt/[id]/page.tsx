@@ -1,523 +1,83 @@
 "use client";
 
-import { CopyButton } from "@/components/copy-button";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { Heart, MessageCircle, Trash2 } from "lucide-react";
-import Image from "next/image";
-import { Link, useRouter } from "@/i18n/navigation";
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast, Toaster } from "sonner";
-import { useSmartLike } from "@/hooks/use-smart-like";
-import { useDebouncedComment } from "@/hooks/use-debounced-comment";
-import { PromptPageSkeleton } from "./loading";
+import { Link } from "@/i18n/navigation";
+import { Toaster } from "sonner";
 import { useTranslations } from "next-intl";
-
-interface Comment {
-  id: number;
-  created_at: string;
-  content: string;
-  user_id: string;
-  profiles?: {
-    display_name?: string;
-    avatar_url?: string;
-  };
-}
-
-interface Prompt {
-  id: number;
-  created_at: string;
-  artist_string: string;
-  image_url: string;
-  prompt: string | null;
-  negative_prompt: string | null;
-  model: string | null;
-  user_id: string | null;
-  likes_count: number;
-  comments: Comment[];
-}
-
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
+import { notFound } from "next/navigation";
+import { usePromptDetail } from "./hooks/use-prompt-detail";
+import { PromptImage } from "./components/prompt-image";
+import { PromptDetails } from "./components/prompt-details";
+import { CommentsSection } from "./components/comments-section";
+import { PromptPageSkeleton } from "./loading";
 
 export default function PromptDetailPage() {
-  const params = useParams();
-  const router = useRouter();
-  const id = params.id as string;
-
-  const [prompt, setPrompt] = useState<Prompt | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-  const [newComment, setNewComment] = useState("");
-  const [isDeleting, setIsDeleting] = useState(false);
-  const [deletingComments, setDeletingComments] = useState<Set<number>>(
-    new Set()
-  );
-
-  const supabase = createClient();
-  const t = useTranslations("PromptDetails");
-  const tToast = useTranslations("Toast");
-
-  const handleAuthRequired = () => {
-    toast.error(tToast("pleaseLoginToInteract"));
-    router.push("/login");
-  };
-
   const {
+    // State
+    prompt,
+    loading,
+    user,
+    newComment,
+    setNewComment,
+    isDeleting,
+    deletingComments,
+    isOwner,
+
+    // Like functionality
     liked,
-    count: likesCount,
-    isLoading: likesLoading,
+    likesCount,
+    likesLoading,
     toggleLike,
-  } = useSmartLike({
-    promptId: id,
-    userId: user?.id || null,
-    onAuthRequired: handleAuthRequired,
-  });
 
-  const { isSubmitting: submittingComment, submitComment } =
-    useDebouncedComment({
-      promptId: id,
-      userId: user?.id || null,
-      onAuthRequired: handleAuthRequired,
-      onCommentAdded: (newComment) => {
-        setPrompt((prev) =>
-          prev
-            ? {
-                ...prev,
-                comments: [...prev.comments, newComment],
-              }
-            : null
-        );
-        setNewComment("");
-      },
-    });
+    // Comment functionality
+    submittingComment,
+    handleComment,
+    handleDeleteComment,
 
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      setUser(user);
-    };
+    // Prompt actions
+    handleDeletePrompt,
+  } = usePromptDetail();
 
-    getUser();
-  }, [supabase]);
-
-  useEffect(() => {
-    const fetchPrompt = async () => {
-      try {
-        const { data: promptData, error: promptError } = await supabase
-          .from("prompts")
-          .select("*")
-          .eq("id", id)
-          .single();
-
-        if (promptError) {
-          throw promptError;
-        }
-
-        const { count: likesCount } = await supabase
-          .from("likes")
-          .select("*", { count: "exact" })
-          .eq("prompt_id", id);
-
-        const { data: comments, error: commentsError } = await supabase
-          .from("comments")
-          .select(
-            `
-            id,
-            created_at,
-            content,
-            user_id,
-            profiles ( display_name, avatar_url )
-          `
-          )
-          .eq("prompt_id", id)
-          .order("created_at", { ascending: true });
-
-        if (commentsError) {
-          throw commentsError;
-        }
-
-        const transformedData = {
-          ...promptData,
-          likes_count: likesCount || 0,
-          comments: comments || [],
-        };
-
-        setPrompt(transformedData);
-        setLoading(false);
-      } catch (error) {
-        console.error(error);
-        toast.error("Failed to load prompt");
-        setLoading(false);
-      }
-    };
-
-    fetchPrompt();
-  }, [id, supabase]);
-
-  const handleComment = async (e: React.FormEvent) => {
-    e.preventDefault();
-    submitComment(newComment);
-  };
-
-  const handleDeleteComment = async (commentId: number) => {
-    if (!user) {
-      handleAuthRequired();
-      return;
-    }
-
-    // Optimistic update - immediately mark comment as deleting and add fade-out animation
-    setDeletingComments((prev) => new Set(prev).add(commentId));
-
-    // After animation duration, optimistically remove from UI
-    setTimeout(() => {
-      setPrompt((prev) =>
-        prev
-          ? {
-              ...prev,
-              comments: prev.comments.filter((c) => c.id !== commentId),
-            }
-          : null
-      );
-    }, 300); // Match animation duration
-
-    // Perform the actual deletion
-    try {
-      const response = await fetch(`/api/comments/${commentId}`, {
-        method: "DELETE",
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to delete comment");
-      }
-
-      toast.success("Comment deleted!");
-    } catch (error) {
-      console.error("Delete comment error:", error);
-      toast.error("Failed to delete comment. Please try again.");
-
-      // Rollback optimistic update on error
-      setDeletingComments((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(commentId);
-        return newSet;
-      });
-
-      // Restore the comment to the UI
-      const { data: comments, error: commentsError } = await supabase
-        .from("comments")
-        .select(
-          `
-          id,
-          created_at,
-          content,
-          user_id,
-          profiles ( display_name, avatar_url )
-        `
-        )
-        .eq("prompt_id", id)
-        .order("created_at", { ascending: true });
-
-      if (!commentsError && comments) {
-        setPrompt((prev) =>
-          prev
-            ? {
-                ...prev,
-                comments: comments.map((comment) => ({
-                  ...comment,
-                  profiles: Array.isArray(comment.profiles)
-                    ? comment.profiles[0]
-                    : comment.profiles,
-                })) as Comment[],
-              }
-            : null
-        );
-      }
-    } finally {
-      setDeletingComments((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(commentId);
-        return newSet;
-      });
-    }
-  };
-
-  const handleDeletePrompt = async () => {
-    setIsDeleting(true);
-
-    try {
-      const response = await fetch(`/api/prompts/${id}`, {
-        method: "DELETE",
-      });
-
-      if (response.ok) {
-        toast.success("Prompt deleted successfully!");
-        router.push("/");
-      } else {
-        const { error } = await response.json();
-        throw new Error(error || "Failed to delete prompt");
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to delete prompt");
-    } finally {
-      setIsDeleting(false);
-    }
-  };
+  const t = useTranslations("PromptDetails");
 
   if (loading) {
     return <PromptPageSkeleton />;
   }
 
   if (!prompt) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div>Prompt not found</div>
-      </div>
-    );
+    notFound();
+    return;
   }
-
-  const isOwner = user && prompt.user_id === user.id;
 
   return (
     <>
       <Toaster richColors />
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div>
-          <Image
-            src={prompt.image_url}
-            alt={prompt.artist_string}
-            width={1024}
-            height={1024}
-            className="rounded-lg object-contain"
-            priority
-          />
-        </div>
+        <PromptImage
+          imageUrl={prompt.image_url}
+          artistString={prompt.artist_string}
+        />
         <div className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>{t("details")}</span>
-                <div className="flex gap-2">
-                  <Button
-                    variant={liked ? "default" : "outline"}
-                    size="sm"
-                    onClick={toggleLike}
-                    disabled={likesLoading}
-                    className="flex items-center gap-1"
-                  >
-                    {likesLoading ? (
-                      <Heart className="w-4 h-4 animate-pulse" />
-                    ) : (
-                      <Heart
-                        className={`w-4 h-4 ${liked ? "fill-current" : ""}`}
-                      />
-                    )}
-                    <span className="tabular-nums">{likesCount}</span>
-                  </Button>
-                  <Badge
-                    variant="secondary"
-                    className="flex items-center gap-1"
-                  >
-                    <MessageCircle className="w-4 h-4" />
-                    {prompt.comments.length}
-                  </Badge>
-                  {isOwner && (
-                    <AlertDialog>
-                      <AlertDialogTrigger asChild>
-                        <Button variant="destructive" size="sm">
-                          <Trash2 className="w-4 h-4" />
-                        </Button>
-                      </AlertDialogTrigger>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>
-                          <AlertDialogTitle>Delete Prompt</AlertDialogTitle>
-                          <AlertDialogDescription>
-                            Are you sure you want to delete this prompt? This
-                            action cannot be undone. All likes and comments will
-                            also be deleted.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogAction
-                            onClick={handleDeletePrompt}
-                            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                            disabled={isDeleting}
-                          >
-                            {isDeleting ? "Deleting..." : "Delete"}
-                          </AlertDialogAction>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialog>
-                  )}
-                </div>
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-lg mb-2 flex justify-between items-center">
-                  <span>{t("artistString")}</span>
-                  <CopyButton text={prompt.artist_string} />
-                </h3>
-                <p className="text-muted-foreground bg-muted p-3 rounded-md">
-                  {prompt.artist_string}
-                </p>
-              </div>
+          <PromptDetails
+            prompt={prompt}
+            liked={liked}
+            likesCount={likesCount}
+            likesLoading={likesLoading}
+            toggleLike={toggleLike}
+            isOwner={isOwner}
+            isDeleting={isDeleting}
+            onDeletePrompt={handleDeletePrompt}
+          />
 
-              {prompt.model && (
-                <>
-                  <Separator />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2">{t("model")}</h3>
-                    <Badge variant="outline">{prompt.model}</Badge>
-                  </div>
-                </>
-              )}
-
-              {prompt.prompt && (
-                <>
-                  <Separator />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2 flex justify-between items-center">
-                      <span>{t("prompt")}</span>
-                      <CopyButton text={prompt.prompt} />
-                    </h3>
-                    <p className="text-muted-foreground bg-muted p-3 rounded-md max-h-48 overflow-y-auto">
-                      {prompt.prompt}
-                    </p>
-                  </div>
-                </>
-              )}
-
-              {prompt.negative_prompt && (
-                <>
-                  <Separator />
-                  <div>
-                    <h3 className="font-semibold text-lg mb-2 flex justify-between items-center">
-                      <span>{t("negativePrompt")}</span>
-                      <CopyButton text={prompt.negative_prompt} />
-                    </h3>
-                    <p className="text-muted-foreground bg-muted p-3 rounded-md max-h-48 overflow-y-auto">
-                      {prompt.negative_prompt}
-                    </p>
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* Comments Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>
-                {t("comments")} ({prompt.comments.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              {/* Add Comment Form */}
-              {user ? (
-                <form onSubmit={handleComment} className="space-y-4 mb-6">
-                  <Textarea
-                    placeholder={t("addComment")}
-                    value={newComment}
-                    onChange={(e) => setNewComment(e.target.value)}
-                    disabled={submittingComment}
-                  />
-                  <Button
-                    type="submit"
-                    disabled={submittingComment || !newComment.trim()}
-                  >
-                    {submittingComment ? t("addingComment") : t("addComment")}
-                  </Button>
-                </form>
-              ) : (
-                <div className="mb-6 p-4 bg-muted rounded-md text-center">
-                  <p className="text-sm text-muted-foreground">
-                    <Link
-                      href="/login"
-                      className="text-blue-500 hover:underline"
-                    >
-                      Log in
-                    </Link>{" "}
-                    to add a comment
-                  </p>
-                </div>
-              )}
-
-              {/* Comments List */}
-              {prompt.comments.length > 0 ? (
-                <div className="space-y-4">
-                  {prompt.comments.map((comment) => (
-                    <div
-                      key={comment.id}
-                      className={`bg-muted p-3 rounded-md space-y-2 transition-all duration-300 ${
-                        deletingComments.has(comment.id)
-                          ? "opacity-0 transform scale-95"
-                          : "opacity-100 transform scale-100"
-                      }`}
-                    >
-                      <p className="text-sm">{comment.content}</p>
-                      <div className="flex justify-between items-center text-xs text-muted-foreground">
-                        <span>
-                          {comment.profiles?.display_name ??
-                            `User ${comment.user_id.slice(0, 8)}...`}
-                        </span>
-                        <div className="flex items-center gap-2">
-                          <span>{formatDate(comment.created_at)}</span>
-                          {user && comment.user_id === user.id && (
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => handleDeleteComment(comment.id)}
-                              disabled={deletingComments.has(comment.id)}
-                              className="h-auto p-1 text-destructive hover:text-destructive hover:bg-destructive/10 disabled:opacity-50"
-                            >
-                              {deletingComments.has(comment.id) ? (
-                                <div className="w-3 h-3 border-2 border-destructive border-t-transparent rounded-full animate-spin" />
-                              ) : (
-                                <Trash2 className="w-3 h-3" />
-                              )}
-                            </Button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground text-center">
-                  {t("noCommentsYet")}
-                </p>
-              )}
-            </CardContent>
-          </Card>
+          <CommentsSection
+            comments={prompt.comments}
+            user={user}
+            newComment={newComment}
+            setNewComment={setNewComment}
+            submittingComment={submittingComment}
+            handleComment={handleComment}
+            handleDeleteComment={handleDeleteComment}
+            deletingComments={deletingComments}
+          />
 
           <Link
             href="/"
