@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { Heart, Sparkles, ArrowLeft } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { PromptsGrid, PromptsLoadingFallback } from "@/components/prompts-grid";
 import Link from "next/link";
 import type { Prompt } from "@/lib/prompts";
@@ -18,6 +19,7 @@ export default function FavoritesPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Favorites");
 
   useEffect(() => {
     const fetchFavoritePrompts = async () => {
@@ -106,8 +108,8 @@ export default function FavoritesPage() {
           <div className="inline-flex p-3 rounded-full bg-primary/10 mb-2">
             <Heart className="h-8 w-8 text-primary fill-current" />
           </div>
-          <h1 className="text-3xl font-bold gradient-text">Favorite Prompts</h1>
-          <p className="text-muted-foreground">Prompts you liked</p>
+          <h1 className="text-3xl font-bold gradient-text">{t("title")}</h1>
+          <p className="text-muted-foreground">{t("subtitle")}</p>
         </div>
         <PromptsLoadingFallback />
       </div>
@@ -127,7 +129,7 @@ export default function FavoritesPage() {
           <div className="inline-flex p-3 rounded-full bg-primary/10 mb-2">
             <Heart className="h-8 w-8 text-primary fill-current" />
           </div>
-          <h1 className="text-3xl font-bold gradient-text">Favorite Prompts</h1>
+          <h1 className="text-3xl font-bold gradient-text">{t("title")}</h1>
           <p className="text-muted-foreground">
             {prompts.length === 0
               ? "You haven't liked any prompts yet"
@@ -154,13 +156,14 @@ export default function FavoritesPage() {
               <div className="p-6 rounded-full bg-muted inline-block mb-4">
                 <Sparkles className="h-12 w-12 text-muted-foreground" />
               </div>
-              <h2 className="text-2xl font-semibold mb-2">No favorites yet</h2>
+              <h2 className="text-2xl font-semibold mb-2">
+                {t("noFavoritesYet")}
+              </h2>
               <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-                Start exploring and like prompts that inspire you. They&apos;ll
-                appear here for easy access.
+                {t("noFavoritesMessage")}
               </p>
               <Button asChild className="hover-glow">
-                <Link href="/">Explore Prompts</Link>
+                <Link href="/">{t("explorePrompts")}</Link>
               </Button>
             </div>
           </Card>

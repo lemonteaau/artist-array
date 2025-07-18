@@ -10,14 +10,17 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { TrendingUp, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface SortSelectorProps {
   currentSort: string;
 }
 
+//TODO: fix sorting (seems mixed up with newest and popular)
 export function SortSelector({ currentSort }: SortSelectorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const t = useTranslations("Sort");
 
   const handleSortChange = useCallback(
     (value: string) => {
@@ -34,20 +37,20 @@ export function SortSelector({ currentSort }: SortSelectorProps) {
 
   return (
     <Select value={currentSort} onValueChange={handleSortChange}>
-      <SelectTrigger className="w-[140px] glass-effect">
-        <SelectValue placeholder="Sort by" />
+      <SelectTrigger className="w-fit">
+        <SelectValue placeholder={t("sortBy")} />
       </SelectTrigger>
       <SelectContent className="glass-effect">
         <SelectItem value="newest">
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4" />
-            <span>Newest</span>
+            <span>{t("newest")}</span>
           </div>
         </SelectItem>
         <SelectItem value="popular">
           <div className="flex items-center gap-2">
             <TrendingUp className="h-4 w-4" />
-            <span>Popular</span>
+            <span>{t("popular")}</span>
           </div>
         </SelectItem>
       </SelectContent>

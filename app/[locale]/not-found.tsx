@@ -1,4 +1,5 @@
-import Link from "next/link";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -7,24 +8,27 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function NotFound() {
+  const t = useTranslations("NotFound");
+
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <Card className="w-full max-w-md text-center">
+    <div className="flex items-center justify-center min-h-[60vh]">
+      <Card className="max-w-md w-full text-center glass-effect border-border/50">
         <CardHeader>
-          <CardTitle className="text-6xl font-bold">404</CardTitle>
-          <CardDescription className="text-lg">
-            Oops! The page you&apos;re looking for doesn&apos;t exist.
-          </CardDescription>
+          <div className="mx-auto p-3 rounded-full bg-primary/10 mb-4">
+            <Sparkles className="h-8 w-8 text-primary" />
+          </div>
+          <CardTitle className="text-6xl font-bold">{t("title")}</CardTitle>
+          <CardDescription className="text-xl">{t("message")}</CardDescription>
         </CardHeader>
         <CardContent>
-          <p className="text-muted-foreground mb-6">
-            The prompt or page you&apos;re trying to access may have been moved
-            or deleted.
-          </p>
-          <Button asChild>
-            <Link href="/">Return Home</Link>
+          <p className="text-muted-foreground mb-6">{t("description")}</p>
+          <Button asChild className="hover-glow">
+            <Link href="/">{t("returnHome")}</Link>
           </Button>
         </CardContent>
       </Card>

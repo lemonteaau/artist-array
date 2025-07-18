@@ -19,12 +19,15 @@ import { User } from "@supabase/supabase-js";
 import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { LanguageSwitcher } from "./language-switcher";
+import { useTranslations } from "next-intl";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Navbar");
+  const tToast = useTranslations("Toast");
 
   useEffect(() => {
     const getUser = async () => {
@@ -52,7 +55,7 @@ export function Navbar() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Successfully signed out!");
+      toast.success(tToast("signedOutSuccess"));
       router.push("/");
       router.refresh();
     }
@@ -83,7 +86,7 @@ export function Navbar() {
               >
                 <Link href="/upload">
                   <Upload className="mr-2 h-4 w-4" />
-                  Share Prompt
+                  {t("sharePrompt")}
                 </Link>
               </Button>
             ) : (
@@ -117,23 +120,23 @@ export function Navbar() {
                   <DropdownMenuItem className="flex flex-col items-start py-3">
                     <div className="font-medium">{user.email}</div>
                     <div className="text-xs text-muted-foreground">
-                      {user.user_metadata?.full_name || "Artist"}
+                      {user.user_metadata?.full_name || t("artist")}
                     </div>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
                     <Link href="/profile" className="cursor-pointer">
-                      My Profile
+                      {t("myProfile")}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/my-prompts" className="cursor-pointer">
-                      My Prompts
+                      {t("myPrompts")}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
                     <Link href="/favorites" className="cursor-pointer">
-                      My Favorites
+                      {t("myFavorites")}
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
@@ -141,7 +144,7 @@ export function Navbar() {
                     onClick={handleSignOut}
                     className="text-destructive focus:text-destructive"
                   >
-                    Sign out
+                    {t("signOut")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -150,13 +153,13 @@ export function Navbar() {
                 <Button variant="ghost" size="sm" asChild>
                   <Link href="/login">
                     <LogIn className="mr-2 h-4 w-4" />
-                    Login
+                    {t("login")}
                   </Link>
                 </Button>
                 <Button size="sm" asChild className="hover-glow">
                   <Link href="/signup">
                     <UserPlus className="mr-2 h-4 w-4" />
-                    Sign Up
+                    {t("signUp")}
                   </Link>
                 </Button>
               </div>

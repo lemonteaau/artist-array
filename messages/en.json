@@ -6,13 +6,178 @@
     "ja": "Japanese"
   },
   "HomePage": {
-    "title": "Welcome to the Homepage"
+    "title": "Discover AI Art Inspiration",
+    "subtitle": "Share and explore artist strings, prompts, and techniques from the AI art community",
+    "trending": "Trending",
+    "latest": "Latest"
   },
   "Navbar": {
     "home": "Home",
-    "about": "About"
+    "about": "About",
+    "sharePrompt": "Share Prompt",
+    "login": "Login",
+    "signUp": "Sign Up",
+    "myProfile": "My Profile",
+    "myPrompts": "My Prompts",
+    "myFavorites": "My Favorites",
+    "signOut": "Sign out",
+    "artist": "Artist"
   },
-  "UploadPage": {
-    "uploadImageButton": "Upload Image"
+  "Auth": {
+    "welcomeBack": "Welcome Back",
+    "signInSubtitle": "Sign in to continue sharing and discovering AI art",
+    "signIn": "Sign In",
+    "signInDescription": "Enter your credentials to access your account",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "name@example.com",
+    "passwordPlaceholder": "Min. 6 characters",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter password",
+    "forgotPassword": "Forgot password?",
+    "signingIn": "Signing in...",
+    "newToArtistArray": "New to Artist Array?",
+    "createAccount": "Create an Account",
+    "createYourAccount": "Create Your Account",
+    "joinCommunity": "Join our community of AI artists",
+    "signUp": "Sign Up",
+    "displayName": "Display Name",
+    "displayNamePlaceholder": "Enter your display name",
+    "signingUp": "Creating account...",
+    "alreadyHaveAccount": "Already have an account?",
+    "signInHere": "Sign in here"
+  },
+  "Upload": {
+    "authRequired": "Authentication Required",
+    "authRequiredMessage": "You need to be logged in to share artwork",
+    "goToLogin": "Go to Login",
+    "artworkDetails": "Artwork Details",
+    "artistString": "Artist String",
+    "artistStringPlaceholder": "e.g., 0.7::artist:ArtistA::, 1.1::artist:ArtistB::",
+    "selectModel": "Select a Model",
+    "selectModelPlaceholder": "Choose the AI model used",
+    "uploadImage": "Upload Image",
+    "uploadImageButton": "Upload Image",
+    "dragDropMessage": "Drag and drop an image here, or click to select",
+    "imageRequirements": "PNG, JPG, or GIF up to 10MB",
+    "prompt": "Prompt",
+    "promptPlaceholder": "The full prompt used to generate this image...",
+    "negativePrompt": "Negative Prompt",
+    "negativePromptPlaceholder": "Words or phrases to avoid...",
+    "shareArtwork": "Share Artwork",
+    "sharing": "Sharing..."
+  },
+  "Profile": {
+    "myProfile": "My Profile",
+    "updateProfile": "Update your profile information",
+    "displayName": "Display Name",
+    "quickActions": "Quick Actions",
+    "promptsShared": "Prompts Shared",
+    "totalLikes": "Total Likes",
+    "comments": "Comments",
+    "emailCannotBeChanged": "Email cannot be changed",
+    "memberSince": "Member Since",
+    "updating": "Updating...",
+    "updateYourProfile": "Update Your Profile",
+    "viewMyPrompts": "View My Prompts",
+    "signOut": "Sign Out"
+  },
+  "MyPrompts": {
+    "title": "My Prompts",
+    "totalPrompts": "Total Prompts",
+    "totalLikes": "Total Likes",
+    "totalComments": "Total Comments",
+    "noPromptsYet": "No prompts yet",
+    "noPromptsMessage": "You haven't shared any prompts yet. Start by uploading your first artwork!",
+    "shareFirst": "Share Your First Prompt",
+    "likes": "likes",
+    "delete": "Delete",
+    "comments": "comments",
+    "hasPrompt": "Has prompt",
+    "hasNoPrompt": "Has no prompt",
+    "deletePrompt": "Delete Prompt",
+    "cancel": "Cancel",
+    "manageYourPrompts": "Manage and track your shared AI art prompts",
+    "deletePromptDescription": "Are you sure you want to delete this prompt? This action cannot be undone. All likes and comments will also be deleted.",
+    "shareAnotherPrompt": "Share Another Prompt"
+  },
+  "Favorites": {
+    "title": "Favorite Prompts",
+    "subtitle": "Prompts you liked",
+    "noFavoritesYet": "No favorites yet",
+    "noFavoritesMessage": "You haven't liked any prompts yet. Explore and like prompts you find inspiring!",
+    "explorePrompts": "Explore Prompts"
+  },
+  "PromptDetails": {
+    "promptNotFound": "Prompt not found",
+    "details": "Details",
+    "artistString": "Artist String",
+    "model": "Model",
+    "prompt": "Prompt",
+    "negativePrompt": "Negative Prompt",
+    "comments": "Comments",
+    "addComment": "Add a comment...",
+    "addingComment": "Adding...",
+    "noCommentsYet": "No comments yet. Be the first to comment!",
+    "backToGallery": "Back to gallery",
+    "deletePrompt": "Delete Prompt",
+    "deletePromptConfirm": "Are you sure you want to delete this prompt? This action cannot be undone.",
+    "cancel": "Cancel"
+  },
+  "PromptCard": {
+    "hasPrompt": "Has prompt",
+    "noPrompt": "No prompt"
+  },
+  "PromptsGrid": {
+    "noPromptsYet": "No prompts yet!",
+    "noPromptsMessage": "Be the first to share your AI art prompts with the community.",
+    "shareFirst": "Share First Prompt"
+  },
+  "Sort": {
+    "sortBy": "Sort by",
+    "newest": "Newest",
+    "popular": "Popular"
+  },
+  "NotFound": {
+    "title": "404",
+    "message": "Page not found",
+    "description": "The page you're looking for doesn't exist.",
+    "returnHome": "Return Home"
+  },
+  "Error": {
+    "title": "Something went wrong",
+    "message": "An unexpected error occurred",
+    "tryAgain": "Try Again"
+  },
+  "Toast": {
+    "pleaseLogin": "Please log in to like posts",
+    "copiedToClipboard": "Copied to clipboard!",
+    "signedOutSuccess": "Successfully signed out!",
+    "welcomeBack": "Welcome back!",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordTooShort": "Password must be at least 6 characters",
+    "checkEmailConfirm": "Check your email to confirm your account!",
+    "profileUpdatedSuccess": "Profile updated successfully!",
+    "profileUpdateFailed": "Failed to update profile",
+    "artworkSharedSuccess": "Artwork shared successfully!",
+    "fillRequiredFields": "Please fill in all required fields",
+    "mustBeLoggedIn": "You must be logged in to upload",
+    "failedToLoadFavorites": "Failed to load favorite prompts",
+    "failedToLoadPrompt": "Failed to load prompt",
+    "commentDeletedSuccess": "Comment deleted!",
+    "commentDeleteFailed": "Failed to delete comment. Please try again.",
+    "promptDeletedSuccess": "Prompt deleted successfully!",
+    "promptDeleteFailed": "Failed to delete prompt",
+    "failedToLoadPrompts": "Failed to load your prompts",
+    "failedToLoadProfile": "Failed to load profile data",
+    "pleaseLoginToInteract": "Please log in to interact with posts"
+  },
+  "Common": {
+    "loading": "Loading...",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "more": "More",
+    "wip": "WIP"
   }
 }

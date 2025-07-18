@@ -6,13 +6,177 @@
     "ja": "日本語"
   },
   "HomePage": {
-    "title": "ホームページへようこそ"
+    "title": "AIアートのインスピレーションを発見",
+    "subtitle": "AIアートコミュニティから作品文字列、プロンプト、テクニックを共有・探索しよう",
+    "trending": "トレンド",
+    "latest": "最新"
   },
   "Navbar": {
     "home": "ホーム",
-    "about": "紹介"
+    "about": "紹介",
+    "sharePrompt": "プロンプト共有",
+    "login": "ログイン",
+    "signUp": "サインアップ",
+    "myProfile": "マイプロフィール",
+    "myPrompts": "マイプロンプト",
+    "myFavorites": "お気に入り",
+    "signOut": "サインアウト",
+    "artist": "アーティスト"
   },
-  "UploadPage": {
-    "uploadImageButton": "画像をアップロード"
+  "Auth": {
+    "welcomeBack": "おかえりなさい",
+    "signInSubtitle": "AIアートの共有と発見を続けるためにサインインしてください",
+    "signIn": "サインイン",
+    "signInDescription": "アカウントにアクセスするための認証情報を入力してください",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "emailPlaceholder": "name@example.com",
+    "passwordPlaceholder": "最低6文字",
+    "confirmPassword": "パスワード確認",
+    "confirmPasswordPlaceholder": "パスワードを再入力",
+    "forgotPassword": "パスワードを忘れましたか？",
+    "signingIn": "サインイン中...",
+    "newToArtistArray": "Artist Arrayは初めてですか？",
+    "createAccount": "アカウントを作成",
+    "createYourAccount": "アカウントを作成",
+    "joinCommunity": "AIアーティストのコミュニティに参加しよう",
+    "signUp": "サインアップ",
+    "displayName": "表示名",
+    "displayNamePlaceholder": "表示名を入力",
+    "signingUp": "アカウント作成中...",
+    "alreadyHaveAccount": "すでにアカウントをお持ちですか？",
+    "signInHere": "こちらからサインイン"
+  },
+  "Upload": {
+    "authRequired": "認証が必要",
+    "authRequiredMessage": "作品を共有するにはログインが必要です",
+    "goToLogin": "ログインページへ",
+    "artworkDetails": "作品詳細",
+    "artistString": "作品文字列",
+    "artistStringPlaceholder": "例：0.7::artist:ArtistA::, 1.1::artist:ArtistB::",
+    "selectModel": "モデルを選択",
+    "selectModelPlaceholder": "使用したAIモデルを選択",
+    "uploadImage": "画像をアップロード",
+    "uploadImageButton": "画像をアップロード",
+    "dragDropMessage": "画像をここにドラッグ＆ドロップするか、クリックして選択",
+    "imageRequirements": "PNG、JPG、またはGIF（10MBまで）",
+    "prompt": "プロンプト",
+    "promptPlaceholder": "この画像の生成に使用したフルプロンプト...",
+    "negativePrompt": "ネガティブプロンプト",
+    "negativePromptPlaceholder": "避けたい単語やフレーズ...",
+    "shareArtwork": "作品を共有",
+    "sharing": "共有中..."
+  },
+  "Profile": {
+    "myProfile": "マイプロフィール",
+    "updateProfile": "プロフィール情報を更新",
+    "displayName": "表示名",
+    "quickActions": "クイックアクション",
+    "promptsShared": "プロンプト共有",
+    "totalLikes": "総いいね数",
+    "comments": "コメント",
+    "emailCannotBeChanged": "メールアドレスは変更できません",
+    "memberSince": "加入日",
+    "updating": "更新中...",
+    "updateYourProfile": "プロフィールを更新",
+    "viewMyPrompts": "マイプロンプトを表示",
+    "signOut": "サインアウト"
+  },
+  "MyPrompts": {
+    "title": "マイプロンプト",
+    "totalPrompts": "総プロンプト数",
+    "totalLikes": "総いいね数",
+    "totalComments": "総コメント数",
+    "noPromptsYet": "まだプロンプトがありません",
+    "noPromptsMessage": "まだプロンプトを共有していません。最初の作品をアップロードして始めましょう！",
+    "shareFirst": "最初のプロンプトを共有",
+    "likes": "いいね",
+    "comments": "コメント",
+    "hasPrompt": "プロンプトがあります",
+    "hasNoPrompt": "プロンプトがありません",
+    "delete": "削除",
+    "cancel": "キャンセル",
+    "manageYourPrompts": "管理し、共有したAIアートプロンプトを追跡",
+    "deletePromptDescription": "このプロンプトを削除してもよろしいですか？この操作は元に戻せません。すべてのいいねとコメントも削除されます。",
+    "shareAnotherPrompt": "別のプロンプトを共有"
+  },
+  "Favorites": {
+    "title": "お気に入りプロンプト",
+    "subtitle": "いいねしたプロンプト",
+    "noFavoritesYet": "まだお気に入りがありません",
+    "noFavoritesMessage": "まだプロンプトにいいねしていません。インスピレーションを感じるプロンプトを探していいねしてみましょう！",
+    "explorePrompts": "プロンプトを探索"
+  },
+  "PromptDetails": {
+    "promptNotFound": "プロンプトが見つかりません",
+    "details": "詳細",
+    "artistString": "作品文字列",
+    "model": "モデル",
+    "prompt": "プロンプト",
+    "negativePrompt": "ネガティブプロンプト",
+    "comments": "コメント",
+    "addComment": "コメントを追加...",
+    "addingComment": "コメントを追加中...",
+    "noCommentsYet": "まだコメントがありません。最初のコメントを投稿してください！",
+    "backToGallery": "ギャラリーに戻る",
+    "deletePrompt": "プロンプトを削除",
+    "deletePromptConfirm": "このプロンプトを削除してもよろしいですか？この操作は元に戻せません。",
+    "cancel": "キャンセル"
+  },
+  "PromptCard": {
+    "hasPrompt": "プロンプトがあります",
+    "noPrompt": "プロンプトがありません"
+  },
+  "PromptsGrid": {
+    "noPromptsYet": "まだプロンプトがありません！",
+    "noPromptsMessage": "コミュニティと最初にAIアートプロンプトを共有しましょう。",
+    "shareFirst": "最初のプロンプトを共有"
+  },
+  "Sort": {
+    "sortBy": "並び替え",
+    "newest": "最新",
+    "popular": "人気"
+  },
+  "NotFound": {
+    "title": "404",
+    "message": "ページが見つかりません",
+    "description": "お探しのページは存在しません。",
+    "returnHome": "ホームに戻る"
+  },
+  "Error": {
+    "title": "何かがうまくいきませんでした",
+    "message": "予期しないエラーが発生しました",
+    "tryAgain": "再試行"
+  },
+  "Toast": {
+    "pleaseLogin": "投稿にいいねするにはログインしてください",
+    "copiedToClipboard": "クリップボードにコピーしました！",
+    "signedOutSuccess": "正常にサインアウトしました！",
+    "welcomeBack": "おかえりなさい！",
+    "passwordsDoNotMatch": "パスワードが一致しません",
+    "passwordTooShort": "パスワードは最低6文字である必要があります",
+    "checkEmailConfirm": "アカウント確認のためメールをチェックしてください！",
+    "profileUpdatedSuccess": "プロフィールが正常に更新されました！",
+    "profileUpdateFailed": "プロフィールの更新に失敗しました",
+    "artworkSharedSuccess": "作品が正常に共有されました！",
+    "fillRequiredFields": "必須フィールドをすべて入力してください",
+    "mustBeLoggedIn": "アップロードにはログインが必要です",
+    "failedToLoadFavorites": "お気に入りプロンプトの読み込みに失敗しました",
+    "failedToLoadPrompt": "プロンプトの読み込みに失敗しました",
+    "commentDeletedSuccess": "コメントが削除されました！",
+    "commentDeleteFailed": "コメントの削除に失敗しました。再試行してください。",
+    "promptDeletedSuccess": "プロンプトが正常に削除されました！",
+    "promptDeleteFailed": "プロンプトの削除に失敗しました",
+    "failedToLoadPrompts": "プロンプトの読み込みに失敗しました",
+    "failedToLoadProfile": "プロフィールデータの読み込みに失敗しました",
+    "pleaseLoginToInteract": "投稿と相互作用するにはログインしてください"
+  },
+  "Common": {
+    "loading": "読み込み中...",
+    "close": "閉じる",
+    "previous": "前へ",
+    "next": "次へ",
+    "more": "その他",
+    "wip": "作業中"
   }
 }

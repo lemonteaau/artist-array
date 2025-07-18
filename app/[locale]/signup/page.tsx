@@ -15,17 +15,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast, Toaster } from "sonner";
-import {
-  UserPlus,
-  Mail,
-  Lock,
-  Sparkles,
-  CheckCircle,
-  User,
-} from "lucide-react";
+import { UserPlus, Mail, Lock, User, Sparkles } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations } from "next-intl";
 
-export default function SignupPage() {
+export default function SignUpPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,29 +27,32 @@ export default function SignupPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Auth");
+  const tToast = useTranslations("Toast");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsLoading(true);
 
+    // Validation
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match");
+      toast.error(tToast("passwordsDoNotMatch"));
+      setIsLoading(false);
       return;
     }
 
     if (password.length < 6) {
-      toast.error("Password must be at least 6 characters");
+      toast.error(tToast("passwordTooShort"));
+      setIsLoading(false);
       return;
     }
-
-    setIsLoading(true);
 
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
         data: {
-          display_name: displayName,
+          full_name: displayName || undefined,
         },
       },
     });
@@ -66,7 +63,7 @@ export default function SignupPage() {
       return;
     }
 
-    toast.success("Check your email to confirm your account!");
+    toast.success(tToast("checkEmailConfirm"));
     router.push("/login");
   };
 
@@ -86,33 +83,31 @@ export default function SignupPage() {
               </div>
             </Link>
             <h1 className="text-3xl font-bold gradient-text mb-2">
-              Join Artist Array
+              {t("createYourAccount")}
             </h1>
-            <p className="text-muted-foreground">
-              Create an account to share your AI art creations
-            </p>
+            <p className="text-muted-foreground">{t("joinCommunity")}</p>
           </div>
 
           <Card className="glass-effect border-border/50">
-            <CardHeader className="space-y-1 pb-1">
+            <CardHeader className="space-y-1 pb-6">
               <CardTitle className="text-2xl text-center">
-                Create Account
+                {t("signUp")}
               </CardTitle>
               <CardDescription className="text-center">
-                Enter your details to get started
+                {t("signInDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-8" onSubmit={handleSubmit}>
+              <form className="space-y-4" onSubmit={handleSubmit}>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    Email
+                    {t("email")}
                   </Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="name@example.com"
+                    placeholder={t("emailPlaceholder")}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -122,56 +117,55 @@ export default function SignupPage() {
                 </div>
                 <div className="space-y-2">
                   <Label
-                    htmlFor="display-name"
+                    htmlFor="displayName"
                     className="flex items-center gap-2"
                   >
                     <User className="h-4 w-4 text-muted-foreground" />
-                    Display Name
+                    {t("displayName")}
                   </Label>
                   <Input
-                    id="display-name"
+                    id="displayName"
                     type="text"
-                    required
+                    placeholder={t("displayNamePlaceholder")}
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     disabled={isLoading}
                     className="glass-effect"
-                    placeholder="Enter your display name"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="password" className="flex items-center gap-2">
                     <Lock className="h-4 w-4 text-muted-foreground" />
-                    Password
+                    {t("password")}
                   </Label>
                   <Input
                     id="password"
                     type="password"
+                    placeholder={t("passwordPlaceholder")}
                     required
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     disabled={isLoading}
                     className="glass-effect"
-                    placeholder="Min. 6 characters"
                   />
                 </div>
                 <div className="space-y-2">
                   <Label
-                    htmlFor="confirm-password"
+                    htmlFor="confirmPassword"
                     className="flex items-center gap-2"
                   >
-                    <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    Confirm Password
+                    <Lock className="h-4 w-4 text-muted-foreground" />
+                    {t("confirmPassword")}
                   </Label>
                   <Input
-                    id="confirm-password"
+                    id="confirmPassword"
                     type="password"
+                    placeholder={t("confirmPasswordPlaceholder")}
                     required
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     disabled={isLoading}
                     className="glass-effect"
-                    placeholder="Re-enter password"
                   />
                 </div>
                 <Button
@@ -183,12 +177,12 @@ export default function SignupPage() {
                   {isLoading ? (
                     <>
                       <UserPlus className="mr-2 h-4 w-4 animate-pulse" />
-                      Creating account...
+                      {t("signingUp")}
                     </>
                   ) : (
                     <>
                       <UserPlus className="mr-2 h-4 w-4" />
-                      Create Account
+                      {t("signUp")}
                     </>
                   )}
                 </Button>
@@ -200,7 +194,7 @@ export default function SignupPage() {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Already have an account?
+                    {t("alreadyHaveAccount")}
                   </span>
                 </div>
               </div>
@@ -208,7 +202,7 @@ export default function SignupPage() {
               <div className="text-center">
                 <Link href="/login">
                   <Button variant="outline" className="w-full" size="lg">
-                    Sign In Instead
+                    {t("signInHere")}
                   </Button>
                 </Link>
               </div>

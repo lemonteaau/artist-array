@@ -32,6 +32,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function UploadPage() {
   const [artistString, setArtistString] = useState("");
@@ -46,6 +47,8 @@ export default function UploadPage() {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Upload");
+  const tToast = useTranslations("Toast");
 
   useEffect(() => {
     const getUser = async () => {
@@ -106,12 +109,12 @@ export default function UploadPage() {
     e.preventDefault();
 
     if (!artistString || !imageFile || !model) {
-      toast.error("Please fill in all required fields");
+      toast.error(tToast("fillRequiredFields"));
       return;
     }
 
     if (!user) {
-      toast.error("You must be logged in to upload");
+      toast.error(tToast("mustBeLoggedIn"));
       router.push("/login");
       return;
     }
@@ -172,7 +175,7 @@ export default function UploadPage() {
       }
 
       toast.dismiss();
-      toast.success("Artwork shared successfully!");
+      toast.success(tToast("artworkSharedSuccess"));
 
       // Reset form
       setArtistString("");
@@ -209,14 +212,12 @@ export default function UploadPage() {
             <div className="mx-auto p-3 rounded-full bg-muted mb-2">
               <AlertCircle className="h-8 w-8 text-muted-foreground" />
             </div>
-            <CardTitle>Authentication Required</CardTitle>
-            <CardDescription>
-              Please log in to share your AI artwork
-            </CardDescription>
+            <CardTitle>{t("authRequired")}</CardTitle>
+            <CardDescription>{t("authRequiredMessage")}</CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
             <Button asChild>
-              <Link href="/login">Go to Login</Link>
+              <Link href="/login">{t("goToLogin")}</Link>
             </Button>
           </CardFooter>
         </Card>
@@ -243,20 +244,19 @@ export default function UploadPage() {
         <Card className="glass-effect border-border/50">
           <form onSubmit={handleSubmit}>
             <CardHeader>
-              <CardTitle>Artwork Details</CardTitle>
-              <CardDescription>
-                Fill in the details about your AI-generated artwork
-              </CardDescription>
+              <CardTitle>{t("artworkDetails")}</CardTitle>
+              <CardDescription>{t("artworkDetails")}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Artist String */}
               <div className="space-y-2">
                 <Label htmlFor="artist-string">
-                  Artist String <span className="text-destructive">*</span>
+                  {t("artistString")}{" "}
+                  <span className="text-destructive">*</span>
                 </Label>
                 <Input
                   id="artist-string"
-                  placeholder="e.g., by artist1, by artist2, style of artist3"
+                  placeholder={t("artistStringPlaceholder")}
                   required
                   value={artistString}
                   onChange={(e) => setArtistString(e.target.value)}
@@ -271,7 +271,7 @@ export default function UploadPage() {
               {/* Model Selection */}
               <div className="space-y-2">
                 <Label htmlFor="model">
-                  AI Model <span className="text-destructive">*</span>
+                  {t("selectModel")} <span className="text-destructive">*</span>
                 </Label>
                 <Select
                   value={model}
@@ -283,7 +283,7 @@ export default function UploadPage() {
                       placeholder={
                         modelsLoading
                           ? "Loading models..."
-                          : "Select the AI model used"
+                          : t("selectModelPlaceholder")
                       }
                     />
                   </SelectTrigger>
@@ -303,7 +303,7 @@ export default function UploadPage() {
               {/* Image Upload */}
               <div className="space-y-2">
                 <Label htmlFor="image">
-                  Example Image <span className="text-destructive">*</span>
+                  {t("uploadImage")} <span className="text-destructive">*</span>
                 </Label>
                 <div className="relative">
                   <Input
@@ -335,14 +335,14 @@ export default function UploadPage() {
               {/* Prompt */}
               <div className="space-y-2">
                 <Label htmlFor="prompt">
-                  Prompt{" "}
+                  {t("prompt")}{" "}
                   <Badge variant="outline" className="ml-2">
                     Optional
                   </Badge>
                 </Label>
                 <Textarea
                   id="prompt"
-                  placeholder="The full prompt used to generate this image..."
+                  placeholder={t("promptPlaceholder")}
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   disabled={isLoading}
@@ -353,14 +353,14 @@ export default function UploadPage() {
               {/* Negative Prompt */}
               <div className="space-y-2">
                 <Label htmlFor="negative-prompt">
-                  Negative Prompt{" "}
+                  {t("negativePrompt")}{" "}
                   <Badge variant="outline" className="ml-2">
                     Optional
                   </Badge>
                 </Label>
                 <Textarea
                   id="negative-prompt"
-                  placeholder="Words or phrases to avoid..."
+                  placeholder={t("negativePromptPlaceholder")}
                   value={negativePrompt}
                   onChange={(e) => setNegativePrompt(e.target.value)}
                   disabled={isLoading}
@@ -378,12 +378,12 @@ export default function UploadPage() {
                 {isLoading ? (
                   <>
                     <Upload className="mr-2 h-4 w-4 animate-pulse" />
-                    Uploading...
+                    {t("sharing")}
                   </>
                 ) : (
                   <>
                     <Upload className="mr-2 h-4 w-4" />
-                    Share Artwork
+                    {t("shareArtwork")}
                   </>
                 )}
               </Button>

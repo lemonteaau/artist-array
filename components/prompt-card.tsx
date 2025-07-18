@@ -6,6 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PromptCardProps {
   prompt: {
@@ -28,6 +29,8 @@ export function PromptCard({
   userId,
   priority = false,
 }: PromptCardProps) {
+  const t = useTranslations("PromptCard");
+
   return (
     <Link href={`/prompt/${prompt.id}`} className="group">
       <Card className="overflow-hidden hover-float hover-glow border-border/50 transition-all duration-300">
@@ -69,11 +72,10 @@ export function PromptCard({
                   promptId={prompt.id.toString()}
                   userId={userId}
                   variant="badge"
-                  className="hover:scale-105 transition-transform"
                 />
                 {prompt.prompt && (
                   <Badge variant="outline" className="text-xs">
-                    Has prompt
+                    {t("hasPrompt")}
                   </Badge>
                 )}
               </div>

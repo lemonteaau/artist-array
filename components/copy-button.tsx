@@ -2,15 +2,18 @@
 import { Button } from "@/components/ui/button";
 import { Copy } from "lucide-react";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 interface CopyButtonProps {
-  textToCopy: string;
+  text: string;
 }
 
-export function CopyButton({ textToCopy }: CopyButtonProps) {
-  const handleCopy = () => {
-    navigator.clipboard.writeText(textToCopy);
-    toast.success("Copied to clipboard!");
+export function CopyButton({ text }: CopyButtonProps) {
+  const tToast = useTranslations("Toast");
+
+  const handleCopy = async () => {
+    await navigator.clipboard.writeText(text);
+    toast.success(tToast("copiedToClipboard"));
   };
 
   return (

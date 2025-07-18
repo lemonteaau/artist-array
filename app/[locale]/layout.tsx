@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     telephone: false,
   },
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_APP_URL || "https://artist-array.vercel.app"
+    process.env.NEXT_PUBLIC_APP_URL || "https://artistarray.com"
   ),
   openGraph: {
     type: "website",

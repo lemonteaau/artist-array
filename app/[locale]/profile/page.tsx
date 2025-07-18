@@ -17,6 +17,7 @@ import { User } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
+import { useTranslations } from "next-intl";
 import {
   User as UserIcon,
   Mail,
@@ -48,6 +49,8 @@ export default function ProfilePage() {
   const [displayName, setDisplayName] = useState("");
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Profile");
+  const tToast = useTranslations("Toast");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -115,10 +118,10 @@ export default function ProfilePage() {
 
       if (error) throw error;
 
-      toast.success("Profile updated successfully!");
+      toast.success(tToast("profileUpdatedSuccess"));
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("Failed to update profile");
+      toast.error(tToast("profileUpdateFailed"));
     } finally {
       setUpdating(false);
     }
@@ -129,7 +132,7 @@ export default function ProfilePage() {
     if (error) {
       toast.error(error.message);
     } else {
-      toast.success("Successfully signed out!");
+      toast.success(tToast("signedOutSuccess"));
       router.push("/");
       router.refresh();
     }
@@ -172,7 +175,7 @@ export default function ProfilePage() {
           </Avatar>
           <div>
             <h1 className="text-3xl font-bold gradient-text">
-              {displayName || "Anonymous Artist"}
+              {displayName || t("anonymousUser")}
             </h1>
             <p className="text-muted-foreground">{user.email}</p>
           </div>
@@ -184,7 +187,7 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <ImageIcon className="h-5 w-5 text-primary" />
-                Prompts Shared
+                {t("promptsShared")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -196,7 +199,7 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <Heart className="h-5 w-5 text-red-500" />
-                Total Likes
+                {t("totalLikes")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -208,7 +211,7 @@ export default function ProfilePage() {
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
                 <MessageCircle className="h-5 w-5 text-blue-500" />
-                Comments
+                {t("comments")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -222,9 +225,9 @@ export default function ProfilePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Settings className="h-5 w-5" />
-              Profile Settings
+              {t("myProfile")}
             </CardTitle>
-            <CardDescription>Update your profile information</CardDescription>
+            <CardDescription>{t("updateYourProfile")}</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleUpdateProfile} className="space-y-4">
@@ -241,7 +244,7 @@ export default function ProfilePage() {
                   className="glass-effect"
                 />
                 <p className="text-xs text-muted-foreground">
-                  Email cannot be changed
+                  {t("emailCannotBeChanged")}
                 </p>
               </div>
 
@@ -251,14 +254,14 @@ export default function ProfilePage() {
                   className="flex items-center gap-2"
                 >
                   <UserIcon className="h-4 w-4 text-muted-foreground" />
-                  Display Name
+                  {t("displayName")}
                 </Label>
                 <Input
                   id="displayName"
                   type="text"
                   value={displayName}
                   onChange={(e) => setDisplayName(e.target.value)}
-                  placeholder="Enter your display name"
+                  placeholder={t("displayName")}
                   disabled={updating}
                   className="glass-effect"
                 />
@@ -267,7 +270,7 @@ export default function ProfilePage() {
               <div className="space-y-2">
                 <Label className="flex items-center gap-2">
                   <Calendar className="h-4 w-4 text-muted-foreground" />
-                  Member Since
+                  {t("memberSince")}
                 </Label>
                 <p className="text-sm text-muted-foreground">
                   {new Date(user.created_at).toLocaleDateString("en-US", {
@@ -282,10 +285,10 @@ export default function ProfilePage() {
                 {updating ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Updating...
+                    {t("updating")}
                   </>
                 ) : (
-                  "Update Profile"
+                  t("updateProfile")
                 )}
               </Button>
             </form>
@@ -295,13 +298,13 @@ export default function ProfilePage() {
         {/* Quick Actions */}
         <Card className="glass-effect border-border/50">
           <CardHeader>
-            <CardTitle>Quick Actions</CardTitle>
+            <CardTitle>{t("quickActions")}</CardTitle>
           </CardHeader>
           <CardContent className="flex justify-between gap-4">
             <Link href="/my-prompts">
               <Button variant="outline" className="w-full justify-start">
                 <ImageIcon className="mr-2 h-4 w-4" />
-                View My Prompts
+                {t("viewMyPrompts")}
               </Button>
             </Link>
 
@@ -311,7 +314,7 @@ export default function ProfilePage() {
               onClick={handleSignOut}
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
+              {t("signOut")}
             </Button>
           </CardContent>
         </Card>

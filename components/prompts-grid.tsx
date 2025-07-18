@@ -1,22 +1,12 @@
 "use client";
 
 import { PromptCard } from "@/components/prompt-card";
+import { type Prompt } from "@/lib/prompts";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Upload, Sparkles } from "lucide-react";
-
-interface Prompt {
-  id: number;
-  created_at: string;
-  artist_string: string;
-  image_url: string;
-  prompt: string | null;
-  negative_prompt: string | null;
-  user_id: string | null;
-  model: string | null;
-  likes_count?: number;
-}
+import { useTranslations } from "next-intl";
 
 interface PromptsGridProps {
   prompts: Prompt[];
@@ -29,6 +19,8 @@ export function PromptsGrid({
   userId,
   loading = false,
 }: PromptsGridProps) {
+  const t = useTranslations("PromptsGrid");
+
   if (loading) {
     return <PromptsLoadingFallback />;
   }
@@ -39,14 +31,14 @@ export function PromptsGrid({
         <div className="p-6 rounded-full bg-muted mb-6">
           <Sparkles className="h-12 w-12 text-muted-foreground" />
         </div>
-        <h2 className="text-2xl font-semibold mb-2">No prompts yet!</h2>
+        <h2 className="text-2xl font-semibold mb-2">{t("noPromptsYet")}</h2>
         <p className="text-muted-foreground text-center mb-6 max-w-md">
-          Be the first to share your AI art inspiration with the community.
+          {t("noPromptsMessage")}
         </p>
         <Button asChild size="lg" className="hover-glow">
           <Link href="/upload">
             <Upload className="mr-2 h-4 w-4" />
-            Share Your First Prompt
+            {t("shareFirst")}
           </Link>
         </Button>
       </div>

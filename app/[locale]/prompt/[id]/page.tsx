@@ -28,6 +28,7 @@ import { toast, Toaster } from "sonner";
 import { useSmartLike } from "@/hooks/use-smart-like";
 import { useDebouncedComment } from "@/hooks/use-debounced-comment";
 import { PromptPageSkeleton } from "./loading";
+import { useTranslations } from "next-intl";
 
 interface Comment {
   id: number;
@@ -78,9 +79,11 @@ export default function PromptDetailPage() {
   );
 
   const supabase = createClient();
+  const t = useTranslations("PromptDetails");
+  const tToast = useTranslations("Toast");
 
   const handleAuthRequired = () => {
-    toast.error("Please log in to interact with posts");
+    toast.error(tToast("pleaseLoginToInteract"));
     router.push("/login");
   };
 
@@ -320,7 +323,7 @@ export default function PromptDetailPage() {
           <Card>
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
-                <span>Details</span>
+                <span>{t("details")}</span>
                 <div className="flex gap-2">
                   <Button
                     variant={liked ? "default" : "outline"}
@@ -380,8 +383,8 @@ export default function PromptDetailPage() {
             <CardContent className="space-y-4">
               <div>
                 <h3 className="font-semibold text-lg mb-2 flex justify-between items-center">
-                  <span>Artist String</span>
-                  <CopyButton textToCopy={prompt.artist_string} />
+                  <span>{t("artistString")}</span>
+                  <CopyButton text={prompt.artist_string} />
                 </h3>
                 <p className="text-muted-foreground bg-muted p-3 rounded-md">
                   {prompt.artist_string}
@@ -392,7 +395,7 @@ export default function PromptDetailPage() {
                 <>
                   <Separator />
                   <div>
-                    <h3 className="font-semibold text-lg mb-2">Model</h3>
+                    <h3 className="font-semibold text-lg mb-2">{t("model")}</h3>
                     <Badge variant="outline">{prompt.model}</Badge>
                   </div>
                 </>
@@ -403,8 +406,8 @@ export default function PromptDetailPage() {
                   <Separator />
                   <div>
                     <h3 className="font-semibold text-lg mb-2 flex justify-between items-center">
-                      <span>Prompt</span>
-                      <CopyButton textToCopy={prompt.prompt} />
+                      <span>{t("prompt")}</span>
+                      <CopyButton text={prompt.prompt} />
                     </h3>
                     <p className="text-muted-foreground bg-muted p-3 rounded-md max-h-48 overflow-y-auto">
                       {prompt.prompt}
@@ -418,8 +421,8 @@ export default function PromptDetailPage() {
                   <Separator />
                   <div>
                     <h3 className="font-semibold text-lg mb-2 flex justify-between items-center">
-                      <span>Negative Prompt</span>
-                      <CopyButton textToCopy={prompt.negative_prompt} />
+                      <span>{t("negativePrompt")}</span>
+                      <CopyButton text={prompt.negative_prompt} />
                     </h3>
                     <p className="text-muted-foreground bg-muted p-3 rounded-md max-h-48 overflow-y-auto">
                       {prompt.negative_prompt}
@@ -433,14 +436,16 @@ export default function PromptDetailPage() {
           {/* Comments Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Comments ({prompt.comments.length})</CardTitle>
+              <CardTitle>
+                {t("comments")} ({prompt.comments.length})
+              </CardTitle>
             </CardHeader>
             <CardContent>
               {/* Add Comment Form */}
               {user ? (
                 <form onSubmit={handleComment} className="space-y-4 mb-6">
                   <Textarea
-                    placeholder="Add a comment..."
+                    placeholder={t("addComment")}
                     value={newComment}
                     onChange={(e) => setNewComment(e.target.value)}
                     disabled={submittingComment}
@@ -449,7 +454,7 @@ export default function PromptDetailPage() {
                     type="submit"
                     disabled={submittingComment || !newComment.trim()}
                   >
-                    {submittingComment ? "Adding..." : "Add Comment"}
+                    {submittingComment ? t("addingComment") : t("addComment")}
                   </Button>
                 </form>
               ) : (
@@ -508,7 +513,7 @@ export default function PromptDetailPage() {
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground text-center">
-                  No comments yet. Be the first to comment!
+                  {t("noCommentsYet")}
                 </p>
               )}
             </CardContent>
@@ -518,7 +523,7 @@ export default function PromptDetailPage() {
             href="/"
             className="text-sm text-blue-500 hover:underline inline-block"
           >
-            &larr; Back to gallery
+            &larr; {t("backToGallery")}
           </Link>
         </div>
       </div>

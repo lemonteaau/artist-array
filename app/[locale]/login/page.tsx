@@ -17,6 +17,7 @@ import { useState } from "react";
 import { toast, Toaster } from "sonner";
 import { LogIn, Mail, Lock, Sparkles } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -24,6 +25,8 @@ export default function LoginPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const supabase = createClient();
+  const t = useTranslations("Auth");
+  const tToast = useTranslations("Toast");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -40,7 +43,7 @@ export default function LoginPage() {
       return;
     }
 
-    toast.success("Welcome back!");
+    toast.success(tToast("welcomeBack"));
     router.push("/");
     router.refresh();
   };
@@ -61,31 +64,31 @@ export default function LoginPage() {
               </div>
             </Link>
             <h1 className="text-3xl font-bold gradient-text mb-2">
-              Welcome Back
+              {t("welcomeBack")}
             </h1>
-            <p className="text-muted-foreground">
-              Sign in to continue sharing and discovering AI art
-            </p>
+            <p className="text-muted-foreground">{t("signInSubtitle")}</p>
           </div>
 
           <Card className="glass-effect border-border/50">
             <CardHeader className="space-y-1 pb-6">
-              <CardTitle className="text-2xl text-center">Sign In</CardTitle>
+              <CardTitle className="text-2xl text-center">
+                {t("signIn")}
+              </CardTitle>
               <CardDescription className="text-center">
-                Enter your credentials to access your account
+                {t("signInDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4" onSubmit={handleSubmit}>
+              <form className="space-y-8" onSubmit={handleSubmit}>
                 <div className="space-y-2">
                   <Label htmlFor="email" className="flex items-center gap-2">
                     <Mail className="h-4 w-4 text-muted-foreground" />
-                    Email
+                    {t("email")}
                   </Label>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="name@example.com"
+                    placeholder={t("emailPlaceholder")}
                     required
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -96,7 +99,7 @@ export default function LoginPage() {
                 <div className="space-y-2">
                   <Label htmlFor="password" className="flex items-center gap-2">
                     <Lock className="h-4 w-4 text-muted-foreground" />
-                    Password
+                    {t("password")}
                   </Label>
                   <Input
                     id="password"
@@ -113,7 +116,7 @@ export default function LoginPage() {
                     href="/forgot-password"
                     className="text-sm text-muted-foreground hover:text-primary transition-colors"
                   >
-                    Forgot password?
+                    {t("forgotPassword")}
                   </Link>
                 </div>
                 <Button
@@ -125,12 +128,12 @@ export default function LoginPage() {
                   {isLoading ? (
                     <>
                       <LogIn className="mr-2 h-4 w-4 animate-pulse" />
-                      Signing in...
+                      {t("signingIn")}
                     </>
                   ) : (
                     <>
                       <LogIn className="mr-2 h-4 w-4" />
-                      Sign In
+                      {t("signIn")}
                     </>
                   )}
                 </Button>
@@ -142,7 +145,7 @@ export default function LoginPage() {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    New to Artist Array?
+                    {t("newToArtistArray")}
                   </span>
                 </div>
               </div>
@@ -150,7 +153,7 @@ export default function LoginPage() {
               <div className="text-center">
                 <Link href="/signup">
                   <Button variant="outline" className="w-full" size="lg">
-                    Create an Account
+                    {t("createAccount")}
                   </Button>
                 </Link>
               </div>

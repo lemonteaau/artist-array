@@ -37,6 +37,7 @@ import {
   Calendar,
 } from "lucide-react";
 import { PromptsLoadingFallback } from "@/components/prompts-grid";
+import { useTranslations } from "next-intl";
 
 interface Prompt {
   id: number;
@@ -52,6 +53,7 @@ interface Prompt {
 }
 
 export default function MyPromptsPage() {
+  const t = useTranslations("MyPrompts");
   const [user, setUser] = useState<User | null>(null);
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [loading, setLoading] = useState(true);
@@ -159,10 +161,10 @@ export default function MyPromptsPage() {
     return (
       <div className="space-y-8">
         <div className="text-center">
-          <h1 className="text-3xl font-bold gradient-text mb-2">My Prompts</h1>
-          <p className="text-muted-foreground">
-            Manage your shared AI art prompts
-          </p>
+          <h1 className="text-3xl font-bold gradient-text mb-2">
+            {t("title")}
+          </h1>
+          <p className="text-muted-foreground">{t("manageYourPrompts")}</p>
         </div>
         <PromptsLoadingFallback />
       </div>
@@ -182,10 +184,8 @@ export default function MyPromptsPage() {
           <div className="inline-flex p-3 rounded-full bg-primary/10 mb-2">
             <Sparkles className="h-8 w-8 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold gradient-text">My Prompts</h1>
-          <p className="text-muted-foreground">
-            Manage and track your shared AI art prompts
-          </p>
+          <h1 className="text-3xl font-bold gradient-text">{t("title")}</h1>
+          <p className="text-muted-foreground">{t("manageYourPrompts")}</p>
         </div>
 
         {/* Stats Summary */}
@@ -193,7 +193,9 @@ export default function MyPromptsPage() {
           <Card className="glass-effect border-border/50">
             <CardContent className="p-6 text-center">
               <p className="text-3xl font-bold">{prompts.length}</p>
-              <p className="text-sm text-muted-foreground">Total Prompts</p>
+              <p className="text-sm text-muted-foreground">
+                {t("totalPrompts")}
+              </p>
             </CardContent>
           </Card>
           <Card className="glass-effect border-border/50">
@@ -201,7 +203,7 @@ export default function MyPromptsPage() {
               <p className="text-3xl font-bold">
                 {prompts.reduce((acc, p) => acc + p.likes_count, 0)}
               </p>
-              <p className="text-sm text-muted-foreground">Total Likes</p>
+              <p className="text-sm text-muted-foreground">{t("totalLikes")}</p>
             </CardContent>
           </Card>
           <Card className="glass-effect border-border/50">
@@ -209,7 +211,9 @@ export default function MyPromptsPage() {
               <p className="text-3xl font-bold">
                 {prompts.reduce((acc, p) => acc + p.comments_count, 0)}
               </p>
-              <p className="text-sm text-muted-foreground">Total Comments</p>
+              <p className="text-sm text-muted-foreground">
+                {t("totalComments")}
+              </p>
             </CardContent>
           </Card>
         </div>
@@ -221,14 +225,16 @@ export default function MyPromptsPage() {
               <div className="p-6 rounded-full bg-muted inline-block mb-4">
                 <Upload className="h-12 w-12 text-muted-foreground" />
               </div>
-              <h2 className="text-2xl font-semibold mb-2">No prompts yet</h2>
+              <h2 className="text-2xl font-semibold mb-2">
+                {t("noPromptsYet")}
+              </h2>
               <p className="text-muted-foreground mb-6">
-                Start sharing your AI art creations with the community
+                {t("noPromptsMessage")}
               </p>
               <Button asChild className="hover-glow">
                 <Link href="/upload">
                   <Upload className="mr-2 h-4 w-4" />
-                  Share Your First Prompt
+                  {t("shareFirst")}
                 </Link>
               </Button>
             </CardContent>
@@ -296,21 +302,21 @@ export default function MyPromptsPage() {
                             <AlertDialogContent>
                               <AlertDialogHeader>
                                 <AlertDialogTitle>
-                                  Delete Prompt
+                                  {t("deletePrompt")}
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                  Are you sure you want to delete this prompt?
-                                  This action cannot be undone. All likes and
-                                  comments will also be deleted.
+                                  {t("deletePromptDescription")}
                                 </AlertDialogDescription>
                               </AlertDialogHeader>
                               <AlertDialogFooter>
-                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogCancel>
+                                  {t("cancel")}
+                                </AlertDialogCancel>
                                 <AlertDialogAction
                                   onClick={() => handleDeletePrompt(prompt.id)}
                                   className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                                 >
-                                  Delete
+                                  {t("delete")}
                                 </AlertDialogAction>
                               </AlertDialogFooter>
                             </AlertDialogContent>
@@ -325,7 +331,9 @@ export default function MyPromptsPage() {
                           <span className="font-medium">
                             {prompt.likes_count}
                           </span>
-                          <span className="text-muted-foreground">likes</span>
+                          <span className="text-muted-foreground">
+                            {t("likes")}
+                          </span>
                         </span>
                         <span className="flex items-center gap-1">
                           <MessageCircle className="h-4 w-4 text-blue-500" />
@@ -333,12 +341,12 @@ export default function MyPromptsPage() {
                             {prompt.comments_count}
                           </span>
                           <span className="text-muted-foreground">
-                            comments
+                            {t("comments")}
                           </span>
                         </span>
                         {prompt.prompt && (
                           <Badge variant="outline" className="text-xs">
-                            Has prompt
+                            {t("hasPrompt")}
                           </Badge>
                         )}
                       </div>
@@ -356,7 +364,7 @@ export default function MyPromptsPage() {
             <Button asChild size="lg" className="hover-glow">
               <Link href="/upload">
                 <Upload className="mr-2 h-4 w-4" />
-                Share Another Prompt
+                {t("shareAnotherPrompt")}
               </Link>
             </Button>
           </div>

@@ -33,7 +33,6 @@ export function LanguageSwitcher() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="glass-effect">
-        <p className="text-green-500 text-sm">WIP</p>
         {locales.map((cur) => (
           <DropdownMenuItem
             key={cur}
