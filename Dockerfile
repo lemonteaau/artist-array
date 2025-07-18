@@ -22,10 +22,6 @@ WORKDIR /app
 ENV NODE_ENV=production
 RUN corepack enable
 
-ENV NEXT_PUBLIC_SUPABASE_URL=""
-ENV NEXT_PUBLIC_SUPABASE_ANON_KEY=""
-ENV NEXT_PUBLIC_CLOUDFLARE_R2_PUBLIC_URL=""
-
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
