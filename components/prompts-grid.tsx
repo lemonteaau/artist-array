@@ -4,7 +4,7 @@ import { PromptCard } from "@/components/prompt-card";
 import { type Prompt } from "@/lib/prompts";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Upload, Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
 

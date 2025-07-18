@@ -7,7 +7,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "@/i18n/navigation";
+import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 import { TrendingUp, Clock } from "lucide-react";
 import { useTranslations } from "next-intl";
@@ -16,7 +17,6 @@ interface SortSelectorProps {
   currentSort: string;
 }
 
-//TODO: fix sorting (seems mixed up with newest and popular)
 export function SortSelector({ currentSort }: SortSelectorProps) {
   const router = useRouter();
   const searchParams = useSearchParams();

@@ -22,11 +22,10 @@ import {
 } from "@/components/ui/alert-dialog";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import Image from "next/image";
-import Link from "next/link";
 import {
   Trash2,
   Eye,

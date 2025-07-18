@@ -3,7 +3,7 @@
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { SmartLikeButton } from "@/components/smart-like-button";
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";

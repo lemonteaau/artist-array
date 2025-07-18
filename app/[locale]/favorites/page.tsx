@@ -4,13 +4,12 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { toast, Toaster } from "sonner";
 import { Heart, Sparkles, ArrowLeft } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { PromptsGrid, PromptsLoadingFallback } from "@/components/prompts-grid";
-import Link from "next/link";
 import type { Prompt } from "@/lib/prompts";
 
 export default function FavoritesPage() {

@@ -14,7 +14,7 @@ import { toast } from "sonner";
 
 import { Sparkles, Upload, LogIn, UserPlus } from "lucide-react";
 
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
