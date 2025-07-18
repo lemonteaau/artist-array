@@ -51,7 +51,6 @@
     "authRequired": "需要认证",
     "authRequiredMessage": "您需要登录才能分享作品",
     "goToLogin": "前往登录",
-    "artworkDetails": "作品详情",
     "artistString": "画师串",
     "artistStringPlaceholder": "例如：0.7::artist:ArtistA::, 1.1::artist:ArtistB::",
     "selectModel": "选择模型",
@@ -66,7 +65,12 @@
     "negativePromptPlaceholder": "要避免的词语或短语...",
     "shareArtwork": "分享作品",
     "sharing": "分享中...",
-    "optional": "可选"
+    "optional": "可选",
+    "shareYourCreation": "分享你的创作",
+    "helpOthersDiscover": "帮助他人发现惊人的AI艺术风格",
+    "artistStringDescription": "创建此风格的画师组合",
+    "loadingModels": "加载模型中...",
+    "preview": "预览"
   },
   "Profile": {
     "myProfile": "我的资料",

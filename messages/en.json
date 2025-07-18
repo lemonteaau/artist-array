@@ -51,7 +51,6 @@
     "authRequired": "Authentication Required",
     "authRequiredMessage": "You need to be logged in to share artwork",
     "goToLogin": "Go to Login",
-    "artworkDetails": "Artwork Details",
     "artistString": "Artist String",
     "artistStringPlaceholder": "e.g., 0.7::artist:ArtistA::, 1.1::artist:ArtistB::",
     "selectModel": "Select a Model",
@@ -66,7 +65,12 @@
     "negativePromptPlaceholder": "Words or phrases to avoid...",
     "shareArtwork": "Share Artwork",
     "sharing": "Sharing...",
-    "optional": "Optional"
+    "optional": "Optional",
+    "shareYourCreation": "Share Your Creation",
+    "helpOthersDiscover": "Help others discover amazing AI art styles",
+    "artistStringDescription": "The artist combination that created this style",
+    "loadingModels": "Loading models...",
+    "preview": "Preview"
   },
   "Profile": {
     "myProfile": "My Profile",

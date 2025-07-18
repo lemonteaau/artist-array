@@ -21,11 +21,26 @@ export default function UploadPage() {
     isLoading,
     modelsLoading,
     user,
+    userLoading,
 
     // Handlers
     handleImageChange,
     handleSubmit,
   } = useUpload();
+
+  if (userLoading) {
+    return (
+      <>
+        <Toaster richColors />
+        <div className="flex justify-center items-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   if (!user) {
     return (

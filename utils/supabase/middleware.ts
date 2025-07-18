@@ -29,7 +29,7 @@ export async function updateSession(
     data: { user },
   } = await supabase.auth.getUser();
 
-  const protectedRoutes = ["/upload"];
+  const protectedRoutes: string[] = [];
   const isProtectedRoute = protectedRoutes.some((route) =>
     request.nextUrl.pathname.startsWith(route)
   );

@@ -51,7 +51,6 @@
     "authRequired": "認証が必要",
     "authRequiredMessage": "作品を共有するにはログインが必要です",
     "goToLogin": "ログインページへ",
-    "artworkDetails": "作品詳細",
     "artistString": "作品文字列",
     "artistStringPlaceholder": "例：0.7::artist:ArtistA::, 1.1::artist:ArtistB::",
     "selectModel": "モデルを選択",
@@ -66,7 +65,12 @@
     "negativePromptPlaceholder": "避けたい単語やフレーズ...",
     "shareArtwork": "作品を共有",
     "sharing": "共有中...",
-    "optional": "任意"
+    "optional": "任意",
+    "shareYourCreation": "作品を共有",
+    "helpOthersDiscover": "驚くべきAIアートスタイルを発見しよう",
+    "artistStringDescription": "このスタイルを作成したアーティストの組み合わせ",
+    "loadingModels": "モデルを読み込んでいます...",
+    "preview": "プレビュー"
   },
   "Profile": {
     "myProfile": "マイプロフィール",

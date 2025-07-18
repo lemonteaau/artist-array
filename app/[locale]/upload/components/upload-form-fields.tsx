@@ -62,7 +62,7 @@ export function UploadFormFields({
           className="glass-effect"
         />
         <p className="text-xs text-muted-foreground">
-          The artist combination that created this style
+          {t("artistStringDescription")}
         </p>
       </div>
 
@@ -79,9 +79,7 @@ export function UploadFormFields({
           <SelectTrigger className="glass-effect">
             <SelectValue
               placeholder={
-                modelsLoading
-                  ? "Loading models..."
-                  : t("selectModelPlaceholder")
+                modelsLoading ? t("loadingModels") : t("selectModelPlaceholder")
               }
             />
           </SelectTrigger>
@@ -123,7 +121,7 @@ export function UploadFormFields({
               <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               <Badge className="absolute bottom-2 right-2">
                 <ImageIcon className="h-3 w-3 mr-1" />
-                Preview
+                {t("preview")}
               </Badge>
             </div>
           )}

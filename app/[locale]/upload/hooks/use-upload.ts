@@ -18,6 +18,7 @@ export function useUpload() {
   const [isLoading, setIsLoading] = useState(false);
   const [modelsLoading, setModelsLoading] = useState(true);
   const [user, setUser] = useState<User | null>(null);
+  const [userLoading, setUserLoading] = useState(true);
 
   const router = useRouter();
   const supabase = createClient();
@@ -25,14 +26,22 @@ export function useUpload() {
 
   useEffect(() => {
     const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        setUser(user);
+
+        if (!user) {
+          router.push("/login");
+          return;
+        }
+      } catch (error) {
+        console.error("Error getting user:", error);
         router.push("/login");
-        return;
+      } finally {
+        setUserLoading(false);
       }
-      setUser(user);
     };
 
     getUser();
@@ -197,6 +206,7 @@ export function useUpload() {
     isLoading,
     modelsLoading,
     user,
+    userLoading,
 
     // Handlers
     handleImageChange,
