@@ -1,6 +1,7 @@
 "use client";
 
 import { Toaster } from "sonner";
+import { PageLoading } from "@/components/ui/page-loading";
 import { useProfile } from "./hooks/use-profile";
 import { ProfileHeader } from "./components/profile-header";
 import { ProfileStats } from "./components/profile-stats";
@@ -26,15 +27,7 @@ export default function ProfilePage() {
   } = useProfile();
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <div className="loading-dots">
-          <span></span>
-          <span></span>
-          <span></span>
-        </div>
-      </div>
-    );
+    return <PageLoading />;
   }
 
   if (!user) {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Toaster } from "sonner";
+import { PageLoading } from "@/components/ui/page-loading";
 import { useUpload } from "./hooks/use-upload";
 import { UploadAuthGuard } from "./components/upload-auth-guard";
 import { UploadForm } from "./components/upload-form";
@@ -32,12 +33,7 @@ export default function UploadPage() {
     return (
       <>
         <Toaster richColors />
-        <div className="flex justify-center items-center min-h-[60vh]">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-            <p className="text-muted-foreground">Loading...</p>
-          </div>
-        </div>
+        <PageLoading message="Loading..." />
       </>
     );
   }
