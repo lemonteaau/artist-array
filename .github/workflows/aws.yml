@@ -85,6 +85,11 @@ jobs:
           )' task-definition.json > task-definition-clean.json \
           && mv task-definition-clean.json task-definition.json
 
+      - name: Remove sensitive variables from environment section
+        run: |
+          jq '.containerDefinitions[0].environment = [.containerDefinitions[0].environment[] | select(.name != "CLOUDFLARE_R2_ACCESS_KEY_ID" and .name != "CLOUDFLARE_R2_SECRET_ACCESS_KEY" and .name != "CLOUDFLARE_R2_ACCOUNT_ID" and .name != "CLOUDFLARE_R2_BUCKET_NAME")]' task-definition.json > task-definition-clean.json \
+          && mv task-definition-clean.json task-definition.json
+
       - name: Fill in new image ID in the Amazon ECS task definition
         id: task-def-render
         uses: aws-actions/amazon-ecs-render-task-definition@v1
