@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
 import { Navbar } from "@/components/navbar";
+import { Footer } from "@/components/footer";
 import Script from "next/script";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getMessages } from "next-intl/server";
@@ -100,6 +101,7 @@ export default async function RootLayout({
             <Navbar />
             <main className="container mx-auto px-4 py-8">{children}</main>
           </div>
+          <Footer />
         </NextIntlClientProvider>
       </body>
       <Script
