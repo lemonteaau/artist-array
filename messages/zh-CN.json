@@ -109,7 +109,13 @@
     "subtitle": "您点赞的提示词",
     "noFavoritesYet": "还没有收藏",
     "noFavoritesMessage": "您还没有点赞任何提示词。探索并点赞您觉得有启发的提示词吧！",
-    "explorePrompts": "探索提示词"
+    "explorePrompts": "探索提示词",
+    "backToGallery": "返回画廊",
+    "totalLikesGiven": "总点赞数",
+    "youveLiked": "你点赞了",
+    "promptsLikedSingular": "你点赞了 {count} 个提示词",
+    "promptsLikedPlural": "你点赞了 {count} 个提示词",
+    "noPromptsLikedYet": "你还没有点赞任何提示词"
   },
   "PromptDetails": {
     "promptNotFound": "未找到提示词",

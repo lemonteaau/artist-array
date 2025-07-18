@@ -111,7 +111,13 @@
     "subtitle": "Prompts you liked",
     "noFavoritesYet": "No favorites yet",
     "noFavoritesMessage": "You haven't liked any prompts yet. Explore and like prompts you find inspiring!",
-    "explorePrompts": "Explore Prompts"
+    "explorePrompts": "Explore Prompts",
+    "backToGallery": "Back to Gallery",
+    "totalLikesGiven": "Total likes given",
+    "youveLiked": "you've liked",
+    "promptsLikedSingular": "{count} prompt you've liked",
+    "promptsLikedPlural": "{count} prompts you've liked",
+    "noPromptsLikedYet": "You haven't liked any prompts yet"
   },
   "PromptDetails": {
     "promptNotFound": "Prompt not found",

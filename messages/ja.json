@@ -110,7 +110,13 @@
     "subtitle": "いいねしたプロンプト",
     "noFavoritesYet": "まだお気に入りがありません",
     "noFavoritesMessage": "まだプロンプトにいいねしていません。インスピレーションを感じるプロンプトを探していいねしてみましょう！",
-    "explorePrompts": "プロンプトを探索"
+    "explorePrompts": "プロンプトを探索",
+    "backToGallery": "ギャラリーに戻る",
+    "totalLikesGiven": "総いいね数",
+    "youveLiked": "いいねしました",
+    "promptsLikedSingular": "{count}個のプロンプトにいいねしました",
+    "promptsLikedPlural": "{count}個のプロンプトにいいねしました",
+    "noPromptsLikedYet": "まだプロンプトにいいねしていません"
   },
   "PromptDetails": {
     "promptNotFound": "プロンプトが見つかりません",
