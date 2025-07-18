@@ -111,6 +111,9 @@ export function UploadFormFields({
             disabled={isLoading}
             className="glass-effect file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary file:items-center file:cursor-pointer hover:file:bg-primary/20"
           />
+          <p className="text-xs text-muted-foreground mt-1">
+            Maximum file size: 10MB. Supported formats: JPG, PNG, WebP, etc.
+          </p>
           {imagePreview && (
             <div className="mt-4 relative flex h-96 w-full items-center justify-center overflow-hidden rounded-lg border bg-muted/20">
               <img

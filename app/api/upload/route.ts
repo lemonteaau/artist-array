@@ -20,7 +20,24 @@ export async function POST(request: Request) {
       );
     }
 
-    const { filename, contentType } = await request.json();
+    const { filename, contentType, fileSize } = await request.json();
+
+    // Validate file size (10MB limit)
+    if (fileSize && fileSize > 10 * 1024 * 1024) {
+      return NextResponse.json(
+        { error: "File size must be less than 10MB" },
+        { status: 400 }
+      );
+    }
+
+    // Validate content type
+    if (!contentType || !contentType.startsWith("image/")) {
+      return NextResponse.json(
+        { error: "Only image files are allowed" },
+        { status: 400 }
+      );
+    }
+
     const Key = `${randomUUID()}-${filename}`;
 
     const signedUrl = await getSignedUrl(

@@ -174,7 +174,10 @@
     "promptDeleteFailed": "プロンプトの削除に失敗しました",
     "failedToLoadPrompts": "プロンプトの読み込みに失敗しました",
     "failedToLoadProfile": "プロフィールデータの読み込みに失敗しました",
-    "pleaseLoginToInteract": "投稿と相互作用するにはログインしてください"
+    "pleaseLoginToInteract": "投稿と相互作用するにはログインしてください",
+    "invalidImageFile": "有効な画像ファイルを選択してください",
+    "fileSizeTooLarge": "ファイルサイズは10MB以下にしてください",
+    "failedToGetUploadUrl": "アップロードURLの取得に失敗しました"
   },
   "Common": {
     "loading": "読み込み中...",

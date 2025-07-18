@@ -173,7 +173,10 @@
     "promptDeleteFailed": "删除提示词失败",
     "failedToLoadPrompts": "加载您的提示词失败",
     "failedToLoadProfile": "加载资料数据失败",
-    "pleaseLoginToInteract": "请登录后与帖子互动"
+    "pleaseLoginToInteract": "请登录后与帖子互动",
+    "invalidImageFile": "请选择有效的图片文件",
+    "fileSizeTooLarge": "文件大小必须小于10MB",
+    "failedToGetUploadUrl": "获取上传URL失败"
   },
   "Common": {
     "loading": "加载中...",

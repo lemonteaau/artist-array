@@ -78,6 +78,21 @@ export function useUpload() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Check file size (10MB limit)
+      const maxSizeInBytes = 10 * 1024 * 1024;
+      if (file.size > maxSizeInBytes) {
+        toast.error(tToast("fileSizeTooLarge"));
+        e.target.value = "";
+        return;
+      }
+
+      // Check file type
+      if (!file.type.startsWith("image/")) {
+        toast.error(tToast("invalidImageFile"));
+        e.target.value = "";
+        return;
+      }
+
       setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -129,11 +144,13 @@ export function useUpload() {
         body: JSON.stringify({
           filename: imageFile.name,
           contentType: imageFile.type,
+          fileSize: imageFile.size,
         }),
       });
 
       if (!presignedResponse.ok) {
-        throw new Error("Failed to get upload URL");
+        const errorData = await presignedResponse.json();
+        throw new Error(errorData.error || tToast("failedToGetUploadUrl"));
       }
 
       const { url: presignedUrl, publicUrl } = await presignedResponse.json();

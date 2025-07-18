@@ -175,7 +175,10 @@
     "promptDeleteFailed": "Failed to delete prompt",
     "failedToLoadPrompts": "Failed to load your prompts",
     "failedToLoadProfile": "Failed to load profile data",
-    "pleaseLoginToInteract": "Please log in to interact with posts"
+    "pleaseLoginToInteract": "Please log in to interact with posts",
+    "invalidImageFile": "Please select a valid image file",
+    "fileSizeTooLarge": "File size must be less than 10MB",
+    "failedToGetUploadUrl": "Failed to get upload URL"
   },
   "Common": {
     "loading": "Loading...",
