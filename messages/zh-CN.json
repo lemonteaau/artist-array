@@ -113,8 +113,7 @@
     "backToGallery": "返回画廊",
     "totalLikesGiven": "总点赞数",
     "youveLiked": "你点赞了",
-    "promptsLikedSingular": "你点赞了 {count} 个提示词",
-    "promptsLikedPlural": "你点赞了 {count} 个提示词",
+    "promptsLiked": "你点赞了 {count} 个提示词",
     "noPromptsLikedYet": "你还没有点赞任何提示词"
   },
   "PromptDetails": {

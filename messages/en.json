@@ -115,8 +115,7 @@
     "backToGallery": "Back to Gallery",
     "totalLikesGiven": "Total likes given",
     "youveLiked": "you've liked",
-    "promptsLikedSingular": "{count} prompt you've liked",
-    "promptsLikedPlural": "{count} prompts you've liked",
+    "promptsLiked": "{count, plural, one {# prompt you've liked} other {# prompts you've liked}}",
     "noPromptsLikedYet": "You haven't liked any prompts yet"
   },
   "PromptDetails": {

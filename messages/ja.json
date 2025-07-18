@@ -114,8 +114,7 @@
     "backToGallery": "ギャラリーに戻る",
     "totalLikesGiven": "総いいね数",
     "youveLiked": "いいねしました",
-    "promptsLikedSingular": "{count}個のプロンプトにいいねしました",
-    "promptsLikedPlural": "{count}個のプロンプトにいいねしました",
+    "promptsLiked": "{count}個のプロンプトにいいねしました",
     "noPromptsLikedYet": "まだプロンプトにいいねしていません"
   },
   "PromptDetails": {

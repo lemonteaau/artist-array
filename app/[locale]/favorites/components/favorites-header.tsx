@@ -19,21 +19,7 @@ export function FavoritesHeader({ prompts, loading }: FavoritesHeaderProps) {
       return t("noPromptsLikedYet");
     }
 
-    // 先测试基本的翻译功能
-    const baseText =
-      prompts.length === 1
-        ? t("promptsLikedSingular")
-        : t("promptsLikedPlural");
-
-    // 如果翻译有效，再进行字符串替换
-    if (baseText && !baseText.includes("promptsLiked")) {
-      return baseText.replace("{count}", prompts.length.toString());
-    }
-
-    // 如果翻译失败，回退到简单的英文显示
-    return `${prompts.length} prompt${
-      prompts.length === 1 ? "" : "s"
-    } you've liked`;
+    return t("promptsLiked", { count: prompts.length });
   };
 
   return (
