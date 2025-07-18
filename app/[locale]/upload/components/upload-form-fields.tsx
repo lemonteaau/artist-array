@@ -116,6 +116,7 @@ export function UploadFormFields({
           </p>
           {imagePreview && (
             <div className="mt-4 relative flex h-96 w-full items-center justify-center overflow-hidden rounded-lg border bg-muted/20">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={imagePreview}
                 alt="Preview"
