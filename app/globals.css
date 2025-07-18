@@ -177,6 +177,10 @@
   @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/25;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Improved scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
