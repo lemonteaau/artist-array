@@ -1,9 +1,8 @@
 import { MetadataRoute } from "next";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@supabase/supabase-js";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "https://artist-array.vercel.app";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://artistarray.com";
 
   // Static routes
   const staticRoutes: MetadataRoute.Sitemap = [
@@ -52,8 +51,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   try {
-    // Dynamic routes from prompts
-    const supabase = await createClient();
+    // Create a simple Supabase client for sitemap generation (no cookies needed)
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    );
+
     const { data: prompts } = await supabase
       .from("prompts")
       .select("id, created_at")
