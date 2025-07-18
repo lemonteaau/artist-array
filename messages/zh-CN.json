@@ -65,7 +65,8 @@
     "negativePrompt": "负面提示词",
     "negativePromptPlaceholder": "要避免的词语或短语...",
     "shareArtwork": "分享作品",
-    "sharing": "分享中..."
+    "sharing": "分享中...",
+    "optional": "可选"
   },
   "Profile": {
     "myProfile": "我的资料",

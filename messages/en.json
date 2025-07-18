@@ -65,7 +65,8 @@
     "negativePrompt": "Negative Prompt",
     "negativePromptPlaceholder": "Words or phrases to avoid...",
     "shareArtwork": "Share Artwork",
-    "sharing": "Sharing..."
+    "sharing": "Sharing...",
+    "optional": "Optional"
   },
   "Profile": {
     "myProfile": "My Profile",

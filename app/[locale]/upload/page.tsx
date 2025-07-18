@@ -1,395 +1,60 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
-import { Link, useRouter } from "@/i18n/navigation";
-import { useEffect, useState } from "react";
-import { Toaster, toast } from "sonner";
-import {
-  Upload,
-  Image as ImageIcon,
-  Sparkles,
-  AlertCircle,
-} from "lucide-react";
-import { Badge } from "@/components/ui/badge";
-import { useTranslations } from "next-intl";
+import { Toaster } from "sonner";
+import { useUpload } from "./hooks/use-upload";
+import { UploadAuthGuard } from "./components/upload-auth-guard";
+import { UploadForm } from "./components/upload-form";
 
 export default function UploadPage() {
-  const [artistString, setArtistString] = useState("");
-  const [prompt, setPrompt] = useState("");
-  const [negativePrompt, setNegativePrompt] = useState("");
-  const [model, setModel] = useState("");
-  const [availableModels, setAvailableModels] = useState<string[]>([]);
-  const [imageFile, setImageFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [modelsLoading, setModelsLoading] = useState(true);
-  const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
-  const supabase = createClient();
-  const t = useTranslations("Upload");
-  const tToast = useTranslations("Toast");
+  const {
+    // State
+    artistString,
+    setArtistString,
+    prompt,
+    setPrompt,
+    negativePrompt,
+    setNegativePrompt,
+    model,
+    setModel,
+    availableModels,
+    imagePreview,
+    isLoading,
+    modelsLoading,
+    user,
 
-  useEffect(() => {
-    const getUser = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      if (!user) {
-        router.push("/login");
-        return;
-      }
-      setUser(user);
-    };
-
-    getUser();
-  }, [router, supabase]);
-
-  useEffect(() => {
-    const fetchModels = async () => {
-      try {
-        const response = await fetch("/api/models");
-        if (response.ok) {
-          const { data } = await response.json();
-          setAvailableModels(data);
-        } else {
-          console.error("Failed to fetch models");
-          setAvailableModels([
-            "NAI Diffusion V4 Curated",
-            "NAI Diffusion V4 Full",
-            "NAI Diffusion V4.5 Curated",
-            "NAI Diffusion V4.5 Full",
-            "Other",
-          ]);
-        }
-      } catch (error) {
-        console.error("Error fetching models:", error);
-        setAvailableModels(["Other"]);
-      } finally {
-        setModelsLoading(false);
-      }
-    };
-
-    fetchModels();
-  }, []);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!artistString || !imageFile || !model) {
-      toast.error(tToast("fillRequiredFields"));
-      return;
-    }
-
-    if (!user) {
-      toast.error(tToast("mustBeLoggedIn"));
-      router.push("/login");
-      return;
-    }
-
-    setIsLoading(true);
-    toast.loading("Uploading your artwork...");
-
-    try {
-      // 1. Get presigned URL
-      const presignedResponse = await fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          filename: imageFile.name,
-          contentType: imageFile.type,
-        }),
-      });
-
-      if (!presignedResponse.ok) {
-        throw new Error("Failed to get upload URL");
-      }
-
-      const { url: presignedUrl, publicUrl } = await presignedResponse.json();
-
-      // 2. Upload image to R2
-      const uploadResponse = await fetch(presignedUrl, {
-        method: "PUT",
-        body: imageFile,
-        headers: {
-          "Content-Type": imageFile.type,
-        },
-      });
-
-      if (!uploadResponse.ok) {
-        throw new Error("Failed to upload image");
-      }
-
-      // 3. Submit prompt to database
-      const submitResponse = await fetch("/api/prompts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          artist_string: artistString,
-          image_url: publicUrl,
-          prompt,
-          negative_prompt: negativePrompt,
-          model,
-        }),
-      });
-
-      if (!submitResponse.ok) {
-        const errorData = await submitResponse.json();
-        throw new Error(errorData.error || "Failed to save prompt");
-      }
-
-      toast.dismiss();
-      toast.success(tToast("artworkSharedSuccess"));
-
-      // Reset form
-      setArtistString("");
-      setPrompt("");
-      setNegativePrompt("");
-      setModel("");
-      setImageFile(null);
-      setImagePreview(null);
-
-      // Reset file input
-      const fileInput = document.getElementById("image") as HTMLInputElement;
-      if (fileInput) {
-        fileInput.value = "";
-      }
-
-      // Redirect to home
-      router.push("/");
-    } catch (error) {
-      console.error(error);
-      toast.dismiss();
-      toast.error(
-        error instanceof Error ? error.message : "Something went wrong"
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    // Handlers
+    handleImageChange,
+    handleSubmit,
+  } = useUpload();
 
   if (!user) {
     return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Card className="w-full max-w-md text-center">
-          <CardHeader>
-            <div className="mx-auto p-3 rounded-full bg-muted mb-2">
-              <AlertCircle className="h-8 w-8 text-muted-foreground" />
-            </div>
-            <CardTitle>{t("authRequired")}</CardTitle>
-            <CardDescription>{t("authRequiredMessage")}</CardDescription>
-          </CardHeader>
-          <CardFooter className="justify-center">
-            <Button asChild>
-              <Link href="/login">{t("goToLogin")}</Link>
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
+      <>
+        <Toaster richColors />
+        <UploadAuthGuard />
+      </>
     );
   }
 
   return (
     <>
       <Toaster richColors />
-      <div className="max-w-2xl mx-auto">
-        <div className="text-center mb-8">
-          <div className="inline-flex p-3 rounded-full bg-primary/10 mb-4">
-            <Upload className="h-8 w-8 text-primary" />
-          </div>
-          <h1 className="text-3xl font-bold gradient-text mb-2">
-            Share Your Creation
-          </h1>
-          <p className="text-muted-foreground">
-            Help others discover amazing AI art styles
-          </p>
-        </div>
-
-        <Card className="glass-effect border-border/50">
-          <form onSubmit={handleSubmit}>
-            <CardHeader>
-              <CardTitle>{t("artworkDetails")}</CardTitle>
-              <CardDescription>{t("artworkDetails")}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              {/* Artist String */}
-              <div className="space-y-2">
-                <Label htmlFor="artist-string">
-                  {t("artistString")}{" "}
-                  <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="artist-string"
-                  placeholder={t("artistStringPlaceholder")}
-                  required
-                  value={artistString}
-                  onChange={(e) => setArtistString(e.target.value)}
-                  disabled={isLoading}
-                  className="glass-effect"
-                />
-                <p className="text-xs text-muted-foreground">
-                  The artist combination that created this style
-                </p>
-              </div>
-
-              {/* Model Selection */}
-              <div className="space-y-2">
-                <Label htmlFor="model">
-                  {t("selectModel")} <span className="text-destructive">*</span>
-                </Label>
-                <Select
-                  value={model}
-                  onValueChange={setModel}
-                  disabled={isLoading || modelsLoading}
-                >
-                  <SelectTrigger className="glass-effect">
-                    <SelectValue
-                      placeholder={
-                        modelsLoading
-                          ? "Loading models..."
-                          : t("selectModelPlaceholder")
-                      }
-                    />
-                  </SelectTrigger>
-                  <SelectContent className="glass-effect">
-                    {availableModels.map((modelName) => (
-                      <SelectItem key={modelName} value={modelName}>
-                        <div className="flex items-center gap-2">
-                          <Sparkles className="h-4 w-4" />
-                          {modelName}
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Image Upload */}
-              <div className="space-y-2">
-                <Label htmlFor="image">
-                  {t("uploadImage")} <span className="text-destructive">*</span>
-                </Label>
-                <div className="relative">
-                  <Input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    required
-                    onChange={handleImageChange}
-                    disabled={isLoading}
-                    className="glass-effect file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary/10 file:text-primary file:items-center file:cursor-pointer hover:file:bg-primary/20"
-                  />
-                  {imagePreview && (
-                    <div className="mt-4 relative flex h-96 w-full items-center justify-center overflow-hidden rounded-lg border bg-muted/20">
-                      <img
-                        src={imagePreview}
-                        alt="Preview"
-                        className="max-h-full max-w-full object-contain"
-                      />
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <Badge className="absolute bottom-2 right-2">
-                        <ImageIcon className="h-3 w-3 mr-1" />
-                        Preview
-                      </Badge>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              {/* Prompt */}
-              <div className="space-y-2">
-                <Label htmlFor="prompt">
-                  {t("prompt")}{" "}
-                  <Badge variant="outline" className="ml-2">
-                    Optional
-                  </Badge>
-                </Label>
-                <Textarea
-                  id="prompt"
-                  placeholder={t("promptPlaceholder")}
-                  value={prompt}
-                  onChange={(e) => setPrompt(e.target.value)}
-                  disabled={isLoading}
-                  className="glass-effect min-h-[100px]"
-                />
-              </div>
-
-              {/* Negative Prompt */}
-              <div className="space-y-2">
-                <Label htmlFor="negative-prompt">
-                  {t("negativePrompt")}{" "}
-                  <Badge variant="outline" className="ml-2">
-                    Optional
-                  </Badge>
-                </Label>
-                <Textarea
-                  id="negative-prompt"
-                  placeholder={t("negativePromptPlaceholder")}
-                  value={negativePrompt}
-                  onChange={(e) => setNegativePrompt(e.target.value)}
-                  disabled={isLoading}
-                  className="glass-effect min-h-[80px]"
-                />
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button
-                type="submit"
-                disabled={isLoading || modelsLoading || !model}
-                className="w-full hover-glow"
-                size="lg"
-              >
-                {isLoading ? (
-                  <>
-                    <Upload className="mr-2 h-4 w-4 animate-pulse" />
-                    {t("sharing")}
-                  </>
-                ) : (
-                  <>
-                    <Upload className="mr-2 h-4 w-4" />
-                    {t("shareArtwork")}
-                  </>
-                )}
-              </Button>
-            </CardFooter>
-          </form>
-        </Card>
-      </div>
+      <UploadForm
+        artistString={artistString}
+        setArtistString={setArtistString}
+        prompt={prompt}
+        setPrompt={setPrompt}
+        negativePrompt={negativePrompt}
+        setNegativePrompt={setNegativePrompt}
+        model={model}
+        setModel={setModel}
+        availableModels={availableModels}
+        imagePreview={imagePreview}
+        isLoading={isLoading}
+        modelsLoading={modelsLoading}
+        handleImageChange={handleImageChange}
+        handleSubmit={handleSubmit}
+      />
     </>
   );
 }

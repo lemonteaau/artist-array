@@ -65,7 +65,8 @@
     "negativePrompt": "ネガティブプロンプト",
     "negativePromptPlaceholder": "避けたい単語やフレーズ...",
     "shareArtwork": "作品を共有",
-    "sharing": "共有中..."
+    "sharing": "共有中...",
+    "optional": "任意"
   },
   "Profile": {
     "myProfile": "マイプロフィール",
