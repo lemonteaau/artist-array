@@ -22,7 +22,7 @@ interface Prompt {
 export function useMyPrompts() {
   const [user, setUser] = useState<User | null>(null);
   const [prompts, setPrompts] = useState<Prompt[]>([]);
-  const [loading, setLoading] = useState(true);
+
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const router = useRouter();
   const supabase = createClient();
@@ -92,8 +92,6 @@ export function useMyPrompts() {
       } catch (error) {
         console.error("Error fetching prompts:", error);
         toast.error("Failed to load your prompts");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -127,7 +125,6 @@ export function useMyPrompts() {
     // State
     user,
     prompts,
-    loading,
     deletingId,
 
     // Actions

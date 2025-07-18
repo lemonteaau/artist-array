@@ -10,7 +10,6 @@ import type { Prompt } from "@/lib/prompts";
 export function useFavorites() {
   const [user, setUser] = useState<User | null>(null);
   const [prompts, setPrompts] = useState<Prompt[]>([]);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
 
@@ -86,8 +85,6 @@ export function useFavorites() {
       } catch (error) {
         console.error("Error fetching favorite prompts:", error);
         toast.error("Failed to load favorite prompts");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -97,6 +94,5 @@ export function useFavorites() {
   return {
     user,
     prompts,
-    loading,
   };
 }

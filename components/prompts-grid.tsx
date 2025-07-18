@@ -67,10 +67,12 @@ export function PromptsLoadingFallback() {
           <CardContent className="p-0">
             <div className="aspect-square bg-muted animate-pulse" />
           </CardContent>
-          <CardFooter className="p-4 space-y-3">
-            <div className="w-full space-y-2">
-              <div className="h-4 bg-muted rounded animate-pulse" />
-              <div className="h-3 bg-muted rounded w-1/2 animate-pulse" />
+          <CardFooter className="p-4">
+            <div className="w-full space-y-3">
+              <div className="space-y-1">
+                <div className="h-4 bg-muted rounded animate-pulse" />
+                <div className="h-3 bg-muted rounded w-1/2 animate-pulse" />
+              </div>
               <div className="flex justify-between items-center">
                 <div className="h-6 bg-muted rounded w-16 animate-pulse" />
                 <div className="h-5 bg-muted rounded w-20 animate-pulse" />

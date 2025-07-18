@@ -1,7 +1,6 @@
 "use client";
 
 import { Toaster } from "sonner";
-import { PageLoading } from "@/components/ui/page-loading";
 import { useProfile } from "./hooks/use-profile";
 import { ProfileHeader } from "./components/profile-header";
 import { ProfileStats } from "./components/profile-stats";
@@ -13,7 +12,6 @@ export default function ProfilePage() {
     // State
     user,
     stats,
-    loading,
     updating,
     displayName,
 
@@ -25,10 +23,6 @@ export default function ProfilePage() {
     handleSignOut,
     getUserInitials,
   } = useProfile();
-
-  if (loading) {
-    return <PageLoading />;
-  }
 
   if (!user) {
     return null;

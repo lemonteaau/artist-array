@@ -4,17 +4,12 @@ import type { Prompt } from "@/lib/prompts";
 
 interface FavoritesHeaderProps {
   prompts: Prompt[];
-  loading: boolean;
 }
 
-export function FavoritesHeader({ prompts, loading }: FavoritesHeaderProps) {
+export function FavoritesHeader({ prompts }: FavoritesHeaderProps) {
   const t = useTranslations("Favorites");
 
   const getSubtitle = () => {
-    if (loading) {
-      return t("subtitle");
-    }
-
     if (prompts.length === 0) {
       return t("noPromptsLikedYet");
     }

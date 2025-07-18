@@ -94,10 +94,7 @@ export function Navbar() {
             )}
 
             {loading ? (
-              <div className="flex items-center gap-2">
-                <div className="h-9 w-20 bg-muted animate-pulse rounded-md" />
-                <div className="h-9 w-20 bg-muted animate-pulse rounded-md" />
-              </div>
+              <div className="h-9 w-9 bg-muted animate-pulse rounded-full" />
             ) : user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>

@@ -20,7 +20,7 @@ export function useProfile() {
     totalLikes: 0,
     totalComments: 0,
   });
-  const [loading, setLoading] = useState(true);
+
   const [updating, setUpdating] = useState(false);
   const [displayName, setDisplayName] = useState("");
   const router = useRouter();
@@ -72,8 +72,6 @@ export function useProfile() {
       } catch (error) {
         console.error("Error fetching user data:", error);
         toast.error("Failed to load profile data");
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -121,7 +119,6 @@ export function useProfile() {
     // State
     user,
     stats,
-    loading,
     updating,
     displayName,
 

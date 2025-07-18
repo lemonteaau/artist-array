@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
 import { Toaster } from "sonner";
 import { ArrowLeft } from "lucide-react";
-import { PromptsGrid, PromptsLoadingFallback } from "@/components/prompts-grid";
+import { PromptsGrid } from "@/components/prompts-grid";
 import { useFavorites } from "./hooks/use-favorites";
 import { FavoritesHeader } from "./components/favorites-header";
 import { FavoritesEmptyState } from "./components/favorites-empty-state";
@@ -12,16 +12,8 @@ import { FavoritesStats } from "./components/favorites-stats";
 import { useTranslations } from "next-intl";
 
 export default function FavoritesPage() {
-  const { user, prompts, loading } = useFavorites();
+  const { user, prompts } = useFavorites();
   const t = useTranslations("Favorites");
-  if (loading) {
-    return (
-      <div className="space-y-8">
-        <FavoritesHeader prompts={[]} loading={true} />
-        <PromptsLoadingFallback />
-      </div>
-    );
-  }
 
   if (!user) {
     return null;
@@ -31,7 +23,7 @@ export default function FavoritesPage() {
     <>
       <Toaster richColors />
       <div className="space-y-8">
-        <FavoritesHeader prompts={prompts} loading={false} />
+        <FavoritesHeader prompts={prompts} />
 
         {/* Back Button */}
         <div className="flex justify-start">

@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Separator } from "@/components/ui/separator";
 
 export function PromptPageSkeleton() {
   return (
@@ -29,14 +30,18 @@ export function PromptPageSkeleton() {
                 <Skeleton className="h-6 w-24" />
                 <Skeleton className="h-6 w-6" />
               </div>
-              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full rounded-md" />
             </div>
+
+            <Separator />
 
             {/* Model */}
             <div>
               <Skeleton className="h-6 w-16 mb-2" />
-              <Skeleton className="h-6 w-20" />
+              <Skeleton className="h-6 w-20 rounded-full" />
             </div>
+
+            <Separator />
 
             {/* Prompt */}
             <div>
@@ -44,8 +49,10 @@ export function PromptPageSkeleton() {
                 <Skeleton className="h-6 w-16" />
                 <Skeleton className="h-6 w-6" />
               </div>
-              <Skeleton className="h-32 w-full" />
+              <Skeleton className="h-32 w-full rounded-md" />
             </div>
+
+            <Separator />
 
             {/* Negative Prompt */}
             <div>
@@ -53,7 +60,7 @@ export function PromptPageSkeleton() {
                 <Skeleton className="h-6 w-28" />
                 <Skeleton className="h-6 w-6" />
               </div>
-              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-full rounded-md" />
             </div>
           </CardContent>
         </Card>
@@ -68,19 +75,22 @@ export function PromptPageSkeleton() {
           <CardContent>
             {/* Comment form */}
             <div className="space-y-4 mb-6">
-              <Skeleton className="h-20 w-full" />
-              <Skeleton className="h-10 w-24" />
+              <Skeleton className="h-20 w-full rounded-md" />
+              <div className="flex justify-end">
+                <Skeleton className="h-10 w-24" />
+              </div>
             </div>
 
             {/* Comments list */}
             <div className="space-y-4">
               {Array.from({ length: 3 }).map((_, i) => (
-                <div key={i} className="space-y-2">
-                  <Skeleton className="h-12 w-full" />
-                  <div className="flex justify-between items-center">
+                <div key={i} className="space-y-2 p-3 rounded-md border">
+                  <div className="flex justify-between items-start">
                     <Skeleton className="h-4 w-20" />
-                    <Skeleton className="h-4 w-16" />
+                    <Skeleton className="h-4 w-4" />
                   </div>
+                  <Skeleton className="h-16 w-full" />
+                  <Skeleton className="h-3 w-24" />
                 </div>
               ))}
             </div>

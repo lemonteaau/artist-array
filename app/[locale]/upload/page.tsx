@@ -1,7 +1,6 @@
 "use client";
 
 import { Toaster } from "sonner";
-import { PageLoading } from "@/components/ui/page-loading";
 import { useUpload } from "./hooks/use-upload";
 import { UploadAuthGuard } from "./components/upload-auth-guard";
 import { UploadForm } from "./components/upload-form";
@@ -22,21 +21,11 @@ export default function UploadPage() {
     isLoading,
     modelsLoading,
     user,
-    userLoading,
 
     // Handlers
     handleImageChange,
     handleSubmit,
   } = useUpload();
-
-  if (userLoading) {
-    return (
-      <>
-        <Toaster richColors />
-        <PageLoading message="Loading..." />
-      </>
-    );
-  }
 
   if (!user) {
     return (
