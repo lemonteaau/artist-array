@@ -177,28 +177,6 @@
   @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/25;
 }
 
-html {
-  scrollbar-gutter: stable;
-}
-
-/* Improved scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-
-::-webkit-scrollbar-track {
-  @apply bg-muted;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-muted-foreground/30 rounded-full;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-muted-foreground/50;
-}
-
 /* Loading animation */
 .loading-dots {
   display: inline-flex;

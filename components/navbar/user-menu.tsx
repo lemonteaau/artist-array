@@ -26,7 +26,7 @@ export function NavbarUserMenu({ user, onSignOut }: NavbarUserMenuProps) {
   };
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"

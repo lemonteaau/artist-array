@@ -35,7 +35,7 @@ export function NavbarSettings() {
   }
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" disabled={isPending}>
           <Settings className="h-5 w-5" />
