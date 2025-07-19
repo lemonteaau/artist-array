@@ -152,7 +152,10 @@
   "PromptsGrid": {
     "noPromptsYet": "No prompts yet!",
     "noPromptsMessage": "Be the first to share your AI art prompts with the community.",
-    "shareFirst": "Share First Prompt"
+    "shareFirst": "Share First Prompt",
+    "loadingMore": "Loading more...",
+    "loadMore": "Load More",
+    "noMorePrompts": "No more prompts to load"
   },
   "Sort": {
     "sortBy": "Sort by",

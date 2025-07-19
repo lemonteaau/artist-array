@@ -38,8 +38,12 @@ export function useSmartLike({
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchInitialState = useCallback(async () => {
-    // Skip API call if we have initial data
-    if (initialLiked !== undefined && initialCount !== undefined) {
+    if (
+      initialLiked !== undefined &&
+      initialCount !== undefined &&
+      typeof initialLiked === "boolean" &&
+      typeof initialCount === "number"
+    ) {
       return;
     }
 

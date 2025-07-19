@@ -5,21 +5,47 @@ import { type Prompt } from "@/lib/prompts";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import { Upload, Sparkles } from "lucide-react";
+import { Upload, Sparkles, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useCallback } from "react";
 
 interface PromptsGridProps {
   prompts: Prompt[];
   userId: string | null;
   loading?: boolean;
+  loadingMore?: boolean;
+  hasMore?: boolean;
+  onLoadMore?: () => void;
 }
 
 export function PromptsGrid({
   prompts,
   userId,
   loading = false,
+  loadingMore = false,
+  hasMore = true,
+  onLoadMore,
 }: PromptsGridProps) {
   const t = useTranslations("PromptsGrid");
+
+  const handleScroll = useCallback(() => {
+    if (!onLoadMore || !hasMore || loadingMore) return;
+
+    const scrollTop = window.pageYOffset;
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+
+    if (scrollTop + windowHeight >= documentHeight - 1000) {
+      onLoadMore();
+    }
+  }, [onLoadMore, hasMore, loadingMore]);
+
+  useEffect(() => {
+    if (!onLoadMore) return;
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll, onLoadMore]);
 
   if (loading) {
     return <PromptsLoadingFallback />;
@@ -46,15 +72,40 @@ export function PromptsGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {prompts.map((prompt, index) => (
-        <PromptCard
-          key={prompt.id}
-          prompt={prompt}
-          userId={userId}
-          priority={index < 4}
-        />
-      ))}
+    <div className="space-y-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {prompts.map((prompt, index) => (
+          <PromptCard
+            key={prompt.id}
+            prompt={prompt}
+            userId={userId}
+            priority={index < 4}
+          />
+        ))}
+      </div>
+
+      {loadingMore && (
+        <div className="flex justify-center items-center py-8">
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Loader2 className="h-5 w-5 animate-spin" />
+            <span>{t("loadingMore")}</span>
+          </div>
+        </div>
+      )}
+
+      {!loadingMore && hasMore && onLoadMore && (
+        <div className="flex justify-center py-8">
+          <Button variant="outline" onClick={onLoadMore} className="hover-glow">
+            {t("loadMore")}
+          </Button>
+        </div>
+      )}
+
+      {!hasMore && prompts.length > 0 && (
+        <div className="text-center py-8 text-muted-foreground text-sm">
+          {t("noMorePrompts")}
+        </div>
+      )}
     </div>
   );
 }

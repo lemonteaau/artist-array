@@ -150,7 +150,10 @@
   "PromptsGrid": {
     "noPromptsYet": "还没有提示词！",
     "noPromptsMessage": "成为第一个与社区分享AI艺术提示词的人。",
-    "shareFirst": "分享第一个提示词"
+    "shareFirst": "分享第一个提示词",
+    "loadingMore": "加载更多中...",
+    "loadMore": "加载更多",
+    "noMorePrompts": "已经划到底了"
   },
   "Sort": {
     "sortBy": "排序方式",

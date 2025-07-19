@@ -18,32 +18,66 @@ function HomePageContent() {
   const [prompts, setPrompts] = useState<Prompt[]>([]);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const supabase = createClient();
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchInitialData = async () => {
       setLoading(true);
+      setPrompts([]);
+      setHasMore(true);
+
       const [
         promptsData,
         {
           data: { user },
         },
-      ] = await Promise.all([getPrompts(sortBy), supabase.auth.getUser()]);
+      ] = await Promise.all([
+        getPrompts(sortBy, 100, 0),
+        supabase.auth.getUser(),
+      ]);
 
       setPrompts(promptsData);
       setUser(user);
       setLoading(false);
+
+      setHasMore(promptsData.length === 100);
     };
 
-    fetchData();
+    fetchInitialData();
   }, [sortBy, supabase]);
+
+  const loadMore = async () => {
+    if (loadingMore || !hasMore) return;
+
+    setLoadingMore(true);
+
+    try {
+      const morePrompts = await getPrompts(sortBy, 100, prompts.length);
+
+      if (morePrompts.length === 0) {
+        setHasMore(false);
+      } else {
+        setPrompts((prev) => [...prev, ...morePrompts]);
+        setHasMore(morePrompts.length === 100);
+      }
+    } catch (error) {
+      console.error("Error loading more prompts:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  };
 
   return (
     <PromptsGrid
       prompts={prompts}
       userId={user?.id || null}
       loading={loading}
+      loadingMore={loadingMore}
+      hasMore={hasMore}
+      onLoadMore={loadMore}
     />
   );
 }

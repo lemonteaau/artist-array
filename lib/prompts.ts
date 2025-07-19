@@ -11,9 +11,19 @@ export interface Prompt {
   user_liked?: boolean;
 }
 
-export async function getPrompts(sortBy = "newest"): Promise<Prompt[]> {
+export async function getPrompts(
+  sortBy = "newest",
+  limit = 100,
+  offset = 0
+): Promise<Prompt[]> {
   try {
-    const response = await fetch(`/api/prompts?sort=${sortBy}`);
+    const params = new URLSearchParams({
+      sort: sortBy,
+      limit: limit.toString(),
+      offset: offset.toString(),
+    });
+
+    const response = await fetch(`/api/prompts?${params.toString()}`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
