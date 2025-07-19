@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { locales } from "@/i18n.config";
 import { FlagIcon } from "../flag-icon";
+import { BsToggles } from "react-icons/bs";
 
 export function NavbarSettings() {
   const { setTheme } = useTheme();
@@ -34,7 +35,7 @@ export function NavbarSettings() {
   }
 
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" disabled={isPending}>
           <Settings className="h-5 w-5" />
@@ -55,7 +56,7 @@ export function NavbarSettings() {
           <span>{tTheme("dark")}</span>
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setTheme("system")}>
-          <span className="mr-2 h-4 w-4 rounded-sm border border-current" />
+          <BsToggles className="mr-2 h-4 w-4" />
           <span>{tTheme("system")}</span>
         </DropdownMenuItem>
 
