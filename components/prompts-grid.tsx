@@ -101,7 +101,7 @@ export function PromptsGrid({
         </div>
       )}
 
-      {!hasMore && prompts.length > 0 && (
+      {!hasMore && prompts.length >= 9 && (
         <div className="text-center py-8 text-muted-foreground text-sm">
           {t("noMorePrompts")}
         </div>

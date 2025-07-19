@@ -77,7 +77,7 @@
     "shareArtwork": "分享作品",
     "sharing": "分享中...",
     "optional": "可选",
-    "shareYourCreation": "分享你的创作",
+    "shareYourCreation": "分享您的创作",
     "helpOthersDiscover": "帮助他人发现惊人的AI艺术风格",
     "artistStringDescription": "创建此风格的画师组合",
     "loadingModels": "加载模型中...",
@@ -123,9 +123,9 @@
     "explorePrompts": "探索提示词",
     "backToGallery": "返回画廊",
     "totalLikesGiven": "总点赞数",
-    "youveLiked": "你点赞了",
-    "promptsLiked": "你点赞了 {count} 个提示词",
-    "noPromptsLikedYet": "你还没有点赞任何提示词"
+    "youveLiked": "您点赞了",
+    "promptsLiked": "您点赞了 {count} 个提示词",
+    "noPromptsLikedYet": "您还没有点赞任何提示词"
   },
   "PromptDetails": {
     "promptNotFound": "未找到提示词",
@@ -153,7 +153,7 @@
     "shareFirst": "分享第一个提示词",
     "loadingMore": "加载更多中...",
     "loadMore": "加载更多",
-    "noMorePrompts": "已经划到底了"
+    "noMorePrompts": "您已经见证了我们分享的每一丝创意火花，是时候分享您的灵感了！"
   },
   "Sort": {
     "sortBy": "排序方式",
