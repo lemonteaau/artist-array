@@ -7,12 +7,11 @@ import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 
-import { NavbarBrand } from "./navbar/navbar-brand";
-import { NavbarUserMenu } from "./navbar/navbar-user-menu";
-import { NavbarAuthButtons } from "./navbar/navbar-auth-buttons";
-import { NavbarShareButton } from "./navbar/navbar-share-button";
-import { LanguageSwitcher } from "./language-switcher";
-import { ThemeToggle } from "./theme-toggle";
+import { NavbarBrand } from "./navbar/brand";
+import { NavbarUserMenu } from "./navbar/user-menu";
+import { NavbarAuthButtons } from "./navbar/auth-buttons";
+import { NavbarShareButton } from "./navbar/share-button";
+import { NavbarSettings } from "./navbar/settings";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
@@ -60,8 +59,7 @@ export function Navbar() {
           <NavbarBrand />
 
           <nav className="flex items-center gap-2">
-            <ThemeToggle />
-            <LanguageSwitcher />
+            <NavbarSettings />
 
             {user && <NavbarShareButton loading={loading} />}
 

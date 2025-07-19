@@ -29,6 +29,11 @@
     "dark": "深色",
     "system": "跟随系统"
   },
+  "Settings": {
+    "settings": "设置",
+    "themeSettings": "主题设置",
+    "languageSettings": "语言设置"
+  },
   "Auth": {
     "welcomeBack": "欢迎回来",
     "signInSubtitle": "登录以继续分享和发现AI艺术",

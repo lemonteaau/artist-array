@@ -29,6 +29,11 @@
     "dark": "ダーク",
     "system": "システム"
   },
+  "Settings": {
+    "settings": "設定",
+    "themeSettings": "テーマ設定",
+    "languageSettings": "言語設定"
+  },
   "Auth": {
     "welcomeBack": "おかえりなさい",
     "signInSubtitle": "AIアートの共有と発見を続けるためにサインインしてください",

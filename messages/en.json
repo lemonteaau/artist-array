@@ -29,6 +29,11 @@
     "dark": "Dark",
     "system": "System"
   },
+  "Settings": {
+    "settings": "Settings",
+    "themeSettings": "Theme Settings",
+    "languageSettings": "Language Settings"
+  },
   "Auth": {
     "welcomeBack": "Welcome Back",
     "signInSubtitle": "Sign in to continue sharing and discovering AI art",
