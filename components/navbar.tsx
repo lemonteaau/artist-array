@@ -1,33 +1,24 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import { createClient } from "@/utils/supabase/client";
 import { toast } from "sonner";
-
-import { Sparkles, Upload, LogIn, UserPlus } from "lucide-react";
-
-import { Link } from "@/i18n/navigation";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
+import { useTranslations } from "next-intl";
+
+import { NavbarBrand } from "./navbar/navbar-brand";
+import { NavbarUserMenu } from "./navbar/navbar-user-menu";
+import { NavbarAuthButtons } from "./navbar/navbar-auth-buttons";
+import { NavbarShareButton } from "./navbar/navbar-share-button";
 import { LanguageSwitcher } from "./language-switcher";
 import { ThemeToggle } from "./theme-toggle";
-import { useTranslations } from "next-intl";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
-  const t = useTranslations("Navbar");
   const tToast = useTranslations("Toast");
 
   useEffect(() => {
@@ -62,106 +53,24 @@ export function Navbar() {
     }
   };
 
-  const getUserInitials = (email: string) => {
-    return email.slice(0, 2).toUpperCase();
-  };
-
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
-              <Sparkles className="h-5 w-5 text-primary" />
-            </div>
-            <h1 className="text-xl font-bold gradient-text">Artist Array</h1>
-          </Link>
+          <NavbarBrand />
 
           <nav className="flex items-center gap-2">
             <ThemeToggle />
             <LanguageSwitcher />
-            {user ? (
-              <Button
-                asChild
-                className="hover-glow"
-                size={loading ? "default" : "sm"}
-              >
-                <Link href="/upload">
-                  <Upload className="mr-2 h-4 w-4" />
-                  {t("sharePrompt")}
-                </Link>
-              </Button>
-            ) : (
-              ""
-            )}
+
+            {user && <NavbarShareButton loading={loading} />}
 
             {loading ? (
               <div className="h-9 w-9 bg-muted animate-pulse rounded-full" />
             ) : user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    className="relative h-9 w-9 rounded-full ring-2 ring-primary/20 hover:ring-primary/40 transition-all"
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage
-                        src={user.user_metadata?.avatar_url}
-                        alt={user.email || ""}
-                      />
-                      <AvatarFallback className="bg-primary/10 text-primary font-semibold">
-                        {user.email ? getUserInitials(user.email) : "U"}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56 glass-effect" align="end">
-                  <DropdownMenuItem className="flex flex-col items-start py-3">
-                    <div className="font-medium">{user.email}</div>
-                    <div className="text-xs text-muted-foreground">
-                      {user.user_metadata?.full_name || t("artist")}
-                    </div>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem asChild>
-                    <Link href="/profile" className="cursor-pointer">
-                      {t("myProfile")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/my-prompts" className="cursor-pointer">
-                      {t("myPrompts")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/favorites" className="cursor-pointer">
-                      {t("myFavorites")}
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem
-                    onClick={handleSignOut}
-                    className="text-destructive focus:text-destructive"
-                  >
-                    {t("signOut")}
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <NavbarUserMenu user={user} onSignOut={handleSignOut} />
             ) : (
-              <div className="flex items-center gap-2">
-                <Button variant="ghost" size="sm" asChild>
-                  <Link href="/login">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    {t("login")}
-                  </Link>
-                </Button>
-                <Button size="sm" asChild className="hover-glow">
-                  <Link href="/signup">
-                    <UserPlus className="mr-2 h-4 w-4" />
-                    {t("signUp")}
-                  </Link>
-                </Button>
-              </div>
+              <NavbarAuthButtons />
             )}
           </nav>
         </div>
