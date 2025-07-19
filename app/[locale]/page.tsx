@@ -7,7 +7,8 @@ import { getPrompts, type Prompt } from "@/lib/prompts";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Sparkles, TrendingUp, Clock } from "lucide-react";
+import { Sparkles, Clock } from "lucide-react";
+import { BsFire } from "react-icons/bs";
 import { useTranslations } from "next-intl";
 
 function HomePageContent() {
@@ -46,7 +47,7 @@ function HomePageContent() {
   );
 }
 
-function HomePageWrapper() {
+export default function HomePage() {
   const searchParams = useSearchParams();
   const sortBy = searchParams.get("sort") || "popular";
   const t = useTranslations("HomePage");
@@ -74,7 +75,7 @@ function HomePageWrapper() {
           <div className="flex items-center gap-2 text-sm">
             {sortBy === "popular" ? (
               <>
-                <TrendingUp className="h-4 w-4 text-primary" />
+                <BsFire className="h-4 w-4 text-orange-500" />
                 <span className="font-medium">{t("trending")}</span>
               </>
             ) : (
@@ -93,23 +94,5 @@ function HomePageWrapper() {
         <HomePageContent />
       </Suspense>
     </div>
-  );
-}
-
-export default function HomePage() {
-  return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center items-center min-h-64">
-          <div className="loading-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-      }
-    >
-      <HomePageWrapper />
-    </Suspense>
   );
 }
