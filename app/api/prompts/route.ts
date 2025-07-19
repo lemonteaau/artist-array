@@ -64,33 +64,42 @@ export async function GET(request: Request) {
   const supabase = await createClient();
 
   try {
-    // Get all prompts
-    let promptsQuery = supabase.from("prompts").select("*");
+    // Get current user for like status
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    if (sort === "newest") {
-      promptsQuery = promptsQuery.order("created_at", { ascending: false });
+    const [promptsResult, likesResult, userLikesResult] = await Promise.all([
+      supabase
+        .from("prompts")
+        .select("*")
+        .order("created_at", { ascending: false }),
+      supabase.from("likes").select("prompt_id"),
+      user
+        ? supabase.from("likes").select("prompt_id").eq("user_id", user.id)
+        : Promise.resolve({ data: [] }),
+    ]);
+
+    if (promptsResult.error || likesResult.error) {
+      throw promptsResult.error || likesResult.error;
     }
 
-    const { data: prompts, error: promptsError } = await promptsQuery;
+    const prompts = promptsResult.data || [];
+    const likes = likesResult.data || [];
+    const userLikes = userLikesResult.data || [];
 
-    if (promptsError) {
-      throw promptsError;
-    }
+    const likesCountMap = likes.reduce((acc, like) => {
+      acc[like.prompt_id] = (acc[like.prompt_id] || 0) + 1;
+      return acc;
+    }, {} as Record<number, number>);
 
-    // Get likes count for each prompt
-    const promptsWithLikes = await Promise.all(
-      prompts.map(async (prompt) => {
-        const { count } = await supabase
-          .from("likes")
-          .select("*", { count: "exact" })
-          .eq("prompt_id", prompt.id);
+    const userLikesSet = new Set(userLikes.map((like) => like.prompt_id));
 
-        return {
-          ...prompt,
-          likes_count: count || 0,
-        };
-      })
-    );
+    const promptsWithLikes = prompts.map((prompt) => ({
+      ...prompt,
+      likes_count: likesCountMap[prompt.id] || 0,
+      user_liked: userLikesSet.has(prompt.id),
+    }));
 
     // Sort by popularity if requested
     let finalData = promptsWithLikes;

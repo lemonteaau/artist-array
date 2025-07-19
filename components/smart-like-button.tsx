@@ -12,6 +12,8 @@ interface SmartLikeButtonProps {
   variant?: "button" | "badge";
   size?: "sm" | "lg";
   className?: string;
+  initialLiked?: boolean;
+  initialCount?: number;
 }
 
 export function SmartLikeButton({
@@ -20,6 +22,8 @@ export function SmartLikeButton({
   variant = "badge",
   size = "sm",
   className = "",
+  initialLiked,
+  initialCount,
 }: SmartLikeButtonProps) {
   const router = useRouter();
 
@@ -32,6 +36,8 @@ export function SmartLikeButton({
     promptId,
     userId,
     onAuthRequired: handleAuthRequired,
+    initialLiked,
+    initialCount,
   });
 
   const handleClick = (e: React.MouseEvent) => {

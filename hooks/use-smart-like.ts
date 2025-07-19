@@ -6,6 +6,8 @@ interface UseSmartLikeProps {
   promptId: string;
   userId: string | null;
   onAuthRequired: () => void;
+  initialLiked?: boolean;
+  initialCount?: number;
 }
 
 interface LikeState {
@@ -18,22 +20,29 @@ export function useSmartLike({
   promptId,
   userId,
   onAuthRequired,
+  initialLiked,
+  initialCount,
 }: UseSmartLikeProps) {
   const [state, setState] = useState<LikeState>({
-    liked: false,
-    count: 0,
+    liked: initialLiked ?? false,
+    count: initialCount ?? 0,
     isLoading: false,
   });
 
   const serverStateRef = useRef<{ liked: boolean; count: number }>({
-    liked: false,
-    count: 0,
+    liked: initialLiked ?? false,
+    count: initialCount ?? 0,
   });
 
   const targetLikedRef = useRef<boolean | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
   const fetchInitialState = useCallback(async () => {
+    // Skip API call if we have initial data
+    if (initialLiked !== undefined && initialCount !== undefined) {
+      return;
+    }
+
     try {
       setState((prev) => ({ ...prev, isLoading: true }));
 
@@ -49,7 +58,7 @@ export function useSmartLike({
       console.error("Failed to fetch like status:", error);
       setState((prev) => ({ ...prev, isLoading: false }));
     }
-  }, [promptId]);
+  }, [promptId, initialLiked, initialCount]);
 
   const debouncedApiCall = useDebouncedCallback(async () => {
     if (!userId || targetLikedRef.current === null) return;

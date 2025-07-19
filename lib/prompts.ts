@@ -1,5 +1,3 @@
-import { createClient } from "@/utils/supabase/client";
-
 export interface Prompt {
   id: number;
   created_at: string;
@@ -10,42 +8,19 @@ export interface Prompt {
   user_id: string | null;
   model: string | null;
   likes_count?: number;
+  user_liked?: boolean;
 }
 
 export async function getPrompts(sortBy = "newest"): Promise<Prompt[]> {
-  const supabase = createClient();
-
   try {
-    const [promptsResult, likesResult] = await Promise.all([
-      supabase
-        .from("prompts")
-        .select("*")
-        .order("created_at", { ascending: false }),
-      supabase.from("likes").select("prompt_id"),
-    ]);
+    const response = await fetch(`/api/prompts?sort=${sortBy}`);
 
-    if (promptsResult.error || likesResult.error) {
-      throw promptsResult.error || likesResult.error;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    const prompts = promptsResult.data || [];
-    const likes = likesResult.data || [];
-
-    const likesCountMap = likes.reduce((acc, like) => {
-      acc[like.prompt_id] = (acc[like.prompt_id] || 0) + 1;
-      return acc;
-    }, {} as Record<number, number>);
-
-    const formattedPrompts = prompts.map((prompt) => ({
-      ...prompt,
-      likes_count: likesCountMap[prompt.id] || 0,
-    }));
-
-    if (sortBy === "popular") {
-      return formattedPrompts.sort((a, b) => b.likes_count - a.likes_count);
-    }
-
-    return formattedPrompts;
+    const { data } = await response.json();
+    return data || [];
   } catch (error) {
     console.error("Error fetching prompts:", error);
     return [];

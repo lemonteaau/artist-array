@@ -19,6 +19,7 @@ interface PromptCardProps {
     user_id: string | null;
     model: string | null;
     likes_count?: number;
+    user_liked?: boolean;
   };
   userId: string | null;
   priority?: boolean;
@@ -72,6 +73,8 @@ export function PromptCard({
                   promptId={prompt.id.toString()}
                   userId={userId}
                   variant="badge"
+                  initialLiked={prompt.user_liked}
+                  initialCount={prompt.likes_count}
                 />
                 {prompt.prompt && (
                   <Badge variant="outline" className="text-xs">
