@@ -23,6 +23,12 @@
     "signOut": "Sign out",
     "artist": "Artist"
   },
+  "Theme": {
+    "toggleTheme": "Toggle theme",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
   "Auth": {
     "welcomeBack": "Welcome Back",
     "signInSubtitle": "Sign in to continue sharing and discovering AI art",

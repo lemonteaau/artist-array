@@ -23,6 +23,12 @@
     "signOut": "サインアウト",
     "artist": "アーティスト"
   },
+  "Theme": {
+    "toggleTheme": "テーマ切り替え",
+    "light": "ライト",
+    "dark": "ダーク",
+    "system": "システム"
+  },
   "Auth": {
     "welcomeBack": "おかえりなさい",
     "signInSubtitle": "AIアートの共有と発見を続けるためにサインインしてください",

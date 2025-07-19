@@ -23,6 +23,12 @@
     "signOut": "退出登录",
     "artist": "画师"
   },
+  "Theme": {
+    "toggleTheme": "切换主题",
+    "light": "浅色",
+    "dark": "深色",
+    "system": "跟随系统"
+  },
   "Auth": {
     "welcomeBack": "欢迎回来",
     "signInSubtitle": "登录以继续分享和发现AI艺术",

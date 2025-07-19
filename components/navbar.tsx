@@ -19,6 +19,7 @@ import { User } from "@supabase/supabase-js";
 import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { LanguageSwitcher } from "./language-switcher";
+import { ThemeToggle } from "./theme-toggle";
 import { useTranslations } from "next-intl";
 
 export function Navbar() {
@@ -77,6 +78,7 @@ export function Navbar() {
           </Link>
 
           <nav className="flex items-center gap-2">
+            <ThemeToggle />
             <LanguageSwitcher />
             {user ? (
               <Button
