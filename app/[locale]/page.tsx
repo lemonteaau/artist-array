@@ -23,6 +23,7 @@ function HomePageContent() {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const [
         promptsData,
         {
