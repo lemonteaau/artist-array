@@ -104,6 +104,12 @@ export default function HomePage() {
         </p>
       </section>
 
+      {/* Mobile Hero Section */}
+      <section className="text-center block md:hidden space-y-1">
+        <h1 className="text-2xl font-bold gradient-text">Artist Array</h1>
+        <p className="text-md text-muted-foreground">{t("subtitle")}</p>
+      </section>
+
       {/* Sort Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 rounded-lg glass-effect">
         <div className="flex justify-between w-full gap-4">

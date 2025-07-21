@@ -6,6 +6,8 @@ import { User } from "@supabase/supabase-js";
 import { useRouter } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { useScrollDirection } from "@/hooks/use-scroll-direction";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 import { NavbarBrand } from "./navbar/brand";
 import { NavbarUserMenu } from "./navbar/user-menu";
@@ -19,6 +21,8 @@ export function Navbar() {
   const router = useRouter();
   const supabase = createClient();
   const tToast = useTranslations("Toast");
+  const { scrollDirection, isAtTop } = useScrollDirection();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const getUser = async () => {
@@ -52,8 +56,14 @@ export function Navbar() {
     }
   };
 
+  const shouldHideNavbar = isMobile && scrollDirection === "down" && !isAtTop;
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md">
+    <header
+      className={`sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-md transition-transform duration-300 ease-in-out ${
+        shouldHideNavbar ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <NavbarBrand />

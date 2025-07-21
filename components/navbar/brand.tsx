@@ -7,7 +7,9 @@ export function NavbarBrand() {
       <div className="p-2 rounded-lg bg-primary/10 group-hover:bg-primary/20 transition-colors">
         <Sparkles className="h-5 w-5 text-primary" />
       </div>
-      <h1 className="text-xl font-bold gradient-text">Artist Array</h1>
+      <h1 className="hidden md:block text-xl font-bold gradient-text whitespace-nowrap">
+        Artist Array
+      </h1>
     </Link>
   );
 }
