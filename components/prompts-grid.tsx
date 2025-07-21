@@ -113,8 +113,8 @@ export function PromptsGrid({
 export function PromptsLoadingFallback() {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {Array.from({ length: 8 }).map((_, i) => (
-        <Card key={i} className="overflow-hidden border-border/50">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Card key={i} className="overflow-hidden border-border/50 p-0 gap-1">
           <CardContent className="p-0">
             <div className="aspect-square bg-muted animate-pulse" />
           </CardContent>
@@ -132,6 +132,9 @@ export function PromptsLoadingFallback() {
           </CardFooter>
         </Card>
       ))}
+      <div className="col-span-full flex justify-center items-center py-8">
+        <Loader2 className="h-10 w-10 animate-spin text-muted-foreground" />
+      </div>
     </div>
   );
 }
