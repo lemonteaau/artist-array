@@ -10,7 +10,8 @@ import {
 import { useRouter } from "@/i18n/navigation";
 import { useSearchParams } from "next/navigation";
 import { useCallback } from "react";
-import { TrendingUp, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
+import { BsFire } from "react-icons/bs";
 import { useTranslations } from "next-intl";
 
 interface SortSelectorProps {
@@ -49,7 +50,7 @@ export function SortSelector({ currentSort }: SortSelectorProps) {
         </SelectItem>
         <SelectItem value="popular">
           <div className="flex items-center gap-2">
-            <TrendingUp className="h-4 w-4" />
+            <BsFire className="h-4 w-4" />
             <span>{t("popular")}</span>
           </div>
         </SelectItem>
