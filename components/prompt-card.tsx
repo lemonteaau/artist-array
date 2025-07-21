@@ -34,7 +34,7 @@ export function PromptCard({
 
   return (
     <Link href={`/prompt/${prompt.id}`} className="group">
-      <Card className="overflow-hidden hover-float hover-glow border-border/50 transition-all duration-300">
+      <Card className="overflow-hidden hover-float hover-glow border-border/50 transition-all duration-300 p-0 gap-1">
         <CardContent className="p-0 relative">
           <div className="aspect-square relative overflow-hidden bg-muted">
             <Image
