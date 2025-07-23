@@ -79,7 +79,7 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
+  --background: #121212;
   --foreground: oklch(0.98 0 0);
   --card: oklch(0.14 0.01 262);
   --card-foreground: oklch(0.98 0 0);
@@ -167,14 +167,6 @@
 
 .glass-effect {
   @apply backdrop-blur-md bg-background/80 border border-border/50;
-}
-
-.hover-float {
-  @apply transition-transform duration-300 hover:-translate-y-1;
-}
-
-.hover-glow {
-  @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/25;
 }
 
 /* Loading animation */
