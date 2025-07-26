@@ -2,9 +2,7 @@
 
 <img width="828" height="288" alt="image" src="https://github.com/user-attachments/assets/06eeb60e-1bcc-41a0-9abc-8e565e8f8c42" />
 
-Artist Array is a web platform designed for the AI art community to share, discover, and utilize "Artist Strings"—curated lists of artist names used to define specific art styles in AI image generation models in NovelAI.
-
-This platform moves these valuable "recipes" from scattered social media posts into a structured, searchable, and interactive gallery.
+Artist Array is a web platform designed for the AI art community to share, discover, and utilise "Artist Strings"—curated lists of artist names used to define specific art styles in AI image generation models in NovelAI.
 
 **Live Demo:** https://artistarray.com
 
