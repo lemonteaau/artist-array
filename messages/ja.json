@@ -145,8 +145,10 @@
     "publishedOn": "投稿日",
     "backToGallery": "ギャラリーに戻る",
     "deletePrompt": "プロンプトを削除",
-    "deletePromptConfirm": "このプロンプトを削除してもよろしいですか？この操作は元に戻せません。",
-    "cancel": "キャンセル"
+    "deletePromptDescription": "このプロンプトを削除してもよろしいですか？この操作は元に戻せません。すべての「いいね！」とコメントも削除されます。",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "deleting": "削除中..."
   },
   "PromptCard": {
     "hasPrompt": "プロンプトがあります",

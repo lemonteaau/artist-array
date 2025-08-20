@@ -1,5 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +11,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Heart, MessageCircle, Trash2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface PromptActionsProps {
   liked: boolean;
@@ -34,6 +34,7 @@ export function PromptActions({
   isDeleting,
   onDeletePrompt,
 }: PromptActionsProps) {
+  const t = useTranslations("PromptDetails");
   return (
     <div className="flex gap-2">
       <Button
@@ -41,42 +42,41 @@ export function PromptActions({
         size="sm"
         onClick={toggleLike}
         disabled={likesLoading}
-        className="flex items-center gap-1"
+        className="flex items-center cursor-pointer"
       >
         {likesLoading ? (
           <Heart className="w-4 h-4 animate-pulse" />
         ) : (
           <Heart className={`w-4 h-4 ${liked ? "fill-current" : ""}`} />
         )}
-        <span className="tabular-nums">{likesCount}</span>
+        <span className="tabular-nums font-mono">{likesCount}</span>
       </Button>
-      <Badge variant="secondary" className="flex items-center gap-1">
+      <Button variant="outline" size="sm" className="flex items-center">
         <MessageCircle className="w-4 h-4" />
-        {commentsCount}
-      </Badge>
+        <span className="tabular-nums font-mono">{commentsCount}</span>
+      </Button>
       {isOwner && (
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive" size="sm">
+            <Button variant="destructive" size="sm" className="cursor-pointer">
               <Trash2 className="w-4 h-4" />
             </Button>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Delete Prompt</AlertDialogTitle>
+              <AlertDialogTitle>{t("deletePrompt")}</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to delete this prompt? This action cannot
-                be undone. All likes and comments will also be deleted.
+                {t("deletePromptDescription")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 onClick={onDeletePrompt}
                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                 disabled={isDeleting}
               >
-                {isDeleting ? "Deleting..." : "Delete"}
+                {isDeleting ? t("deleting") : t("delete")}
               </AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

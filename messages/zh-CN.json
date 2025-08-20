@@ -144,8 +144,10 @@
     "publishedOn": "发布于",
     "backToGallery": "返回画廊",
     "deletePrompt": "删除提示词",
-    "deletePromptConfirm": "您确定要删除这个提示词吗？此操作无法撤销。",
-    "cancel": "取消"
+    "deletePromptDescription": "您确定要删除此提示词吗？此操作无法撤消。所有点赞和评论也将被删除。",
+    "cancel": "取消",
+    "delete": "删除",
+    "deleting": "删除中..."
   },
   "PromptCard": {
     "hasPrompt": "含提示词",

@@ -146,8 +146,10 @@
     "publishedOn": "on",
     "backToGallery": "Back to gallery",
     "deletePrompt": "Delete Prompt",
-    "deletePromptConfirm": "Are you sure you want to delete this prompt? This action cannot be undone.",
-    "cancel": "Cancel"
+    "deletePromptDescription": "Are you sure you want to delete this prompt? This action cannot be undone. All likes and comments will also be deleted.",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleting": "Deleting..."
   },
   "PromptCard": {
     "hasPrompt": "Has prompt",

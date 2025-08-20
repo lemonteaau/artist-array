@@ -84,8 +84,8 @@ export function PromptDetails({
         {prompt.model && (
           <>
             <Separator />
-            <div>
-              <h3 className="font-semibold text-lg mb-2">{t("model")}</h3>
+            <div className="flex justify-between items-center">
+              <h3 className="font-semibold text-lg my-2">{t("model")}</h3>
               <Badge variant="outline">{prompt.model}</Badge>
             </div>
           </>

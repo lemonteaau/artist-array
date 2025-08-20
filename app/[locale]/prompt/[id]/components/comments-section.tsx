@@ -88,7 +88,7 @@ export function CommentsSection({
 
         {/* Add Comment Form */}
         {user ? (
-          <form onSubmit={handleComment} className="space-y-4 mt-6">
+          <form onSubmit={handleComment} className="mt-6 flex flex-col gap-4">
             <Textarea
               placeholder={t("addComment")}
               value={newComment}
@@ -96,6 +96,7 @@ export function CommentsSection({
               disabled={submittingComment}
             />
             <Button
+              className="cursor-pointer self-end"
               type="submit"
               disabled={submittingComment || !newComment.trim()}
             >
