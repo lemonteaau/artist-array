@@ -42,7 +42,7 @@ export function PromptActions({
         size="sm"
         onClick={toggleLike}
         disabled={likesLoading}
-        className="flex items-center cursor-pointer"
+        className="flex items-center"
       >
         {likesLoading ? (
           <Heart className="w-4 h-4 animate-pulse" />
@@ -51,14 +51,18 @@ export function PromptActions({
         )}
         <span className="tabular-nums font-mono">{likesCount}</span>
       </Button>
-      <Button variant="outline" size="sm" className="flex items-center">
+      <Button
+        variant="outline"
+        size="sm"
+        className="flex items-center cursor-default hover:bg-[]"
+      >
         <MessageCircle className="w-4 h-4" />
         <span className="tabular-nums font-mono">{commentsCount}</span>
       </Button>
       {isOwner && (
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <Button variant="destructive" size="sm" className="cursor-pointer">
+            <Button variant="destructive" size="sm">
               <Trash2 className="w-4 h-4" />
             </Button>
           </AlertDialogTrigger>
@@ -73,7 +77,7 @@ export function PromptActions({
               <AlertDialogCancel>{t("cancel")}</AlertDialogCancel>
               <AlertDialogAction
                 onClick={onDeletePrompt}
-                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                className="bg-destructive text-white hover:bg-destructive/90"
                 disabled={isDeleting}
               >
                 {isDeleting ? t("deleting") : t("delete")}

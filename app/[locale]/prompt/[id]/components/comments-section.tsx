@@ -97,7 +97,7 @@ export function CommentsSection({
               className="resize-none"
             />
             <Button
-              className="cursor-pointer self-end"
+              className=" self-end"
               type="submit"
               disabled={submittingComment || !newComment.trim()}
             >
