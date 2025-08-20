@@ -78,13 +78,14 @@ export default function PromptDetailPage() {
             handleDeleteComment={handleDeleteComment}
             deletingComments={deletingComments}
           />
-
-          <Link
-            href="/"
-            className="text-sm text-primary hover:underline inline-block"
-          >
-            &larr; {t("backToGallery")}
-          </Link>
+          <div className="flex justify-end">
+            <Link
+              href="/"
+              className="text-md text-primary hover:underline inline-block"
+            >
+              &larr; {t("backToGallery")}
+            </Link>
+          </div>
         </div>
       </div>
     </>

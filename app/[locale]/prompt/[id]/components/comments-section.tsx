@@ -94,6 +94,7 @@ export function CommentsSection({
               value={newComment}
               onChange={(e) => setNewComment(e.target.value)}
               disabled={submittingComment}
+              className="resize-none"
             />
             <Button
               className="cursor-pointer self-end"
