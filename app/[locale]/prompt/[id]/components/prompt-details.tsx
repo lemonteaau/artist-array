@@ -36,7 +36,28 @@ export function PromptDetails({
     <Card>
       <CardHeader>
         <CardTitle className="flex justify-between items-center">
-          <span>{t("details")}</span>
+          {/* Publisher Information */}
+          <div className="flex items-center gap-3 text-sm text-muted-foreground mt-2">
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={prompt.profiles?.avatar_url} />
+              <AvatarFallback>
+                {prompt.profiles?.display_name?.[0]?.toUpperCase() ??
+                  prompt.user_id?.slice(0, 2).toUpperCase() ??
+                  "U"}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <div>
+                <span className="font-medium">
+                  {prompt.profiles?.display_name ??
+                    `User ${prompt.user_id?.slice(0, 8)}...`}
+                </span>
+              </div>
+              <div className="text-xs">
+                {t("publishedOn")} {formatDate(prompt.created_at)}
+              </div>
+            </div>
+          </div>
           <PromptActions
             liked={liked}
             likesCount={likesCount}
@@ -48,29 +69,6 @@ export function PromptDetails({
             onDeletePrompt={onDeletePrompt}
           />
         </CardTitle>
-        {/* Publisher Information */}
-        <div className="flex items-center gap-3 text-sm text-muted-foreground">
-          <Avatar className="w-8 h-8">
-            <AvatarImage src={prompt.profiles?.avatar_url} />
-            <AvatarFallback>
-              {prompt.profiles?.display_name?.[0]?.toUpperCase() ??
-                prompt.user_id?.slice(0, 2).toUpperCase() ??
-                "U"}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <div>
-              {t("publishedBy")}{" "}
-              <span className="font-medium">
-                {prompt.profiles?.display_name ??
-                  `User ${prompt.user_id?.slice(0, 8)}...`}
-              </span>
-            </div>
-            <div className="text-xs">
-              {t("publishedOn")} {formatDate(prompt.created_at)}
-            </div>
-          </div>
-        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>
