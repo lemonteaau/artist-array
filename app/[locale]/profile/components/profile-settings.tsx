@@ -9,6 +9,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { User } from "@supabase/supabase-js";
+import { useDateFormat } from "@/lib/date-utils";
 import {
   User as UserIcon,
   Mail,
@@ -34,6 +35,7 @@ export function ProfileSettings({
   onSubmit,
 }: ProfileSettingsProps) {
   const t = useTranslations("Profile");
+  const { formatDateSimple } = useDateFormat();
 
   return (
     <Card className="glass-effect border-border/50">
@@ -85,11 +87,7 @@ export function ProfileSettings({
               {t("memberSince")}
             </Label>
             <p className="text-sm text-muted-foreground">
-              {new Date(user.created_at).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {formatDateSimple(user.created_at)}
             </p>
           </div>
 

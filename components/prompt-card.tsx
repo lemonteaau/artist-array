@@ -7,6 +7,7 @@ import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useDateFormat } from "@/lib/date-utils";
 
 interface PromptCardProps {
   prompt: {
@@ -31,6 +32,7 @@ export function PromptCard({
   priority = false,
 }: PromptCardProps) {
   const t = useTranslations("PromptCard");
+  const { formatDateSimple } = useDateFormat();
 
   return (
     <Link href={`/prompt/${prompt.id}`} className="group">
@@ -162,7 +164,7 @@ export function PromptCard({
                 {prompt.artist_string}
               </p>
               <p className="text-xs text-muted-foreground">
-                {new Date(prompt.created_at).toLocaleDateString()}
+                {formatDateSimple(prompt.created_at)}
               </p>
             </div>
             {typeof prompt.likes_count !== "undefined" && (

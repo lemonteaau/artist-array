@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Trash2 } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
+import { useDateFormat } from "@/lib/date-utils";
 import { Comment } from "../hooks/use-prompt-detail";
 import { User } from "@supabase/supabase-js";
 
@@ -18,16 +19,6 @@ interface CommentsSectionProps {
   deletingComments: Set<number>;
 }
 
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
-
 export function CommentsSection({
   comments,
   user,
@@ -39,6 +30,7 @@ export function CommentsSection({
   deletingComments,
 }: CommentsSectionProps) {
   const t = useTranslations("PromptDetails");
+  const { formatDate } = useDateFormat();
 
   return (
     <Card>

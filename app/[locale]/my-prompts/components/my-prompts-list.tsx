@@ -17,6 +17,7 @@ import { Trash2, Eye, Heart, MessageCircle, Calendar } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import type { Prompt } from "../hooks/use-my-prompts";
+import { useDateFormat } from "@/lib/date-utils";
 
 interface MyPromptsListProps {
   prompts: Prompt[];
@@ -30,6 +31,7 @@ export function MyPromptsList({
   onDeletePrompt,
 }: MyPromptsListProps) {
   const t = useTranslations("MyPrompts");
+  const { formatDateSimple } = useDateFormat();
 
   return (
     <div className="space-y-4">
@@ -60,7 +62,7 @@ export function MyPromptsList({
                     <div className="flex items-center gap-4 text-sm text-muted-foreground">
                       <span className="flex items-center gap-1">
                         <Calendar className="h-3 w-3" />
-                        {new Date(prompt.created_at).toLocaleDateString()}
+                        {formatDateSimple(prompt.created_at)}
                       </span>
                       {prompt.model && (
                         <Badge variant="secondary" className="text-xs">

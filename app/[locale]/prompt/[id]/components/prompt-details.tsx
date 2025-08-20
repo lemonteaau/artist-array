@@ -4,18 +4,9 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslations } from "next-intl";
+import { useDateFormat } from "@/lib/date-utils";
 import { Prompt } from "../hooks/use-prompt-detail";
 import { PromptActions } from "./prompt-actions";
-
-function formatDate(dateString: string): string {
-  return new Date(dateString).toLocaleDateString("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
-}
 
 interface PromptDetailsProps {
   prompt: Prompt;
@@ -39,6 +30,7 @@ export function PromptDetails({
   onDeletePrompt,
 }: PromptDetailsProps) {
   const t = useTranslations("PromptDetails");
+  const { formatDate } = useDateFormat();
 
   return (
     <Card>
