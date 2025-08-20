@@ -2,9 +2,20 @@ import { CopyButton } from "@/components/copy-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useTranslations } from "next-intl";
 import { Prompt } from "../hooks/use-prompt-detail";
 import { PromptActions } from "./prompt-actions";
+
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
 
 interface PromptDetailsProps {
   prompt: Prompt;
@@ -45,6 +56,29 @@ export function PromptDetails({
             onDeletePrompt={onDeletePrompt}
           />
         </CardTitle>
+        {/* Publisher Information */}
+        <div className="flex items-center gap-3 text-sm text-muted-foreground">
+          <Avatar className="w-8 h-8">
+            <AvatarImage src={prompt.profiles?.avatar_url} />
+            <AvatarFallback>
+              {prompt.profiles?.display_name?.[0]?.toUpperCase() ??
+                prompt.user_id?.slice(0, 2).toUpperCase() ??
+                "U"}
+            </AvatarFallback>
+          </Avatar>
+          <div>
+            <div>
+              {t("publishedBy")}{" "}
+              <span className="font-medium">
+                {prompt.profiles?.display_name ??
+                  `User ${prompt.user_id?.slice(0, 8)}...`}
+              </span>
+            </div>
+            <div className="text-xs">
+              {t("publishedOn")} {formatDate(prompt.created_at)}
+            </div>
+          </div>
+        </div>
       </CardHeader>
       <CardContent className="space-y-4">
         <div>

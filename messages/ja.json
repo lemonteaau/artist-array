@@ -141,6 +141,8 @@
     "noCommentsYet": "まだコメントがありません。最初のコメントを投稿してください！",
     "loginToComment": "ログイン",
     "toAddComment": "してコメントを追加",
+    "publishedBy": "投稿者",
+    "publishedOn": "投稿日",
     "backToGallery": "ギャラリーに戻る",
     "deletePrompt": "プロンプトを削除",
     "deletePromptConfirm": "このプロンプトを削除してもよろしいですか？この操作は元に戻せません。",

@@ -32,6 +32,10 @@ export interface Prompt {
   user_id: string | null;
   likes_count: number;
   comments: Comment[];
+  profiles?: {
+    display_name?: string;
+    avatar_url?: string;
+  };
 }
 
 export function usePromptDetail() {
@@ -101,7 +105,12 @@ export function usePromptDetail() {
       try {
         const { data: promptData, error: promptError } = await supabase
           .from("prompts")
-          .select("*")
+          .select(
+            `
+            *,
+            profiles!prompts_user_id_fkey ( display_name, avatar_url )
+          `
+          )
           .eq("id", id)
           .single();
 
