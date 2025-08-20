@@ -81,7 +81,7 @@ export default function PromptDetailPage() {
 
           <Link
             href="/"
-            className="text-sm text-blue-500 hover:underline inline-block"
+            className="text-sm text-primary hover:underline inline-block"
           >
             &larr; {t("backToGallery")}
           </Link>

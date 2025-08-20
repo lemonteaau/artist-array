@@ -139,6 +139,8 @@
     "addComment": "コメントを追加...",
     "addingComment": "コメントを追加中...",
     "noCommentsYet": "まだコメントがありません。最初のコメントを投稿してください！",
+    "loginToComment": "ログイン",
+    "toAddComment": "してコメントを追加",
     "backToGallery": "ギャラリーに戻る",
     "deletePrompt": "プロンプトを削除",
     "deletePromptConfirm": "このプロンプトを削除してもよろしいですか？この操作は元に戻せません。",

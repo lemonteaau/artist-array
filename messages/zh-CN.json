@@ -138,6 +138,8 @@
     "addComment": "添加评论...",
     "addingComment": "评论提交中...",
     "noCommentsYet": "还没有评论。成为第一个评论的人吧！",
+    "loginToComment": "登录",
+    "toAddComment": "以添加评论",
     "backToGallery": "返回画廊",
     "deletePrompt": "删除提示词",
     "deletePromptConfirm": "您确定要删除这个提示词吗？此操作无法撤销。",

@@ -48,33 +48,6 @@ export function CommentsSection({
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {/* Add Comment Form */}
-        {user ? (
-          <form onSubmit={handleComment} className="space-y-4 mb-6">
-            <Textarea
-              placeholder={t("addComment")}
-              value={newComment}
-              onChange={(e) => setNewComment(e.target.value)}
-              disabled={submittingComment}
-            />
-            <Button
-              type="submit"
-              disabled={submittingComment || !newComment.trim()}
-            >
-              {submittingComment ? t("addingComment") : t("addComment")}
-            </Button>
-          </form>
-        ) : (
-          <div className="mb-6 p-4 bg-muted rounded-md text-center">
-            <p className="text-sm text-muted-foreground">
-              <Link href="/login" className="text-blue-500 hover:underline">
-                Log in
-              </Link>{" "}
-              to add a comment
-            </p>
-          </div>
-        )}
-
         {/* Comments List */}
         {comments.length > 0 ? (
           <div className="space-y-4">
@@ -119,6 +92,33 @@ export function CommentsSection({
           <p className="text-sm text-muted-foreground text-center">
             {t("noCommentsYet")}
           </p>
+        )}
+
+        {/* Add Comment Form */}
+        {user ? (
+          <form onSubmit={handleComment} className="space-y-4 mt-6">
+            <Textarea
+              placeholder={t("addComment")}
+              value={newComment}
+              onChange={(e) => setNewComment(e.target.value)}
+              disabled={submittingComment}
+            />
+            <Button
+              type="submit"
+              disabled={submittingComment || !newComment.trim()}
+            >
+              {submittingComment ? t("addingComment") : t("addComment")}
+            </Button>
+          </form>
+        ) : (
+          <div className="mt-6 p-4 bg-muted rounded-md text-center">
+            <p className="text-sm text-muted-foreground">
+              <Link href="/login" className="text-primary hover:underline">
+                {t("loginToComment")}
+              </Link>{" "}
+              {t("toAddComment")}
+            </p>
+          </div>
         )}
       </CardContent>
     </Card>
