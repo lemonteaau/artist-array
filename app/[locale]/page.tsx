@@ -7,7 +7,7 @@ import { getPrompts, type Prompt } from "@/lib/prompts";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Sparkles, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { BsFire } from "react-icons/bs";
 import { useTranslations } from "next-intl";
 
@@ -90,23 +90,18 @@ export default function HomePage() {
   return (
     <div className="space-y-8">
       {/* Hero Section */}
-      <section className="text-center hidden md:block py-6 space-y-4">
-        <div className="flex justify-center mb-4">
-          <div className="p-4 rounded-2xl bg-primary/10 animate-pulse-scale">
-            <Sparkles className="h-12 w-12 text-primary" />
-          </div>
-        </div>
-        <h1 className="text-4xl md:text-5xl font-bold gradient-text">
+      <section className="text-center hidden md:block space-y-4">
+        <h1 className="text-4xl md:text-5xl font-bold text-[#f97316]">
           {t("title")}
         </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+        <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
           {t("subtitle")}
         </p>
       </section>
 
       {/* Mobile Hero Section */}
       <section className="text-center block md:hidden space-y-1">
-        <h1 className="text-2xl font-bold gradient-text">Artist Array</h1>
+        <h1 className="text-2xl font-bold text-[#f97316]">Artist Array</h1>
         <p className="text-md text-muted-foreground">{t("subtitle")}</p>
       </section>
 

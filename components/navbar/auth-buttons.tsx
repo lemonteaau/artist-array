@@ -14,7 +14,7 @@ export function NavbarAuthButtons() {
           {t("login")}
         </Link>
       </Button>
-      <Button size="sm" asChild className="hover-glow">
+      <Button size="sm" asChild className="hover-glow bg-[#f97316]">
         <Link href="/signup">
           <UserPlus className="mr-2 h-4 w-4" />
           {t("signUp")}

@@ -104,7 +104,7 @@ export default async function RootLayout({
           <NextIntlClientProvider locale={locale} messages={messages}>
             <div className="flex-1">
               <div className="fixed inset-0 -z-10 h-full w-full bg-background">
-                <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] dark:bg-[radial-gradient(#1f2937_1px,transparent_1px)] opacity-20"></div>
+                <div className="absolute h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_2px)] [background-size:24px_24px] dark:bg-[radial-gradient(#374151_1px,transparent_2px)] opacity-65 dark:opacity-20"></div>
               </div>
               <Navbar />
               <main className="container mx-auto px-4 py-8">{children}</main>
