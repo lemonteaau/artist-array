@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Image as ImageIcon, Sparkles } from "lucide-react";
+import { Image as ImageIcon, Palette } from "lucide-react";
 import { useTranslations } from "next-intl";
 
 interface UploadFormFieldsProps {
@@ -87,7 +87,7 @@ export function UploadFormFields({
             {availableModels.map((modelName) => (
               <SelectItem key={modelName} value={modelName}>
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4" />
+                  <Palette className="h-4 w-4" />
                   {modelName}
                 </div>
               </SelectItem>

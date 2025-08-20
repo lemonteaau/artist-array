@@ -45,7 +45,7 @@ export function UploadForm({
         <div className="inline-flex p-3 rounded-full bg-primary/10 mb-4">
           <Upload className="h-8 w-8 text-primary" />
         </div>
-        <h1 className="text-3xl font-bold gradient-text mb-2">
+        <h1 className="text-3xl font-bold text-primary mb-2">
           {t("shareYourCreation")}
         </h1>
         <p className="text-muted-foreground">{t("helpOthersDiscover")}</p>

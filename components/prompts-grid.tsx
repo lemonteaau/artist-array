@@ -5,7 +5,7 @@ import { type Prompt } from "@/lib/prompts";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "@/i18n/navigation";
-import { Upload, Sparkles, Loader2 } from "lucide-react";
+import { Upload, Palette, Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useEffect, useCallback } from "react";
 
@@ -55,7 +55,7 @@ export function PromptsGrid({
     return (
       <div className="flex flex-col items-center justify-center py-16 px-4">
         <div className="p-6 rounded-full bg-muted mb-6">
-          <Sparkles className="h-12 w-12 text-muted-foreground" />
+          <Palette className="h-12 w-12 text-muted-foreground" />
         </div>
         <h2 className="text-2xl font-semibold mb-2">{t("noPromptsYet")}</h2>
         <p className="text-muted-foreground text-center mb-6 max-w-md">

@@ -27,7 +27,7 @@ export function ProfileHeader({
         </AvatarFallback>
       </Avatar>
       <div>
-        <h1 className="text-3xl font-bold gradient-text">
+        <h1 className="text-3xl font-bold text-primary">
           {displayName || t("anonymousUser")}
         </h1>
         <p className="text-muted-foreground">{user.email}</p>

@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Sparkles } from "lucide-react";
+import { Palette } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 
@@ -20,7 +20,7 @@ export default function NotFound() {
       <Card className="max-w-md w-full text-center glass-effect border-border/50">
         <CardHeader>
           <div className="mx-auto p-3 rounded-full bg-primary/10 mb-4">
-            <Sparkles className="h-8 w-8 text-primary" />
+            <Palette className="h-8 w-8 text-primary" />
           </div>
           <CardTitle className="text-6xl font-bold">{t("title")}</CardTitle>
           <CardDescription className="text-xl">{t("message")}</CardDescription>

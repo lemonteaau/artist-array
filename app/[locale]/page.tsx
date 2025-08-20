@@ -91,7 +91,7 @@ export default function HomePage() {
     <div className="space-y-8">
       {/* Hero Section */}
       <section className="text-center hidden md:block space-y-4">
-        <h1 className="text-4xl md:text-5xl font-bold text-[#f97316]">
+        <h1 className="text-4xl md:text-5xl font-bold text-primary">
           {t("title")}
         </h1>
         <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
@@ -101,7 +101,7 @@ export default function HomePage() {
 
       {/* Mobile Hero Section */}
       <section className="text-center block md:hidden space-y-1">
-        <h1 className="text-2xl font-bold text-[#f97316]">Artist Array</h1>
+        <h1 className="text-2xl font-bold text-primary">Artist Array</h1>
         <p className="text-md text-muted-foreground">{t("subtitle")}</p>
       </section>
 

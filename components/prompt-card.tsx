@@ -67,7 +67,7 @@ export function PromptCard({
                 h-full 
                 group-hover:scale-105 
                 transition-transform 
-                duration-500
+                duration-300
               "
               priority={priority}
             />

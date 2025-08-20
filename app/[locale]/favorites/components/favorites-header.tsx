@@ -22,7 +22,7 @@ export function FavoritesHeader({ prompts }: FavoritesHeaderProps) {
       <div className="inline-flex p-3 rounded-full bg-primary/10 mb-2">
         <Heart className="h-8 w-8 text-primary fill-current" />
       </div>
-      <h1 className="text-3xl font-bold gradient-text">{t("title")}</h1>
+      <h1 className="text-3xl font-bold text-primary">{t("title")}</h1>
       <p className="text-muted-foreground">{getSubtitle()}</p>
     </div>
   );
