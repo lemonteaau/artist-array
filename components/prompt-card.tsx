@@ -148,7 +148,7 @@ export function PromptCard({
             </Badge>
           )}
         </CardContent>
-        <CardFooter className="p-4">
+        <CardFooter className="p-4 dark:bg-card dark:group-hover:bg-card">
           <div className="w-full space-y-3">
             <div className="space-y-1">
               <p
