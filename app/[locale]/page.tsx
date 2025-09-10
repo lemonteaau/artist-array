@@ -2,7 +2,7 @@
 
 import { SortSelector } from "@/components/sort-selector";
 import { PromptsGrid, PromptsLoadingFallback } from "@/components/prompts-grid";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { getPrompts, type Prompt } from "@/lib/prompts";
 import { User } from "@supabase/supabase-js";
 import { useEffect, useState, Suspense } from "react";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "@/i18n/navigation";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";

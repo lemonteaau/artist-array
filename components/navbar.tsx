@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/lib/supabase/client";
 import { toast } from "sonner";
 import { User } from "@supabase/supabase-js";
 import { useRouter } from "@/i18n/navigation";

@@ -1,7 +1,7 @@
 import createIntlMiddleware from "next-intl/middleware";
 import { type NextRequest } from "next/server";
 import { routing } from "./i18n/routing";
-import { updateSession } from "./utils/supabase/middleware";
+import { updateSession } from "./lib/supabase/middleware";
 
 export async function middleware(request: NextRequest) {
   // 1. running next-intl middleware first
